@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DLL.Interfaces
 {
-    public interface IRepository<T> where T : class
+    public interface IRepository<T> where T : IEntity
     {
         IEnumerable<T> GetAll();
         T Get(int id);

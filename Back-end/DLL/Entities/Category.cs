@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
+using DLL.Interfaces;
 
 namespace DLL.Entities
 {
-    public class Category
+    public class Category : IEntity
     {
-        public string ID { get; set; }
+        [Key]
+        public int Id { get; set; }
+
         [Required]
         public string Name { get; set; }
 

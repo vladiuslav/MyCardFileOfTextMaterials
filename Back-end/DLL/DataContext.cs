@@ -13,6 +13,7 @@ namespace DLL
         public DbSet<User> Users { get; set; }
         public DataContext()
         {
+            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
         public DataContext(DbContextOptions<DataContext> options)

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DLL.Repositories
 {
-    class CategoryRepository : IRepository<Category>
+    public class CategoryRepository : IRepository<Category>
     {
         private DataContext db;
         public CategoryRepository(DataContext dataContext)

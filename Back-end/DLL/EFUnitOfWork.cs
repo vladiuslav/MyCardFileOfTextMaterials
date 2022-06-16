@@ -19,6 +19,10 @@ namespace DLL
         {
             db = new DataContext();
         }
+        public EFUnitOfWork(DataContext dataContext)
+        {
+            db = dataContext;
+        }
         public IRepository<Card> Cards
         {
             get
