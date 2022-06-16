@@ -15,9 +15,7 @@ namespace ProjectBackEndTests.DLLTests
         [SetUp]
         public void Setup()
         {
-            var dataContext = new DataContext();
-            TestHelper.SeedData(dataContext);
-            unitOfWork = new EFUnitOfWork(dataContext);
+            unitOfWork = new EFUnitOfWork(@"Server=localhost\SQLEXPRESS;Database=COFT;Trusted_Connection=True;");
         }
 
         [Test]

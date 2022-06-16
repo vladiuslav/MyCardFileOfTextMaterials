@@ -4,6 +4,7 @@ using DLL.Repositories;
 using DLL;
 using System.Linq;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProjectBackEndTests.DLLTests
 {
@@ -16,17 +17,17 @@ namespace ProjectBackEndTests.DLLTests
         [SetUp]
         public void Setup()
         {
-            dataContext = new DataContext();
-            TestHelper.SeedData(dataContext);
+            var contextOptions = new DbContextOptionsBuilder<DataContext>()
+            .UseSqlServer(@"Server=localhost\SQLEXPRESS;Database=COFT;Trusted_Connection=True;")
+            .Options;
+            dataContext = new DataContext(contextOptions);
             this.categoryRepository = new CategoryRepository(dataContext);
         }
 
         [Test]
         public void CategoryRepository_GetCategory_ReturnsCategory()
         {
-            Category categoryExcepted = new Category { Name = "TestCategoryName1" };
-            Category categoryActual = categoryRepository.Get(1);
-            Assert.AreEqual(categoryExcepted.Name, categoryActual.Name);
+            Assert.IsNotNull(categoryRepository.Get(1));
         }
 
         [Test]
@@ -64,10 +65,10 @@ namespace ProjectBackEndTests.DLLTests
         [Test]
         public void CategoryRepository_CreateAndDeleteTesting_CreateCategory()
         {
-            var category = new Category { Name = "TestCategoryName1" };
+            var category = new Category { Name = "TestCategoryName10" };
             categoryRepository.Create(category);
             dataContext.SaveChanges();
-            var categoryForDelete = categoryRepository.Find(category => category.Name == "TestCategoryName1").FirstOrDefault();
+            var categoryForDelete = categoryRepository.Find(category => category.Name == "TestCategoryName10").FirstOrDefault();
             Assert.IsNotNull(categoryForDelete);
             categoryRepository.Delete(categoryForDelete.Id);
             dataContext.SaveChanges();

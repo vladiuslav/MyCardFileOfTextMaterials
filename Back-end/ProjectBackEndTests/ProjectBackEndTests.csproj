@@ -17,6 +17,11 @@
   <ItemGroup>
     <ProjectReference Include="..\BLL\BLL.csproj" />
     <ProjectReference Include="..\DLL\DLL.csproj" />
+    <ProjectReference Include="..\WEBAPI\WEBAPI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="WEBAPITests\" />
   </ItemGroup>
 
 </Project>

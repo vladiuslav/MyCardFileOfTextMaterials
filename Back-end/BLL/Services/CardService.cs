@@ -9,39 +9,42 @@ using DLL;
 
 namespace BLL.Services
 {
-    public class UserService : IUserService
+    public class CardService : ICardService
     {
-        
+
         private EFUnitOfWork unitOfWork;
         private Mapper mapper;
-        public UserService()
+        public CardService(string connectionString)
         {
-            this.unitOfWork = new EFUnitOfWork(); 
+            this.unitOfWork = new EFUnitOfWork(connectionString);
+
             var config = new MapperConfiguration(cfg => {
                 cfg.AddProfile<CardConfigurationProfile>();
                 cfg.AddProfile<UserConfigurationProfile>();
                 cfg.AddProfile<CategoryConfigurationProfile>();
-                });
+            });
             this.mapper = new Mapper(config);
         }
-        public void CreateUser(UserDTO userDto)
+        public void CreateCard(CardDTO cardDto)
         {
-            unitOfWork.Users.Create(mapper.Map<User>(userDto));
+            unitOfWork.Cards.Create(mapper.Map<Card>(cardDto));
+            unitOfWork.Save();
         }
 
         public void Dispose()
         {
+            unitOfWork.Save();
             unitOfWork.Dispose();
         }
 
-        public UserDTO GetUser(int id)
+        public CardDTO GetCard(int id)
         {
-            return mapper.Map<UserDTO>(unitOfWork.Users.Get(id));
+            return mapper.Map<CardDTO>(unitOfWork.Cards.Get(id));
         }
 
-        public IEnumerable<UserDTO> GetUsers()
+        public IEnumerable<CardDTO> GetCards()
         {
-            return mapper.Map<IEnumerable<UserDTO>>(unitOfWork.Users.GetAll());
+            return mapper.Map<IEnumerable<CardDTO>>(unitOfWork.Cards.GetAll());
         }
     }
 }

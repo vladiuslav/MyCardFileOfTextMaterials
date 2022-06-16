@@ -4,7 +4,7 @@ using System.Text;
 using DLL.Entities;
 using DLL.Interfaces;
 using DLL.Repositories;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace DLL
 {
@@ -15,13 +15,12 @@ namespace DLL
         private CategoryRepository categoryRepository;
         private UserRepository userRepository;
 
-        public EFUnitOfWork()
+        public EFUnitOfWork(string connectionString)
         {
-            db = new DataContext();
-        }
-        public EFUnitOfWork(DataContext dataContext)
-        {
-            db = dataContext;
+            var contextOptions = new DbContextOptionsBuilder<DataContext>()
+            .UseSqlServer(connectionString)
+            .Options;
+            db = new DataContext(contextOptions);
         }
         public IRepository<Card> Cards
         {

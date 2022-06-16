@@ -4,6 +4,7 @@ using DLL.Repositories;
 using DLL;
 using System.Linq;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProjectBackEndTests.DLLTests
 {
@@ -15,29 +16,24 @@ namespace ProjectBackEndTests.DLLTests
         [SetUp]
         public void Setup()
         {
-            dataContext = new DataContext();
-            TestHelper.SeedData(dataContext);
+            var contextOptions = new DbContextOptionsBuilder<DataContext>()
+            .UseSqlServer(@"Server=localhost\SQLEXPRESS;Database=COFT;Trusted_Connection=True;")
+            .Options;
+            dataContext = new DataContext(contextOptions);
             this.cardRepository = new CardRepository(dataContext);
         }
 
         [Test]
         public void CardRepository_GetCard_ReturnsCard()
         {
-            Card CardExcepted = new Card {
-                Title = "TestTitle1",
-                Text = "Some special test text for testing dataBase, some special test text for testing dataBase, ",
-                NumberOfLikes = 0
-            };
-            Card CardActual = cardRepository.Get(1);
-            Assert.AreEqual(CardExcepted.Title, CardActual.Title);
+            Assert.IsNotNull(cardRepository.Get(1));
         }
 
         [Test]
         public void CardRepository_GetALL_ReturnsListOfCard()
         {
             List<Card> Cards = cardRepository.GetAll().ToList();
-            Assert.IsNotNull(Cards.FirstOrDefault(Card => Card.Title == "TestTitle1"));
-            Assert.IsNotNull(Cards.FirstOrDefault(Card => Card.Title == "TestTitle2"));
+            Assert.IsNotNull(Cards.First());
         }
 
         [Test]
@@ -69,7 +65,7 @@ namespace ProjectBackEndTests.DLLTests
         {
             var Card = new Card
             {
-                Title = "TestTitle3",
+                Title = "TestTitle10",
                 Text = "Some special test text for testing dataBase, some special test text for testing dataBase, ",
                 NumberOfLikes = 0,
                 UserId=1,
@@ -77,7 +73,7 @@ namespace ProjectBackEndTests.DLLTests
             };
             cardRepository.Create(Card);
             dataContext.SaveChanges();
-            var CardForDelete = cardRepository.Find(Card => Card.Title == "TestTitle1").FirstOrDefault();
+            var CardForDelete = cardRepository.Find(Card => Card.Title == "TestTitle10").FirstOrDefault();
             Assert.IsNotNull(CardForDelete);
             cardRepository.Delete(CardForDelete.Id);
             dataContext.SaveChanges();

@@ -5,11 +5,11 @@ using System.Text;
 
 namespace BLL.Interfaces
 {
-    public interface IUserService
+    interface ICardService
     {
-        void CreateUser(UserDTO userDto);
-        UserDTO GetUser(int id);
-        IEnumerable<UserDTO> GetUsers();
+        void CreateCard(CardDTO cardDto);
+        CardDTO GetCard(int id);
+        IEnumerable<CardDTO> GetCards();
         void Dispose();
     }
 }

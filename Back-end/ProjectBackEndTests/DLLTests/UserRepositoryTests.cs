@@ -4,6 +4,7 @@ using DLL.Repositories;
 using DLL;
 using System.Linq;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProjectBackEndTests.DLLTests
 {
@@ -15,9 +16,11 @@ namespace ProjectBackEndTests.DLLTests
         [SetUp]
         public void Setup()
         {
-            dataContext = new DataContext();
+            var contextOptions = new DbContextOptionsBuilder<DataContext>()
+            .UseSqlServer(@"Server=localhost\SQLEXPRESS;Database=COFT;Trusted_Connection=True;")
+            .Options;
+            dataContext = new DataContext(contextOptions);
             this.userRepository = new UserRepository(dataContext);
-            TestHelper.SeedData(dataContext);
         }
 
         [Test]
