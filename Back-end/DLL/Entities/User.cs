@@ -17,6 +17,7 @@ namespace DLL.Entities
         [StringLength(40)]
         public string NickName { get; set; }
         [Required]
+        [StringLength(40)]
         public string Password { get; set; }
         public virtual ICollection<Card> Cards { get; set; }
 

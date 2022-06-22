@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BLL.Interfaces
 {
-    interface ICardService
+    public interface ICardService
     {
         void CreateCard(CardDTO cardDto);
         CardDTO GetCard(int id);

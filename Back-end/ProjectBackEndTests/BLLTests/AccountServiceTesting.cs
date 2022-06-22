@@ -13,11 +13,11 @@ namespace ProjectBackEndTests.BLLTests
     public class AccountServiceTesting
     {
 
-        private AccountService accountService;
+        private UserService accountService;
         [SetUp]
         public void Setup()
         {
-            accountService = new AccountService(@"Server=localhost\SQLEXPRESS;Database=COFT;Trusted_Connection=True;");
+            accountService = new UserService(@"Server=localhost\SQLEXPRESS;Database=COFT;Trusted_Connection=True;");
         }
         [Test]
         public void AccountService_CreateAccount_ReturnAccount()
@@ -28,9 +28,14 @@ namespace ProjectBackEndTests.BLLTests
             Assert.IsNotNull(accountService.GetUsers().FirstOrDefault(user => user.NickName == "TestNickName10"));
         }
         [Test]
-        public void AccountService_GetCards_ReturnCards()
+        public void AccountService_GetUsers_ReturnUsers()
         {
             Assert.IsNotNull(accountService.GetUsers());
+        }
+        [Test]
+        public void AccountService_GetUsersFromRange_ReturnUsers()
+        {
+            Assert.IsNotNull(accountService.GetUsersRange(1,10));
         }
         [Test]
         public void AccountService_GetCard_ReturnCard()
