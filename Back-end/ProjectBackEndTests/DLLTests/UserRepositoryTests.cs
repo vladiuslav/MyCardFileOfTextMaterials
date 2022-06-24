@@ -26,7 +26,7 @@ namespace ProjectBackEndTests.DLLTests
         [Test]
         public void UserRepository_GetUser_ReturnsUser()
         {
-            User userExcepted = new User {Email = "TestEmail1@mail.com", NickName = "TestNickName1", Password = "qwe123" };
+            User userExcepted = new User {Email = "TestEmail1@mail.com", NickName = "TestNickName1", Password = "qwe123", Role = "user" };
             User userActual = userRepository.Get(1);
             Assert.AreEqual(userExcepted.Email, userActual.Email);
             Assert.AreEqual(userExcepted.NickName, userActual.NickName);
@@ -68,7 +68,7 @@ namespace ProjectBackEndTests.DLLTests
         [Test]
         public void UserRepository_CreateAndDeleteTesting_CreateUser()
         {
-            var user = new User { Email = "TestEmail3@mail.com", NickName = "TestNickName3", Password = "qwe123" };
+            var user = new User { Email = "TestEmail3@mail.com", NickName = "TestNickName3", Password = "qwe123", Role = "user" };
             userRepository.Create(user);
             dataContext.SaveChanges();
             var userForDelete = userRepository.Find(user => user.Email == "TestEmail3@mail.com").FirstOrDefault();

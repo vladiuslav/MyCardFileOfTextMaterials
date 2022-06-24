@@ -1,5 +1,8 @@
 ﻿
 
+using System;
+using System.Diagnostics.CodeAnalysis;
+
 namespace BLL.DTO
 {
     public class CardDTO

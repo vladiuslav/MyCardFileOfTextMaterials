@@ -12,15 +12,23 @@ namespace WEBAPI
     {
         public MapperProfile()
         {
-            CreateMap<UserAllInfoModel, UserDTO>()
+            CreateMap<UserInfoModel, UserDTO>()
                 .ForMember(dto => dto.Cards, model => model.Ignore())
                 .ReverseMap();
 
             CreateMap<UserRegistrationModel, UserDTO>()
                 .ForMember(dto => dto.Cards, model => model.Ignore())
                 .ForMember(dto => dto.Id, model => model.Ignore())
+                .ForMember(dto => dto.Role, model => model.Ignore())
                 .ReverseMap();
             CreateMap<UserDTO, UserShortInfoModel>();
+            CreateMap<UserDTO, UserUpdateModel>().ReverseMap();
+
+            CreateMap<CardDTO, CardCreationModel>().ReverseMap();
+            CreateMap<CardDTO, CardInfoModel>().ReverseMap();
+
+            CreateMap<CategoryDTO, CategoryCreationModel>().ReverseMap(); 
+            CreateMap<CategoryDTO, CategoryInfoModel>().ReverseMap();
         }
     }
 }

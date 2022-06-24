@@ -11,7 +11,7 @@ namespace DLL
         public DbSet<Card> Cards { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<User> Users { get; set; }
-        public DataContext(DbContextOptions<DataContext> options)//My string @"Server=localhost\SQLEXPRESS;Database=COFT;Trusted_Connection=True;"
+        public DataContext(DbContextOptions<DataContext> options)
             : base(options)
         {
             if (Database.EnsureCreated())
@@ -21,12 +21,12 @@ namespace DLL
         }
         private void addSeedData(DataContext context)
         {
-            User user1 = new User { Email = "TestEmail1@mail.com", NickName = "TestNickName1", Password = "qwe123" };
-            User user2 = new User { Email = "TestEmail2@mail.com", NickName = "TestNickName2", Password = "qwe123" };
-            User user3 = new User { Email = "TestEmail3@mail.com", NickName = "TestNickName3", Password = "qwe123" };
-            User user4 = new User { Email = "TestEmail4@mail.com", NickName = "TestNickName4", Password = "qwe123" };
-            User user5 = new User { Email = "TestEmail5@mail.com", NickName = "TestNickName5", Password = "qwe123" };
-            User user6 = new User { Email = "TestEmail6@mail.com", NickName = "TestNickName6", Password = "qwe123" };
+            User user1 = new User { Email = "TestEmail1@mail.com", NickName = "TestNickName1", Password = "qwe123", Role = "admin" };
+            User user2 = new User { Email = "TestEmail2@mail.com", NickName = "TestNickName2", Password = "qwe123", Role = "user" };
+            User user3 = new User { Email = "TestEmail3@mail.com", NickName = "TestNickName3", Password = "qwe123", Role = "user" };
+            User user4 = new User { Email = "TestEmail4@mail.com", NickName = "TestNickName4", Password = "qwe123", Role = "user" };
+            User user5 = new User { Email = "TestEmail5@mail.com", NickName = "TestNickName5", Password = "qwe123", Role = "user" };
+            User user6 = new User { Email = "TestEmail6@mail.com", NickName = "TestNickName6", Password = "qwe123", Role = "user" };
             
             context.Users.AddRange(user1, user2, user3, user4, user5, user6);
             Category category1 = new Category { Name = "TestCategoryName1" };

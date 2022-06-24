@@ -1,12 +1,14 @@
 using AutoMapper;
 using BLL.Interfaces;
 using BLL.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerUI;
@@ -26,7 +28,22 @@ namespace WEBAPI
         public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = AuthOptions.ISSUER,
+                        ValidateAudience = true,
+                        ValidAudience = AuthOptions.AUDIENCE,
+                        ValidateLifetime = true,
+                        IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                        ValidateIssuerSigningKey = true,
+                    };
+                });
+
             string connection = Configuration.GetConnectionString("DefaultConnection");
             UserService userService = new UserService(connection);
             services.AddSingleton<IUserService>(userService);
@@ -34,6 +51,9 @@ namespace WEBAPI
             CardService cardService = new CardService(connection);
             services.AddSingleton<ICardService>(cardService);
 
+            CategoryService categoryService = new CategoryService(connection);
+            services.AddSingleton<ICategoryService>(categoryService);
+            
             var mapperConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new MapperProfile());
@@ -56,13 +76,17 @@ namespace WEBAPI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
             }
             else
             {
                 app.UseHsts();
+                app.UseHttpsRedirection();
             }
-            app.UseHttpsRedirection();
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseSwagger();
             app.UseSwaggerUI(options =>
@@ -74,6 +98,7 @@ namespace WEBAPI
                 SubmitMethod.Put, SubmitMethod.Delete });
                 options.RoutePrefix = string.Empty;
             });
+
 
             app.UseEndpoints(endpoints =>
             {

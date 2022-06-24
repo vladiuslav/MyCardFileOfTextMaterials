@@ -13,57 +13,70 @@ namespace BLL.Services
     public class UserService : IUserService
     {
         
-        private EFUnitOfWork unitOfWork;
-        private Mapper mapper;
+        private EFUnitOfWork _unitOfWork;
+        private Mapper _mapper;
         public UserService(string connectionString)
         {
-            this.unitOfWork = new EFUnitOfWork(connectionString); 
+            this._unitOfWork = new EFUnitOfWork(connectionString); 
 
             var config = new MapperConfiguration(cfg => {
-                cfg.AddProfile<CardConfigurationProfile>();
-                cfg.AddProfile<UserConfigurationProfile>();
-                cfg.AddProfile<CategoryConfigurationProfile>();
+                cfg.AddProfile<ConfigurationProfile>();
                 });
-            this.mapper = new Mapper(config);
+            this._mapper = new Mapper(config);
         }
         public void CreateUser(UserDTO userDto)
         {
-            unitOfWork.Users.Create(mapper.Map<User>(userDto));
-            unitOfWork.Save();
+            _unitOfWork.Users.Create(_mapper.Map<User>(userDto));
+            _unitOfWork.Save();
         }
         public void ChangeUser(UserDTO userDto)
         {
-            unitOfWork.Users.Update(mapper.Map<User>(userDto));
-            unitOfWork.Save();
+            _unitOfWork.Users.Update(_mapper.Map<User>(userDto));
+            _unitOfWork.Save();
         }
 
         public void Dispose()
         {
-            unitOfWork.Save();
-            unitOfWork.Dispose();
+            _unitOfWork.Save();
+            _unitOfWork.Dispose();
         }
 
         public UserDTO GetUser(int id)
         {
-            return mapper.Map<UserDTO>(unitOfWork.Users.Get(id));
+            return _mapper.Map<UserDTO>(_unitOfWork.Users.Get(id));
+        }
+        public UserDTO GetUserByNickName(string nickname)
+        {
+            return _mapper.Map<UserDTO>(_unitOfWork.Users.GetAll().FirstOrDefault(user => user.NickName == nickname));
+        }
+
+        public UserDTO GetUserByEmail(string email)
+        {
+            return _mapper.Map<UserDTO>(_unitOfWork.Users.GetAll().FirstOrDefault(user=>user.Email==email));
         }
 
         public IEnumerable<UserDTO> GetUsers()
         {
-            return mapper.Map<IEnumerable<UserDTO>>(unitOfWork.Users.GetAll());
+            return _mapper.Map<IEnumerable<UserDTO>>(_unitOfWork.Users.GetAll());
         }
-        public IEnumerable<UserDTO> GetUsersRange(int firstId,int lastId)
+
+        public IEnumerable<UserDTO> GetUsersRange(int[] usersId)
         {
             List<UserDTO> users = new List<UserDTO>();
-            IEnumerable<UserDTO> allUsers= GetUsers();
+            IEnumerable<UserDTO> allUsers = GetUsers();
             foreach (var item in allUsers)
             {
-                if(item.Id>=firstId&& item.Id <= lastId)
+                foreach (int id in usersId)
                 {
-                    users.Add(item);
+                    if (item.Id==id)
+                    {
+                        users.Add(item);
+                        break;
+                    }
                 }
             }
             return users;
         }
+
     }
 }

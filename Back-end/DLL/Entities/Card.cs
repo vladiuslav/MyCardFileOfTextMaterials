@@ -1,6 +1,7 @@
 ﻿using DLL.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
@@ -17,8 +18,9 @@ namespace DLL.Entities
         [Required]
         [Column(TypeName ="ntext")]
         public string Text { get; set; }
-        
-        public int NumberOfLikes { get; set; }//set here 0 like standart value
+
+        [DefaultValue(0)]
+        public int NumberOfLikes { get; set; }
 
         public virtual User User { get; set; }
         public int UserId { get; set; }

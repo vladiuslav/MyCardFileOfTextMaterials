@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace WEBAPI.Models
 {
-    public class LoginModel
+    public class UserLoginModel
     {
-        [Required(ErrorMessage = "Не указан Email")]
+        [Required(ErrorMessage = "Wrong email")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Не указан пароль")]
+        [Required(ErrorMessage = "Wrong password")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
     }

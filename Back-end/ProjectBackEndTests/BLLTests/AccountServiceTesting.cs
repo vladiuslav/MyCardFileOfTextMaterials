@@ -22,7 +22,7 @@ namespace ProjectBackEndTests.BLLTests
         [Test]
         public void AccountService_CreateAccount_ReturnAccount()
         {
-            UserDTO userDTO = new UserDTO { Email = "TestEmail10@mail.com", NickName = "TestNickName10", Password = "qwe12345" };
+            UserDTO userDTO = new UserDTO { Email = "TestEmail10@mail.com", NickName = "TestNickName10", Password = "qwe12345", Role = "user" };
             accountService.CreateUser(userDTO);
 
             Assert.IsNotNull(accountService.GetUsers().FirstOrDefault(user => user.NickName == "TestNickName10"));
@@ -35,7 +35,8 @@ namespace ProjectBackEndTests.BLLTests
         [Test]
         public void AccountService_GetUsersFromRange_ReturnUsers()
         {
-            Assert.IsNotNull(accountService.GetUsersRange(1,10));
+            int[] idArr = { 1, 10 };
+            Assert.IsNotNull(accountService.GetUsersRange(idArr));
         }
         [Test]
         public void AccountService_GetCard_ReturnCard()

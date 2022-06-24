@@ -40,6 +40,14 @@ namespace ProjectBackEndTests.BLLTests
             Assert.IsNotNull(cardService.GetCards());
         }
         [Test]
+        public void CardService_LikeCard_ReturnCard()
+        {
+            int cardLikesBefore = cardService.GetCard(1).NumberOfLikes;
+            cardService.LikeCard(1);
+            int cardLikesAfter = cardService.GetCard(1).NumberOfLikes;
+            Assert.AreEqual(cardLikesBefore+1, cardLikesAfter);
+        }
+        [Test]
         public void CardService_GetCard_ReturnCard()
         {
             Assert.IsNotNull(cardService.GetCard(1));

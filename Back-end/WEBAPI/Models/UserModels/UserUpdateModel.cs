@@ -8,8 +8,6 @@ namespace WEBAPI.Models
 {
     public class UserUpdateModel
     {
-        [Required(ErrorMessage = "No userId specified")]
-        public int Id { get; set; }
 
         [Required(ErrorMessage = "No email specified")]
         [DataType(DataType.EmailAddress)]

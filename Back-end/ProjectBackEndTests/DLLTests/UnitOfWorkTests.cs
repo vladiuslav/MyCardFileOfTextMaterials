@@ -28,7 +28,7 @@ namespace ProjectBackEndTests.DLLTests
         [Test]
         public void EFUnitOfWork_Save()
         {
-            User user = new User { Email = "TestEmail3@mail.com", NickName = "TestNickName3", Password = "qwe123" };
+            User user = new User { Email = "TestEmail3@mail.com", NickName = "TestNickName3", Password = "qwe123", Role = "user" };
             string userNickName = user.NickName;
             unitOfWork.Users.Create(user);
             unitOfWork.Save();

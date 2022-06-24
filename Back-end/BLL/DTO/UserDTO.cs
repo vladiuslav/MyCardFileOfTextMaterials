@@ -8,6 +8,7 @@ namespace BLL.DTO
         public string Email { get; set; }
         public string NickName { get; set; }
         public string Password { get; set; }
+        public string Role { get; set; }
         public virtual ICollection<CardDTO> Cards { get; set; }
         public UserDTO() {
             this.Cards = new List<CardDTO>();
