@@ -1,50 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 using DLL.Entities;
-using DLL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace DLL.Repositories
 {
-    public class CardRepository : IRepository<Card>
+    public class CardRepository : RepositoryBase<Card>
     {
-        private DataContext db;
-        public CardRepository(DataContext dataContext)
+        public CardRepository(DataContext dataContext) : base(dataContext)
         {
-            this.db = dataContext;
+
         }
-        public void Create(Card item)
+        public async Task<IEnumerable<Card>> FindAsync(Expression<Func<Card, bool>> predicate)
         {
-            db.Cards.Add(item);
+            return await Find(predicate).ToListAsync();
+        }
+        public async Task<Card> FirstOrDefaultAsync(Expression<Func<Card, bool>> predicate)
+        {
+            return await dataContext.Cards.FirstOrDefaultAsync(predicate);
         }
 
-        public void Delete(int id)
+        public async Task<Card> GetByIdAsync(int id)
         {
-            Card card = db.Cards.Find(id);
-            if (card != null)
-                db.Cards.Remove(card);
+            return await Find(card => card.Id.Equals(id)).FirstOrDefaultAsync();
         }
 
-        public IEnumerable<Card> Find(Func<Card, bool> predicate)
+        public async Task<IEnumerable<Card>> GetAllAsync()
         {
-            return db.Cards.Where(predicate).ToList();
+            return await GetAll().ToListAsync();
         }
 
-        public Card Get(int id)
+        public new void Create(Card item)
         {
-            return db.Cards.Find(id);
+            Create(item);
         }
 
-        public IEnumerable<Card> GetAll()
+        public new void Delete(Card item)
         {
-            return db.Cards;
+            Delete(item);
         }
-
-        public void Update(Card item)
+        public new void Update(Card item)
         {
-            db.Entry(item).State = EntityState.Modified;
+            Update(item);
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using AutoMapper;
 using DLL.Entities;
 using DLL;
+using System.Threading.Tasks;
 
 namespace BLL.Services
 {
@@ -23,44 +24,44 @@ namespace BLL.Services
             });
             this._mapper = new Mapper(config);
         }
-        public void CreateCategory(CategoryDTO categoryDto)
+        public async Task CreateCategory(CategoryDTO categoryDto)
         {
             _unitOfWork.Categories.Create(_mapper.Map<Category>(categoryDto));
-            _unitOfWork.Save();
+            await _unitOfWork.SaveAsync();
         }
 
-        public void ChangeCategory(CategoryDTO categoryDto)
+        public async Task ChangeCategory(CategoryDTO categoryDto)
         {
             _unitOfWork.Categories.Update(_mapper.Map<Category>(categoryDto));
-            _unitOfWork.Save();
+            await _unitOfWork.SaveAsync();
         }
 
 
-        public void DeleteCategory(int id)
+        public async Task DeleteCategory(CategoryDTO category)
         {
-            _unitOfWork.Categories.Delete(id);
-            _unitOfWork.Save();
+            _unitOfWork.Categories.Delete(_mapper.Map<Category>(category));
+            await _unitOfWork.SaveAsync();
         }
 
-        public void Dispose()
+        public async void Dispose()
         {
-            _unitOfWork.Save();
+            await _unitOfWork.SaveAsync();
             _unitOfWork.Dispose();
         }
 
-        public IEnumerable<CategoryDTO> GetCategories()
+        public async Task<IEnumerable<CategoryDTO>> GetCategories()
         {
-            return _mapper.Map<IEnumerable<CategoryDTO>>(_unitOfWork.Categories.GetAll());
+            return _mapper.Map<IEnumerable<CategoryDTO>>( await _unitOfWork.Categories.GetAllAsync());
         }
 
-        public CategoryDTO GetCategory(int id)
+        public async Task<CategoryDTO> GetCategory(int id)
         {
-            return _mapper.Map<CategoryDTO>(_unitOfWork.Categories.Get(id));
+            return _mapper.Map<CategoryDTO>(await _unitOfWork.Categories.GetByIdAsync(id));
         }
 
-        public CategoryDTO GetCategoryByName(string name)
+        public async Task<CategoryDTO> GetCategoryByName(string name)
         {
-            return _mapper.Map<CategoryDTO>(_unitOfWork.Categories.GetAll().FirstOrDefault(category => category.Name == name));
+            return _mapper.Map<CategoryDTO>(await _unitOfWork.Categories.FindAsync(category => category.Name == name));
         }
     }
 }

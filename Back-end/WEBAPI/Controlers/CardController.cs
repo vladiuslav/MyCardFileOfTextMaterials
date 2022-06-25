@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using WEBAPI.Models;
 
 namespace WEBAPI.Controlers
@@ -27,52 +28,52 @@ namespace WEBAPI.Controlers
 
         // GET: api/<CardController>
         [HttpGet]
-        public IEnumerable<CardInfoModel> Get()
+        public async Task<IEnumerable<CardInfoModel>> Get()
         {
-            return _mapper.Map<IEnumerable<CardInfoModel>>(_cardService.GetCards());
+            return _mapper.Map<IEnumerable<CardInfoModel>>(await _cardService.GetCardsAsync());
         }
         // GET: api/<CardController>/
         [HttpGet("/mostLikedCards")]
-        public IEnumerable<CardInfoModel> GetMostLikedCards()
+        public async Task<IEnumerable<CardInfoModel>> GetMostLikedCards()
         {
-            return _mapper.Map<IEnumerable<CardInfoModel>>(_cardService.GetMostLikedCards());
+            return _mapper.Map<IEnumerable<CardInfoModel>>(await _cardService.GetMostLikedCardsAsync());
         }
         // GET: api/<CardController>
         [HttpGet("/GetCardsByCategory/{id}")]
-        public IEnumerable<CardInfoModel> GetCardsByCategory(int id)
+        public async Task<IEnumerable<CardInfoModel>> GetCardsByCategory(int id)
         {
-            return _mapper.Map<IEnumerable<CardInfoModel>>(_cardService.GetCardsByCategory(id));
+            return _mapper.Map<IEnumerable<CardInfoModel>>(await _cardService.GetCardsByCategoryAsync(id));
         }
 
         // GET api/<CardController>/5
         [HttpGet("{id}")]
-        public CardInfoModel Get(int id)
+        public async Task<CardInfoModel> Get(int id)
         {
-            return _mapper.Map<CardInfoModel>(_cardService.GetCard(id));
+            return _mapper.Map<CardInfoModel>(await _cardService.GetCardAsync(id));
         }
 
         // POST api/<CardController>
         [Authorize(Roles ="user,admin")]
         [HttpPost]
-        public void Post(CardCreationModel card)
+        public async Task PostAsync(CardCreationModel card)
         {
-            _cardService.CreateCard(_mapper.Map<CardDTO>(card));
+            await _cardService.CreateCard(_mapper.Map<CardDTO>(card));
         }
-
+       
         // PUT api/<CardController>/5
         [Authorize(Roles = "user,admin")]
         [HttpPut("{id}")]
-        public void Put(CardCreationModel card)
+        public async Task PutAsync(CardCreationModel card)
         {
-            _cardService.ChangeCard(_mapper.Map<CardDTO>(card));
+            await _cardService.ChangeCard(_mapper.Map<CardDTO>(card));
         }
 
         // DELETE api/<CardController>/5
         [Authorize(Roles = "user,admin")]
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            _cardService.DeleteCard(id);
+            await _cardService.DeleteCardAsync(_cardService.GetCardAsync(id).Result);
         }
     }
 }

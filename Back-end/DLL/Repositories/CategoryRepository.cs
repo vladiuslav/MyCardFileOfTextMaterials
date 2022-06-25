@@ -1,50 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 using DLL.Entities;
-using DLL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace DLL.Repositories
 {
-    public class CategoryRepository : IRepository<Category>
+    public class CategoryRepository : RepositoryBase<Category>
     {
-        private DataContext db;
-        public CategoryRepository(DataContext dataContext)
+        public CategoryRepository(DataContext dataContext) : base(dataContext)
         {
-            this.db = dataContext;
+
         }
-        public void Create(Category item)
+        public async Task<IEnumerable<Category>> FindAsync(Expression<Func<Category, bool>> predicate)
         {
-            db.Categories.Add(item);
+            return await Find(predicate).ToListAsync();
+        }
+        public async Task<Category> FirstOrDefaultAsync(Expression<Func<Category, bool>> predicate)
+        {
+            return await dataContext.Categories.FirstOrDefaultAsync(predicate);
         }
 
-        public void Delete(int id)
+        public async Task<Category> GetByIdAsync(int id)
         {
-            Category category = db.Categories.Find(id);
-            if (category != null)
-                db.Categories.Remove(category);
+            return await Find(category => category.Id.Equals(id)).FirstOrDefaultAsync();
         }
 
-        public IEnumerable<Category> Find(Func<Category, bool> predicate)
+        public async Task<IEnumerable<Category>> GetAllAsync()
         {
-            return db.Categories.Where(predicate).ToList();
+            return await GetAll().ToListAsync();
         }
 
-        public Category Get(int id)
+        public new void Create(Category item)
         {
-            return db.Categories.Find(id);
+            Create(item);
         }
 
-        public IEnumerable<Category> GetAll()
+        public new void Delete(Category item)
         {
-            return db.Categories;
+            Delete(item);
         }
-
-        public void Update(Category item)
+        public new void Update(Category item)
         {
-            db.Entry(item).State = EntityState.Modified;
+            Update(item);
         }
     }
 }

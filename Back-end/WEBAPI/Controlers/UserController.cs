@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using WEBAPI.Models;
 
 namespace WEBAPI.Controlers
@@ -19,7 +20,7 @@ namespace WEBAPI.Controlers
     {
         private IMapper _mapper;
         private IUserService _userService;
-        public UserController(IMapper mapper,IUserService userService)
+        public UserController(IMapper mapper, IUserService userService)
         {
             _mapper = mapper;
             this._userService = userService;
@@ -35,43 +36,43 @@ namespace WEBAPI.Controlers
 
         // POST api/<UserController>
         [HttpPost]
-        public IActionResult Post(UserRegistrationModel user)
+        public async Task<IActionResult> PostAsync(UserRegistrationModel user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            if (_userService.GetUserByEmail(user.Email) is null && _userService.GetUserByNickName(user.NickName) is null)
+            if (await _userService.GetUserByEmail(user.Email) is null && await _userService.GetUserByNickName(user.NickName) is null)
             {
                 UserDTO userdto = _mapper.Map<UserDTO>(user);
                 userdto.Role = "user";
-                _userService.CreateUser(userdto);
+                await _userService.CreateUser(userdto);
                 return Ok();
             }
             else
             {
                 return BadRequest();
             }
-            
+
         }
 
         // PUT api/<UserController>
         [Authorize(Roles = "user,admin")]
         [HttpPut]
-        public IActionResult Put(UserUpdateModel user)
+        public async Task<IActionResult> PutAsync(UserUpdateModel user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            UserDTO userBefore = _userService.GetUserByEmail(User.Identity.Name);
-            if ((userBefore.Email == user.Email || _userService.GetUserByEmail(user.Email) is null)
-                && (userBefore.NickName == user.NickName || _userService.GetUserByNickName(user.NickName) == null))
+            UserDTO userBefore = await _userService.GetUserByEmail(User.Identity.Name);
+            if ((userBefore.Email == user.Email || await _userService.GetUserByEmail(user.Email) is null)
+                && (userBefore.NickName == user.NickName || await _userService.GetUserByNickName(user.NickName) == null))
             {
                 UserDTO userdto = _mapper.Map<UserDTO>(user);
                 userdto.Role = userBefore.Role;
                 userdto.Id = userBefore.Id;
-                _userService.ChangeUser(_mapper.Map<UserDTO>(user));
+                await _userService.ChangeUser(_mapper.Map<UserDTO>(user));
                 return Ok();
             }
             else
@@ -82,14 +83,14 @@ namespace WEBAPI.Controlers
 
         //POST api/<UserController>/login
         [HttpPost("/login")]
-        public IActionResult Login(UserLoginModel user)
+        public async Task<IActionResult> LoginAsync(UserLoginModel user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
             string email = user.Email, password = user.Password;
-            var identity = GetIdentity(email, password);
+            var identity = await GetIdentityAsync(email, password);
             if (identity == null)
             {
                 return BadRequest(new { errorText = "Invalid username or password." });
@@ -116,9 +117,9 @@ namespace WEBAPI.Controlers
             return json;
         }
 
-        private ClaimsIdentity GetIdentity(string email, string password)
+        private async Task<ClaimsIdentity> GetIdentityAsync(string email, string password)
         {
-            UserDTO user = _userService.GetUsers().FirstOrDefault(user=>user.Email==email&&user.Password==password);// part with getUsers.firstOrdefault must to be in bll. 
+            UserDTO user = (await _userService.GetUsersAsync()).FirstOrDefault(user => user.Email == email && user.Password == password);// part with getUsers.firstOrdefault must to be in bll. 
             if (user != null)
             {
                 var claims = new List<Claim>

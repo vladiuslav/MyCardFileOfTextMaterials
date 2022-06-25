@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace DLL.Interfaces
 {
-    public interface IRepository<T> where T : IEntity
+    public interface IRepository<T>
     {
-        IEnumerable<T> GetAll();
-        T Get(int id);
-        IEnumerable<T> Find(Func<T, Boolean> predicate);
+        IQueryable<T> GetAll();
+        IQueryable<T> Find(Expression<Func<T, bool>> predicate);
         void Create(T item);
         void Update(T item);
-        void Delete(int id);
+        void Delete(T item);
     }
 }

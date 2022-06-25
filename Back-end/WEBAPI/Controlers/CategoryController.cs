@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using WEBAPI.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -28,40 +29,40 @@ namespace WEBAPI.Controlers
         }
         // GET: api/<CategoryController>
         [HttpGet]
-        public IEnumerable<CategoryInfoModel> Get()
+        public async Task<IEnumerable<CategoryInfoModel>> Get()
         {
-            return _mapper.Map<IEnumerable<CategoryInfoModel>>(_categoryService.GetCategories());
+            return _mapper.Map<IEnumerable<CategoryInfoModel>>(await _categoryService.GetCategories());
         }
 
         // GET api/<CategoryController>/5
         [HttpGet("{id}")]
-        public CategoryInfoModel Get(int id)
+        public async Task<CategoryInfoModel> GetAsync(int id)
         {
-            return _mapper.Map<CategoryInfoModel>(_categoryService.GetCategory(id));
+            return _mapper.Map<CategoryInfoModel>(await _categoryService.GetCategory(id));
         }
 
         // POST api/<CategoryController>
         [Authorize(Roles = "admin")]
         [HttpPost]
-        public void Post(CategoryCreationModel category)
+        public async Task PostAsync(CategoryCreationModel category)
         {
-            _categoryService.CreateCategory(_mapper.Map<CategoryDTO>(category));
+            await _categoryService.CreateCategory(_mapper.Map<CategoryDTO>(category));
         }
 
         // PUT api/<CategoryController>
         [Authorize(Roles = "admin")]
         [HttpPut]
-        public void Put(CategoryCreationModel category)
+        public async Task PutAsync(CategoryCreationModel category)
         {
-            _categoryService.ChangeCategory(_mapper.Map<CategoryDTO>(category));
+            await _categoryService.ChangeCategory(_mapper.Map<CategoryDTO>(category));
         }
 
         // DELETE api/<CategoryController>/5
         [Authorize(Roles = "admin")]
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            _categoryService.DeleteCategory(id);
+            await _categoryService.DeleteCategory(_mapper.Map<CategoryDTO>(_categoryService.GetCategory(id).Result));
         }
     }
 }
