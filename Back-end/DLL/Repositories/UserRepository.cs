@@ -44,7 +44,10 @@ namespace DLL.Repositories
 
         public void Update(User item)
         {
-            db.Entry(item).State = EntityState.Modified;
+            var user = db.Users.FirstOrDefault(user => user.Id == item.Id);
+            user.Email = item.Email;
+            user.NickName = item.NickName;
+            user.Password = item.Password;
         }
     }
 }

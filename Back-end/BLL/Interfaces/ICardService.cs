@@ -11,6 +11,7 @@ namespace BLL.Interfaces
         void ChangeCard(CardDTO cardDto);
         void DeleteCard(int id);
         CardDTO GetCard(int id);
+        int GetCardCreatorId(int CardId);
         IEnumerable<CardDTO> GetCards();
         public IEnumerable<CardDTO> GetMostLikedCards();
         public IEnumerable<CardDTO> GetCardsByCategory(int CategoryId);

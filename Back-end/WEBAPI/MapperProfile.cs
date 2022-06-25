@@ -25,6 +25,7 @@ namespace WEBAPI
             CreateMap<UserDTO, UserUpdateModel>().ReverseMap();
 
             CreateMap<CardDTO, CardCreationModel>().ReverseMap();
+            CreateMap<CardDTO, CardUpdateModel>().ReverseMap();
             CreateMap<CardDTO, CardInfoModel>().ReverseMap();
 
             CreateMap<CategoryDTO, CategoryCreationModel>().ReverseMap(); 

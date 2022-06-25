@@ -56,6 +56,10 @@ namespace BLL.Services
         {
             return _mapper.Map<CardDTO>(_unitOfWork.Cards.Get(id));
         }
+        public int GetCardCreatorId(int CardId)
+        {
+            return GetCard(CardId).UserId;
+        }
 
         public IEnumerable<CardDTO> GetCards()
         {
@@ -71,9 +75,7 @@ namespace BLL.Services
         public IEnumerable<CardDTO> GetCardsByCategory(int CategoryId)
         {
             List<CardDTO> cards = _mapper.Map<IEnumerable<CardDTO>>(_unitOfWork.Cards.GetAll()).ToList();
-            cards.FindAll(card => card.CategoryId == CategoryId);
-            return cards;
+            return cards.FindAll(card => card.CategoryId == CategoryId);
         }
-
     }
 }

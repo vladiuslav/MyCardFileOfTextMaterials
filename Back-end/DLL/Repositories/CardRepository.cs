@@ -44,7 +44,9 @@ namespace DLL.Repositories
 
         public void Update(Card item)
         {
-            db.Entry(item).State = EntityState.Modified;
+            var card = db.Cards.FirstOrDefault(card => card.Id == item.Id);
+            card.Text = item.Text;
+            card.Title = item.Title;
         }
     }
 }

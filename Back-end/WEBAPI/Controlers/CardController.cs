@@ -19,10 +19,12 @@ namespace WEBAPI.Controlers
     {
         private IMapper _mapper;
         private ICardService _cardService;
-        public CardController(IMapper mapper, ICardService cardService)
+        private IUserService _userService;
+        public CardController(IMapper mapper, ICardService cardService, IUserService userService)
         {
             _mapper = mapper;
             this._cardService = cardService;
+            this._userService = userService;
         }
 
         // GET: api/<CardController>
@@ -54,25 +56,57 @@ namespace WEBAPI.Controlers
         // POST api/<CardController>
         [Authorize(Roles ="user,admin")]
         [HttpPost]
-        public void Post(CardCreationModel card)
+        public IActionResult Post(CardCreationModel card)
         {
-            _cardService.CreateCard(_mapper.Map<CardDTO>(card));
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            int userId = _userService.GetUserByEmail(User.Identity.Name).Id;
+            CardDTO cardDTO = _mapper.Map<CardDTO>(card);
+            if (_cardService.GetCardCreatorId(cardDTO.Id)==userId)
+            {
+                cardDTO.UserId = userId;
+
+                _cardService.CreateCard(cardDTO);
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         // PUT api/<CardController>/5
         [Authorize(Roles = "user,admin")]
         [HttpPut("{id}")]
-        public void Put(CardCreationModel card)
+        public IActionResult Put(CardUpdateModel card)
         {
-            _cardService.ChangeCard(_mapper.Map<CardDTO>(card));
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            int userId = _userService.GetUserByEmail(User.Identity.Name).Id;
+            CardDTO cardDTO = _mapper.Map<CardDTO>(card);
+            if (_cardService.GetCardCreatorId(cardDTO.Id) == userId)
+            {
+                cardDTO.UserId = _userService.GetUserByEmail(User.Identity.Name).Id;
+
+                _cardService.ChangeCard(_mapper.Map<CardDTO>(card));
+                return Ok();
+            }
+            else{
+                return BadRequest();
+            }
         }
 
         // DELETE api/<CardController>/5
         [Authorize(Roles = "user,admin")]
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
             _cardService.DeleteCard(id);
+            return Ok();
         }
     }
 }

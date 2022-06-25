@@ -71,7 +71,7 @@ namespace WEBAPI.Controlers
                 UserDTO userdto = _mapper.Map<UserDTO>(user);
                 userdto.Role = userBefore.Role;
                 userdto.Id = userBefore.Id;
-                _userService.ChangeUser(_mapper.Map<UserDTO>(user));
+                _userService.ChangeUser(userdto);
                 return Ok();
             }
             else

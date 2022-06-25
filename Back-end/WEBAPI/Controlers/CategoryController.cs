@@ -43,25 +43,40 @@ namespace WEBAPI.Controlers
         // POST api/<CategoryController>
         [Authorize(Roles = "admin")]
         [HttpPost]
-        public void Post(CategoryCreationModel category)
+        public IActionResult Post(CategoryCreationModel category)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             _categoryService.CreateCategory(_mapper.Map<CategoryDTO>(category));
+            return Ok();
         }
 
         // PUT api/<CategoryController>
         [Authorize(Roles = "admin")]
         [HttpPut]
-        public void Put(CategoryCreationModel category)
+        public IActionResult Put(CategoryInfoModel category)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             _categoryService.ChangeCategory(_mapper.Map<CategoryDTO>(category));
+            return Ok();
         }
 
         // DELETE api/<CategoryController>/5
         [Authorize(Roles = "admin")]
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             _categoryService.DeleteCategory(id);
+            return Ok();
         }
     }
 }

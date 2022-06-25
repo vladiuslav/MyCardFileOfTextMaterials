@@ -44,7 +44,8 @@ namespace DLL.Repositories
 
         public void Update(Category item)
         {
-            db.Entry(item).State = EntityState.Modified;
+            var category = db.Categories.FirstOrDefault(category => category.Id == item.Id);
+            category.Name = item.Name;
         }
     }
 }

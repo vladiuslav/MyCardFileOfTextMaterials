@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace WEBAPI.Models
 {
-    public class CardCreationModel
+    public class CardUpdateModel
     {
+        [Required(ErrorMessage = "Wrong id")]
+        public int Id;
         [Required(ErrorMessage = "Wrong title")]
         [DataType(DataType.Text)]
         [StringLength(40, MinimumLength = 5)]
