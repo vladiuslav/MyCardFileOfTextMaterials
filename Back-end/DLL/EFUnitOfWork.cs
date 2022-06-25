@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using DLL.Entities;
 using DLL.Interfaces;
 using DLL.Repositories;
@@ -10,7 +11,7 @@ namespace DLL
 {
     public class EFUnitOfWork : IUnitOfWork
     {
-        private DataContext db;
+        private DataContext dataContext;
         private CardRepository cardRepository;
         private CategoryRepository categoryRepository;
         private UserRepository userRepository;
@@ -20,40 +21,40 @@ namespace DLL
             var contextOptions = new DbContextOptionsBuilder<DataContext>()
             .UseSqlServer(connectionString)
             .Options;
-            db = new DataContext(contextOptions);
+            dataContext = new DataContext(contextOptions);
         }
-        public IRepository<Card> Cards
+        public CardRepository Cards
         {
             get
             {
                 if (cardRepository == null)
-                    cardRepository = new CardRepository(db);
+                    cardRepository = new CardRepository(dataContext);
                 return cardRepository;
             }
         }
 
-        public IRepository<Category> Categories
+        public CategoryRepository Categories
         {
             get
             {
                 if (categoryRepository == null)
-                    categoryRepository = new CategoryRepository(db);
+                    categoryRepository = new CategoryRepository(dataContext);
                 return categoryRepository;
             }
         }
-        public IRepository<User> Users
+        public UserRepository Users
         {
             get
             {
                 if (userRepository == null)
-                    userRepository = new UserRepository(db);
+                    userRepository = new UserRepository(dataContext);
                 return userRepository;
             }
         }
 
-        public void Save()
+        public async Task SaveAsync()
         {
-            db.SaveChanges();
+            await dataContext.SaveChangesAsync();
         }
 
         private bool disposed = false;
@@ -64,7 +65,7 @@ namespace DLL
             {
                 if (disposing)
                 {
-                    db.Dispose();
+                    dataContext.Dispose();
                 }
                 this.disposed = true;
             }

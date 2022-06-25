@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using AutoMapper;
 using DLL.Entities;
 using DLL;
+using System.Threading.Tasks;
 
 namespace BLL.Services
 {
@@ -24,46 +25,46 @@ namespace BLL.Services
                 });
             this._mapper = new Mapper(config);
         }
-        public void CreateUser(UserDTO userDto)
+        public async Task CreateUser(UserDTO userDto)
         {
             _unitOfWork.Users.Create(_mapper.Map<User>(userDto));
-            _unitOfWork.Save();
+            await _unitOfWork.SaveAsync();
         }
-        public void ChangeUser(UserDTO userDto)
+        public async Task ChangeUser(UserDTO userDto)
         {
             _unitOfWork.Users.Update(_mapper.Map<User>(userDto));
-            _unitOfWork.Save();
+            await _unitOfWork.SaveAsync();
         }
 
-        public void Dispose()
+        public async void Dispose()
         {
-            _unitOfWork.Save();
+            await _unitOfWork.SaveAsync();
             _unitOfWork.Dispose();
         }
 
-        public UserDTO GetUser(int id)
+        public async Task<UserDTO> GetUser(int id)
         {
-            return _mapper.Map<UserDTO>(_unitOfWork.Users.Get(id));
+            return _mapper.Map<UserDTO>(await _unitOfWork.Users.GetByIdAsync(id));
         }
-        public UserDTO GetUserByNickName(string nickname)
+        public async Task<UserDTO> GetUserByNickName(string nickname)
         {
-            return _mapper.Map<UserDTO>(_unitOfWork.Users.GetAll().FirstOrDefault(user => user.NickName == nickname));
-        }
-
-        public UserDTO GetUserByEmail(string email)
-        {
-            return _mapper.Map<UserDTO>(_unitOfWork.Users.GetAll().FirstOrDefault(user=>user.Email==email));
+            return _mapper.Map<UserDTO>(await _unitOfWork.Users.FirstOrDefaultAsync(user=>user.NickName==nickname));
         }
 
-        public IEnumerable<UserDTO> GetUsers()
+        public async Task<UserDTO> GetUserByEmail(string email)
         {
-            return _mapper.Map<IEnumerable<UserDTO>>(_unitOfWork.Users.GetAll());
+            return _mapper.Map<UserDTO>(await _unitOfWork.Users.FirstOrDefaultAsync(user => user.Email == email));
         }
 
-        public IEnumerable<UserDTO> GetUsersRange(int[] usersId)
+        public async Task<IEnumerable<UserDTO>> GetUsersAsync()
+        {
+            return _mapper.Map<IEnumerable<UserDTO>>(await _unitOfWork.Users.GetAllAsync());
+        }
+
+        public async Task<IEnumerable<UserDTO>> GetUsersRange(int[] usersId)
         {
             List<UserDTO> users = new List<UserDTO>();
-            IEnumerable<UserDTO> allUsers = GetUsers();
+            IEnumerable<UserDTO> allUsers = await GetUsersAsync();
             foreach (var item in allUsers)
             {
                 foreach (int id in usersId)
