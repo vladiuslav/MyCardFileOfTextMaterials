@@ -56,9 +56,17 @@ namespace BLL.Services
         {
             return _mapper.Map<CardDTO>(_unitOfWork.Cards.Get(id));
         }
-        public int GetCardCreatorId(int CardId)
+        public CardDTO GetCardByTitle(string title)
+        {
+            return _mapper.Map<CardDTO>(_unitOfWork.Cards.GetAll().FirstOrDefault(card => card.Title == title));
+        }
+        public int GetCreatorIdByCardId(int CardId)
         {
             return GetCard(CardId).UserId;
+        }
+        public IEnumerable<CardDTO> GetCardsIdByCreatorId(int creatorId)
+        {
+            return _mapper.Map<IEnumerable<CardDTO>>(_unitOfWork.Cards.GetAll().FirstOrDefault(card=>card.UserId==creatorId));
         }
 
         public IEnumerable<CardDTO> GetCards()
