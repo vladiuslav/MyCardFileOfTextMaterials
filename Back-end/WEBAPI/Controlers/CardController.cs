@@ -56,7 +56,29 @@ namespace WEBAPI.Controlers
         [HttpPost]
         public void Post(CardCreationModel card)
         {
+<<<<<<< Updated upstream
             _cardService.CreateCard(_mapper.Map<CardDTO>(card));
+=======
+            int userId = _userService.GetUserByEmail(User.Identity.Name).Id;
+            CardDTO cardDTO = _mapper.Map<CardDTO>(card);
+            cardDTO.UserId = userId;
+            cardDTO.CategoryId = _categoryService.GetCategoryByName(card.CategoryName).Id;
+
+
+            _cardService.CreateCard(cardDTO);
+            CardDTO resultCard = _cardService.GetCardByTitle(cardDTO.Title);
+                
+            return new JsonResult(resultCard);
+        }
+
+        // PUT api/<CardController>/5
+        [Authorize(Roles = "user,admin")]
+        [HttpPost("like/{id}")]
+        public IActionResult likeCard(int id)
+        {
+            _cardService.LikeCard(id);
+            return Ok();
+>>>>>>> Stashed changes
         }
 
         // PUT api/<CardController>/5

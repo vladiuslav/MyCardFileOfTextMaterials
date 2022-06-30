@@ -40,6 +40,13 @@ namespace WEBAPI.Controlers
             return _mapper.Map<CategoryInfoModel>(_categoryService.GetCategory(id));
         }
 
+        [HttpGet("name/{id}")]
+        public string getCategory(int id)
+        {
+            return _categoryService.GetCategory(id).Name;
+        }
+
+
         // POST api/<CategoryController>
         [Authorize(Roles = "admin")]
         [HttpPost]
