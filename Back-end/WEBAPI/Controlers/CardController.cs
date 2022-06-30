@@ -20,13 +20,11 @@ namespace WEBAPI.Controlers
         private IMapper _mapper;
         private ICardService _cardService;
         private IUserService _userService;
-        private ICategoryService _categoryService;
-        public CardController(IMapper mapper, ICardService cardService, IUserService userService, ICategoryService categoryService)
+        public CardController(IMapper mapper, ICardService cardService, IUserService userService)
         {
             _mapper = mapper;
             this._cardService = cardService;
             this._userService = userService;
-            this._categoryService = categoryService;
         }
 
         // GET: api/<CardController>
@@ -36,13 +34,13 @@ namespace WEBAPI.Controlers
             return _mapper.Map<IEnumerable<CardInfoModel>>(_cardService.GetCards());
         }
         // GET: api/<CardController>/
-        [HttpGet("mostLikedCards")]
+        [HttpGet("/mostLikedCards")]
         public IEnumerable<CardInfoModel> GetMostLikedCards()
         {
             return _mapper.Map<IEnumerable<CardInfoModel>>(_cardService.GetMostLikedCards());
         }
         // GET: api/<CardController>
-        [HttpGet("GetCardsByCategory/{id}")]
+        [HttpGet("/GetCardsByCategory/{id}")]
         public IEnumerable<CardInfoModel> GetCardsByCategory(int id)
         {
             return _mapper.Map<IEnumerable<CardInfoModel>>(_cardService.GetCardsByCategory(id));
@@ -56,31 +54,27 @@ namespace WEBAPI.Controlers
         }
 
         // POST api/<CardController>
-        [Authorize(Roles = "user,admin")]
-        [HttpPost("Create")]
+        [Authorize(Roles ="user,admin")]
+        [HttpPost]
         public IActionResult Post(CardCreationModel card)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             int userId = _userService.GetUserByEmail(User.Identity.Name).Id;
             CardDTO cardDTO = _mapper.Map<CardDTO>(card);
-            cardDTO.UserId = userId;
-            cardDTO.CategoryId = _categoryService.GetCategoryByName(card.CategoryName).Id;
+            if (_cardService.GetCardCreatorId(cardDTO.Id)==userId)
+            {
+                cardDTO.UserId = userId;
 
-
-            _cardService.CreateCard(cardDTO);
-            CardDTO resultCard = _cardService.GetCardByTitle(cardDTO.Title);
-                
-            return new JsonResult(resultCard);
-        }
-
-        // PUT api/<CardController>/5
-        [Authorize(Roles = "user,admin")]
-        [HttpPost("like/{id}")]
-        public IActionResult likeCard(int id)
-        {
-
-            _cardService.LikeCard(id);
-            return Ok();
-
+                _cardService.CreateCard(cardDTO);
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         // PUT api/<CardController>/5
@@ -94,7 +88,7 @@ namespace WEBAPI.Controlers
             }
             int userId = _userService.GetUserByEmail(User.Identity.Name).Id;
             CardDTO cardDTO = _mapper.Map<CardDTO>(card);
-            if (_cardService.GetCreatorIdByCardId(cardDTO.Id) == userId)
+            if (_cardService.GetCardCreatorId(cardDTO.Id) == userId)
             {
                 cardDTO.UserId = _userService.GetUserByEmail(User.Identity.Name).Id;
 

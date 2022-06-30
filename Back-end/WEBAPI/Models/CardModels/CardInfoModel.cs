@@ -7,7 +7,7 @@ namespace WEBAPI.Models
 {
     public class CardInfoModel
     {
-        public int Id { get; set; }
+        public int Id;
         public string Title { get; set; }
         public string Text { get; set; }
         public int NumberOfLikes { get; set; }

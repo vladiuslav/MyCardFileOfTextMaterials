@@ -19,7 +19,7 @@ namespace WEBAPI.Controlers
     {
         private IMapper _mapper;
         private IUserService _userService;
-        public UserController(IMapper mapper, IUserService userService)
+        public UserController(IMapper mapper,IUserService userService)
         {
             _mapper = mapper;
             this._userService = userService;
@@ -27,7 +27,7 @@ namespace WEBAPI.Controlers
 
         // GET api/<UserController>/account
         [Authorize(Roles = "user,admin")]
-        [HttpGet]
+        [HttpGet("/account")]
         public UserInfoModel Get()
         {
             return _mapper.Map<UserInfoModel>(_userService.GetUserByEmail(User.Identity.Name));
@@ -52,95 +52,36 @@ namespace WEBAPI.Controlers
             {
                 return BadRequest();
             }
-
-        }
-
-        // PUT api/<UserController>/changeNickname
-        [Authorize(Roles = "user,admin")]
-        [HttpPut("changeNickname")]
-        public IActionResult PutNickname([FromBody] string value)
-        {
-            UserDTO userBefore = _userService.GetUserByEmail(User.Identity.Name);
             
-            if (String.IsNullOrEmpty(value)||value.Length<4 || value.Length > 40)
-            {
-                return BadRequest();
-            }
-            var userWithNickName = _userService.GetUserByNickName(value);
-            if (userWithNickName is null)
-            { }
-            else if (userWithNickName.Id!=userBefore.Id)
-            {
-                return BadRequest();
-            }
-
-            UserDTO userdto = new UserDTO{NickName=value,
-                Role=userBefore.Role,
-                Id= userBefore.Id,
-                Email=userBefore.Email,
-                Password=userBefore.Password };
-            _userService.ChangeUser(userdto);
-            return Ok();
         }
 
-        // PUT api/<UserController>/changeNickname
+        // PUT api/<UserController>
         [Authorize(Roles = "user,admin")]
-        [HttpPut("changeEmail")]
-        public IActionResult PutEmail([FromBody] string value)
+        [HttpPut]
+        public IActionResult Put(UserUpdateModel user)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             UserDTO userBefore = _userService.GetUserByEmail(User.Identity.Name);
-
-            if (String.IsNullOrEmpty(value) || !value.Contains('@') || value.Length > 500)
+            if ((userBefore.Email == user.Email || _userService.GetUserByEmail(user.Email) is null)
+                && (userBefore.NickName == user.NickName || _userService.GetUserByNickName(user.NickName) == null))
+            {
+                UserDTO userdto = _mapper.Map<UserDTO>(user);
+                userdto.Role = userBefore.Role;
+                userdto.Id = userBefore.Id;
+                _userService.ChangeUser(userdto);
+                return Ok();
+            }
+            else
             {
                 return BadRequest();
             }
-
-            var userWithEmail = _userService.GetUserByEmail(value) ;
-            if (userWithEmail is null)
-            { }
-            else if (userWithEmail.Id!=userBefore.Id)
-            {
-                return BadRequest();
-            }
-
-            UserDTO userdto = new UserDTO
-            {
-                NickName = userBefore.NickName,
-                Role = userBefore.Role,
-                Id = userBefore.Id,
-                Email = value,
-                Password = userBefore.Password
-            };
-            _userService.ChangeUser(userdto);
-            return Ok();
-        }
-
-        // PUT api/<UserController>/changeNickname
-        [Authorize(Roles = "user,admin")]
-        [HttpPut("changePassword")]
-        public IActionResult PutPassword([FromBody] string value)
-        {
-            if (String.IsNullOrEmpty(value)||value.Length<8 || value.Length > 100)
-            {
-                return BadRequest();
-            }
-
-            UserDTO userBefore = _userService.GetUserByEmail(User.Identity.Name);
-
-            UserDTO userdto = new UserDTO
-            {
-                NickName = userBefore.NickName,
-                Role = userBefore.Role,
-                Id = userBefore.Id,
-                Email = userBefore.Email,
-                Password = value
-            };
-            _userService.ChangeUser(userdto);
-            return Ok();
         }
 
         //POST api/<UserController>/login
-        [HttpPost("login")]
+        [HttpPost("/login")]
         public IActionResult Login(UserLoginModel user)
         {
             if (!ModelState.IsValid)
@@ -167,7 +108,7 @@ namespace WEBAPI.Controlers
             var response = new
             {
                 access_token = encodedJwt,
-                email = identity.Name
+                username = identity.Name
             };
 
             JsonResult json = new JsonResult(response);
