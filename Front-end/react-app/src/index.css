@@ -1,10 +1,12 @@
 body {
   margin: 0;
+  color: var(--color1);
 }
 :root {
   --color1: #ffffff;
   --color2: #009ffd;
   --color3: #2a2a72;
+  --color3A: #2a2a90;
   --color4: #232528;
   --color5: #937666;
 }
@@ -55,7 +57,7 @@ nav ul li p{
 }
 
 nav ul li .navItem:hover {
-  background-color: var(--color3);
+  background-color: var(--color3A);
 }
 
 article {
@@ -63,11 +65,126 @@ article {
   border: 1px solid var(--color3);
   border-radius: 5px;
   background-color: var(--color3);
-  height: 1000px;
+  min-height: 500px;
   width: 80%;
-  margin-top: 5rem;
+  margin-top: 3rem;
   margin-left: 10rem;
   margin-right: 10rem;
+}
+
+
+.loginForm{
+  padding: 1%;
+  background-color: var(--color3A);
+  display: block;
+  margin: 0.5em;
+  margin-top: 10%;
+  text-align: center;
+  width: 80%;
+  margin-left: 10%;
+  margin-bottom: 5%;
+}
+
+.inputDiv{
+  margin: 1rem;
+}
+.input {
+  border-bottom: 1px solid var(--color3);
+  font-size: 18px;
+  height: 2rem;
+  width: 10em;
+  display: inline-block;
+  background-color: var(--color2);
+  color: var(--color1);
+  border: 1px;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+.inputTextArea{
+  border-bottom: 1px solid var(--color3);
+  padding: 1rem;
+  font-size: 18px;
+  height: 20rem;
+  width: 40em;
+  display: inline-block;
+  background-color: var(--color2);
+  color: var(--color1);
+  border: 1px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  resize: none;
+}
+
+.buttonMerge{
+  margin-top: .5rem;
+}
+
+.simpleButton{
+  border-bottom: 1px solid var(--color3);
+  font-size: 18px;
+  height: 2rem;
+  width: 10em;
+  display: inline-block;
+  background-color: var(--color2);
+  color: var(--color1);
+  border: 1px;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+.simpleButton:hover{
+  background-color: var(--color3A);
+}
+.sortButtons{
+  margin: 1rem;
+  text-align: center;
+  display: grid;
+  grid-template-columns: 0.25fr 1fr 0.25fr;
+  
+}
+.sortButtons input{
+  margin-right: 1rem;
+}
+.cardsListItem ul{
+  margin: 1rem;
+  padding: 0.5rem;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr 0.5fr 1fr 3fr;
+}
+
+.cardsListItem ul li{
+  display: inline;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.cardPage{
+  text-align: center;
+  background-color: var(--color3A);
+  margin-left: 10%;
+  width: 80%;
+  padding: 1rem;
+}
+.cardPageButtons{
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.cardButton{
+  border-bottom: 1px solid var(--color3);
+  margin-left: 2rem;
+  font-size: 18px;
+  width: 10rem;
+  height: 3rem;
+  display: inline-block;
+  background-color: var(--color2);
+  color: var(--color1);
+  border: 1px;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+.cardButton:hover {
+  background-color: var(--color3A);
 }
 
 footer {

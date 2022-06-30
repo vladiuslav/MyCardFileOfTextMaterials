@@ -8,7 +8,7 @@ class CardChangeClass extends Component {
     this.state = {
       title: "",
       text: "",
-      categoryName: ""
+      categoryName: "",
     };
 
     this.changeTitle = this.changeTitle.bind(this);
@@ -52,15 +52,14 @@ class CardChangeClass extends Component {
             Authorization: "Bearer " + sessionStorage.getItem("access_token"),
           },
         })
-        .then((res) => res.json())
-        .then((value) => {
-          this.setState({
-            categoryName: value,
+          .then((res) => res.json())
+          .then((value) => {
+            this.setState({
+              categoryName: value,
+            });
           });
-        });
-    });
+      });
   }
-  
 
   changeCard() {
     fetch(Variables.API_URL + "/Card/" + this.props.cardId, {
@@ -83,33 +82,43 @@ class CardChangeClass extends Component {
       });
   }
   render() {
-    const { navigation } = this.props;
     const { title, text, categoryName } = this.state;
     return (
       <article>
-        <div>
-          <span>Title:</span>
-          <input
-            type="text"
-            value={title}
-            onChange={this.changeTitle}
-            placeholder="Card Title"
-          ></input>
-          <span>Text:</span>
-          <textarea
-            type="text"
-            value={text}
-            onChange={this.changeText}
-            placeholder="Card text"
-          ></textarea>
-          <span>Category Name:</span>
-          <input
-            type="text"
-            value={categoryName}
-            onChange={this.changeCategoryName}
-            placeholder="Category Name"
-          ></input>
-          <button onClick={this.changeCard}>Create</button>
+        <div className="loginForm">
+          <div className="inputDiv">
+            <span>Title:</span>
+            <input
+              className="input"
+              type="text"
+              value={title}
+              onChange={this.changeTitle}
+              placeholder="Card Title"
+            ></input>
+          </div>
+          <div className="inputDiv">
+            <span>Text:</span>
+            <textarea
+              className="inputTextArea"
+              type="text"
+              value={text}
+              onChange={this.changeText}
+              placeholder="Card text"
+            ></textarea>
+          </div>
+          <div className="inputDiv">
+            <span>Category Name:</span>
+            <input
+              className="input"
+              type="text"
+              value={categoryName}
+              onChange={this.changeCategoryName}
+              placeholder="Category Name"
+            ></input>
+          </div>
+          <button className="simpleButton" onClick={this.changeCard}>
+            Create
+          </button>
         </div>
       </article>
     );

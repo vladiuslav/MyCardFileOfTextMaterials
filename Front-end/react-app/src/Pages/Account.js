@@ -39,10 +39,9 @@ export default class Account extends Component {
         Authorization: "Bearer " + sessionStorage.getItem("access_token"),
       },
       body: JSON.stringify(this.state.Nnickname),
-    })
-      .then(result => {
-        this.refreshUser();
-      });
+    }).then((result) => {
+      this.refreshUser();
+    });
   }
   fetchUserEmail() {
     fetch(Variables.API_URL + "/User/changeEmail", {
@@ -109,30 +108,58 @@ export default class Account extends Component {
     } else {
       return (
         <article>
-          <p>User nickname : {nickname} </p>
-          <input
-            type="text"
-            value={Nnickname}
-            onChange={this.changeNickname}
-            placeholder="Your new nickname"
-          />
-          <button onClick={this.fetchUserNickname}>Change nickname</button>
-          <p>User email : {email}</p>{" "}
-          <input
-            type="text"
-            value={Nemail}
-            onChange={this.changeEmail}
-            placeholder="Your new email"
-          />
-          <button onClick={this.fetchUserEmail}>Change email</button>
-          <p>User password : {password}</p>{" "}
-          <input
-            type="text"
-            value={Npassword}
-            onChange={this.changePassword}
-            placeholder="Your new password"
-          />
-          <button onClick={this.fetchUserPassword}>Change password</button>
+          <div className="loginForm">
+            <div className="inputDiv">
+              <p>User nickname : {nickname} </p>
+              <input
+                className="input"
+                type="text"
+                value={Nnickname}
+                onChange={this.changeNickname}
+                placeholder="Your new nickname"
+              />
+              <div className="buttonMerge">
+                <button
+                  className="simpleButton"
+                  onClick={this.fetchUserNickname}
+                >
+                  Change nickname
+                </button>
+              </div>
+            </div>
+            <div className="inputDiv">
+              <p>User email : {email}</p>{" "}
+              <input
+                className="input"
+                type="text"
+                value={Nemail}
+                onChange={this.changeEmail}
+                placeholder="Your new email"
+              />
+              <div className="buttonMerge"></div>
+              <button className="simpleButton" onClick={this.fetchUserEmail}>
+                Change email
+              </button>
+            </div>
+            <div className="inputDiv">
+              <p>User password : {password}</p>{" "}
+              <input
+                className="input"
+                type="text"
+                value={Npassword}
+                onChange={this.changePassword}
+                placeholder="Your new password"
+              />
+              <div className="buttonMerge">
+                <button
+                  className="simpleButton"
+                  onClick={this.fetchUserPassword}
+                >
+                  Change password
+                </button>
+              </div>
+            </div>
+          </div>
         </article>
       );
     }

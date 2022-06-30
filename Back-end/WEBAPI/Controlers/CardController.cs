@@ -48,13 +48,29 @@ namespace WEBAPI.Controlers
         [HttpGet("mostLikedCards")]
         public IEnumerable<CardInfoModel> GetMostLikedCards()
         {
-            return _mapper.Map<IEnumerable<CardInfoModel>>(_cardService.GetMostLikedCards());
+            var cards = _mapper.Map<IEnumerable<CardInfoModel>>(_cardService.GetMostLikedCards());
+            var userNames = _cardService.UserNames();
+            var categoriesNames = _cardService.CategoryNames();
+            foreach (var item in cards)
+            {
+                item.CategoryName = categoriesNames[item.Id];
+                item.UserName = userNames[item.Id];
+            }
+            return cards;
         }
         // GET: api/<CardController>
         [HttpGet("GetCardsByCategory/{id}")]
-        public IEnumerable<CardInfoModel> GetCardsByCategory(int id)
+        public IEnumerable<CardInfoModel> GetCardsByCategory(string category)
         {
-            return _mapper.Map<IEnumerable<CardInfoModel>>(_cardService.GetCardsByCategory(id));
+            var cards = _mapper.Map<IEnumerable<CardInfoModel>>(_cardService.GetCardsByCategory(category));
+            var userNames = _cardService.UserNames();
+            var categoriesNames = _cardService.CategoryNames();
+            foreach (var item in cards)
+            {
+                item.CategoryName = categoriesNames[item.Id];
+                item.UserName = userNames[item.Id];
+            }
+            return cards;
         }
 
         // GET api/<CardController>/5

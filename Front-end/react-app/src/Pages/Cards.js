@@ -8,7 +8,7 @@ class CardsClass extends Component {
     this.state = {
       cards: [],
       filter: 1,
-      filterCategory: 0,
+      filterCategory: "",
     };
 
     this.setFilter1 = this.setFilter1.bind(this);
@@ -78,7 +78,6 @@ class CardsClass extends Component {
         console.log("Problem with switch");
         break;
     }
-
   }
   componentDidMount() {
     this.refreshList(this.state.filter);
@@ -105,46 +104,55 @@ class CardsClass extends Component {
     const { cards, filterCategory } = this.state;
     return (
       <article>
+        <div className="sortButtons">
+          <button className="simpleButton" onClick={this.setFilter2}>
+            Sort by likes
+          </button>
+          <div>
+            <input
+              className="input"
+              type="text"
+              value={filterCategory}
+              onChange={this.changeCategoryFilter}
+              placeholder="Category name"
+            ></input>
+            <button className="simpleButton" onClick={this.setFilter2}>
+              Sort by category
+            </button>
+          </div>
+          <button className="simpleButton" onClick={this.setFilter1}>
+            Reset list
+          </button>
+        </div>
         <div>
-          <ul>
-            <li>id</li>
-            <li>title</li>
-            <li>numberOfLikes</li>
-            <li>categoryId</li>
-            <li>Text</li>
-            <li>
-              <button onClick={this.setFilter2}>sortByPopularity</button>
-            </li>
-            <li>
-              <input
-                type="text"
-                value={filterCategory}
-                onChange={this.changeCategoryFilter}
-                placeholder="CategoryId"
-              ></input>
-              <button onClick={this.setFilter2}>sortByCategory</button>
-            </li>
-            <li>
-              <button onClick={this.setFilter1}>resetList</button>
-            </li>
-          </ul>
+          <div className="cardsListItem">
+            <ul>
+              <li>Title</li>
+              <li>Creator name</li>
+              <li>Number of likes</li>
+              <li>Category</li>
+              <li>Text</li>
+            </ul>
+          </div>
           {cards.map((card) => {
             return (
-              <ul
-                key={card.id}
-                onClick={() => {
-                  navigation("/Card/" + card.id);
-                }}
-              >
-                <li>{card.title}</li>
-                <li>{card.userName}</li>
-                <li>{card.numberOfLikes}</li>
-                <li>{card.categoryName}</li>
-                <li>
-                  {card.text.substr(0, 90) +
-                    (card.text.length > 90 ? " ..." : "")}
-                </li>
-              </ul>
+              <div className="cardsListItem">
+                <ul
+                  key={card.id}
+                  onClick={() => {
+                    navigation("/Card/" + card.id);
+                  }}
+                >
+                  <li>{card.title}</li>
+                  <li>{card.userName}</li>
+                  <li>{card.numberOfLikes}</li>
+                  <li>{card.categoryName}</li>
+                  <li>
+                    {card.text.substr(0, 90) +
+                      (card.text.length > 90 ? " ..." : "")}
+                  </li>
+                </ul>
+              </div>
             );
           })}
         </div>

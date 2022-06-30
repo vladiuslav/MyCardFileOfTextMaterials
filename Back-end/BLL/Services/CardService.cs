@@ -95,12 +95,15 @@ namespace BLL.Services
         {
             List<CardDTO> cards = _mapper.Map<IEnumerable<CardDTO>>(_unitOfWork.Cards.GetAll()).ToList();
             cards.Sort((x, y) => x.NumberOfLikes.CompareTo(y.NumberOfLikes));
+            cards.Reverse();
             return cards;
         }
-        public IEnumerable<CardDTO> GetCardsByCategory(int CategoryId)
+        public IEnumerable<CardDTO> GetCardsByCategory(string category)
         {
             List<CardDTO> cards = _mapper.Map<IEnumerable<CardDTO>>(_unitOfWork.Cards.GetAll()).ToList();
-            return cards.FindAll(card => card.CategoryId == CategoryId);
+            var sortedCards = cards.FindAll(card => card.CategoryId == _unitOfWork.Categories.Find(category1 => category1.Name == category).First().Id);
+            sortedCards.Reverse();
+            return sortedCards;
         }
     }
 }

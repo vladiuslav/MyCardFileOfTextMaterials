@@ -8,7 +8,7 @@ class CardClass extends Component {
     this.state = {
       title: "",
       text: "",
-      numberOfLikes: ""
+      numberOfLikes: "",
     };
     this.Like = this.Like.bind(this);
     this.deleteCard = this.deleteCard.bind(this);
@@ -43,7 +43,7 @@ class CardClass extends Component {
           text: result.text,
           numberOfLikes: result.numberOfLikes,
         });
-    });
+      });
   }
 
   deleteCard() {
@@ -68,14 +68,27 @@ class CardClass extends Component {
     const { title, text, numberOfLikes } = this.state;
     return (
       <article>
-        <div>
+        <div className="cardPage">
           <h1>{title}</h1>
           <p>{text}</p>
-          <p>
-            {numberOfLikes} : <button onClick={this.Like}>Like</button>
-          </p>
-          <button id="deleteButton" onClick={this.deleteCard}>delete</button>
-          <button id="changeButton"
+        </div>
+        <div className="cardPageButtons">
+          {numberOfLikes} :{" "}
+          <button className="cardButton" onClick={this.Like}>
+            Like
+          </button>
+        </div>
+        <div className="cardPageButtons">
+          <button
+            className="cardButton"
+            id="deleteButton"
+            onClick={this.deleteCard}
+          >
+            delete
+          </button>
+          <button
+            className="cardButton"
+            id="changeButton"
             onClick={() =>
               this.props.navigation("/cardChange/" + this.props.cardId)
             }
@@ -87,7 +100,6 @@ class CardClass extends Component {
     );
   }
 }
-
 
 // Wrap and export
 export default function Card(props) {

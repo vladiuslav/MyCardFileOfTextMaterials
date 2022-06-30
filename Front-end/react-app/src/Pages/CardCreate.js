@@ -50,29 +50,40 @@ class CardCreateClass extends Component {
     const { title, text, categoryName } = this.state;
     return (
       <article>
-        <div>
-          <span>Title:</span>
-          <input
-            type="text"
-            value={title}
-            onChange={this.changeTitle}
-            placeholder="Card Title"
-          ></input>
-          <span>Text:</span>
-          <textarea
-            type="text"
-            value={text}
-            onChange={this.changeText}
-            placeholder="Card text"
-          ></textarea>
-          <span>Category Name:</span>
-          <input
-            type="text"
-            value={categoryName}
-            onChange={this.changeCategoryName}
-            placeholder="Category Name"
-          ></input>
-          <button onClick={this.createNewCard}>Create</button>
+        <div className="loginForm">
+          <div className="inputDiv">
+            <span>Title:</span>
+            <input
+              className="input"
+              type="text"
+              value={title}
+              onChange={this.changeTitle}
+              placeholder="Card Title"
+            ></input>
+          </div>
+          <div className="inputDiv">
+            <span>Text:</span>
+            <textarea
+              className="inputTextArea"
+              type="text"
+              value={text}
+              onChange={this.changeText}
+              placeholder="Card text"
+            ></textarea>
+          </div>
+          <div className="inputDiv">
+            <span>Category Name:</span>
+            <input
+              className="input"
+              type="text"
+              value={categoryName}
+              onChange={this.changeCategoryName}
+              placeholder="Category Name"
+            ></input>
+          </div>
+          <button className="simpleButton" onClick={this.createNewCard}>
+            Create
+          </button>
         </div>
       </article>
     );
@@ -80,7 +91,6 @@ class CardCreateClass extends Component {
 }
 
 export default function CardCreate(props) {
-
   const navigation = useNavigate();
 
   return <CardCreateClass {...props} navigation={navigation} />;

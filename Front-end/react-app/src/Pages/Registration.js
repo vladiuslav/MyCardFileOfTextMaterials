@@ -82,40 +82,55 @@ class RegistrationClass extends Component {
   render() {
     const { Nickname, Email, Password, ConfirmPassword } = this.state;
     return (
-      <div>
-        <span>Nickname:</span>
-        <input
-          type="text"
-          value={Nickname}
-          onChange={this.changeNickname}
-          placeholder="Your nickname"
-        ></input>
-        <span>Email:</span>
-        <input
-          value={Email}
-          onChange={this.changeEmail}
-          placeholder="Your email"
-        ></input>
-        <span>Password:</span>
-        <input
-          type="text"
-          value={Password}
-          onChange={this.changePassword}
-          placeholder="Your password"
-        ></input>
-        <span>ConfirmPassword:</span>
-        <input
-          type="text"
-          value={ConfirmPassword}
-          onChange={this.changeConfirmPassword}
-          placeholder="Your password"
-        ></input>
-        <button onClick={this.createNewUser}>CreateNewUser</button>
-      </div>
+      <article>
+        <div className="loginForm">
+          <div className="inputDiv">
+            <span>Nickname: </span>
+            <input
+              className="input"
+              type="text"
+              value={Nickname}
+              onChange={this.changeNickname}
+              placeholder="Your nickname"
+            ></input>
+          </div>
+          <div className="inputDiv">
+            <span>Email: </span>
+            <input
+              className="input"
+              value={Email}
+              onChange={this.changeEmail}
+              placeholder="Your email"
+            ></input>
+          </div>
+          <div className="inputDiv">
+            <span>Password: </span>
+            <input
+              className="input"
+              type="text"
+              value={Password}
+              onChange={this.changePassword}
+              placeholder="Your password"
+            ></input>
+          </div>
+          <div className="inputDiv">
+            <span>ConfirmPassword: </span>
+            <input
+              className="input"
+              type="text"
+              value={ConfirmPassword}
+              onChange={this.changeConfirmPassword}
+              placeholder="Your password"
+            ></input>
+          </div>
+          <button className="simpleButton" onClick={this.createNewUser}>
+            CreateNewUser
+          </button>
+        </div>
+      </article>
     );
   }
 }
-
 
 export default function Login(props) {
   const navigation = useNavigate();

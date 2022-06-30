@@ -1,4 +1,5 @@
 import Home from "./Pages/Home";
+import Footer from "./Pages/Footer";
 import Account from "./Pages/Account";
 import Cards from "./Pages/Cards";
 import CardCreate from "./Pages/CardCreate";
@@ -13,7 +14,6 @@ function App() {
   return (
     <>
       <Navbar />
-      <div>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/account" element={<Account />} />
@@ -25,7 +25,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/regestration" element={<Registration />} />
         </Routes>
-      </div>
+        <Footer/>
+
     </>
   );
 }

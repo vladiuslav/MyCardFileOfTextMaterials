@@ -70,22 +70,32 @@ class LoginClass extends Component {
   render() {
     const { Email, Password } = this.state;
     return (
-      <div className="login">
-        <span>Email: </span>
-        <input
-          value={Email}
-          onChange={this.changeEmail}
-          placeholder="Your email"
-        ></input>
-        <span>Password: </span>
-        <input
-          type="text"
-          value={Password}
-          onChange={this.changePassword}
-          placeholder="Your password"
-        ></input>
-        <button onClick={this.Login}>Login</button>
-      </div>
+      <article>
+        <div className="loginForm">
+          <div className="inputDiv">
+            <span>Email: </span>
+            <input
+              className="input"
+              value={Email}
+              onChange={this.changeEmail}
+              placeholder="Your email"
+            ></input>
+          </div>
+          <div className="inputDiv">
+            <span>Password: </span>
+            <input
+              className="input"
+              type="text"
+              value={Password}
+              onChange={this.changePassword}
+              placeholder="Your password"
+            ></input>
+          </div>
+          <button className="simpleButton" onClick={this.Login}>
+            Login
+          </button>
+        </div>
+      </article>
     );
   }
 }

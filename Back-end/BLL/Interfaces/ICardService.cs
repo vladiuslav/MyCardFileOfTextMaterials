@@ -19,7 +19,7 @@ namespace BLL.Interfaces
         IEnumerable<CardDTO> GetCardsIdByCreatorId(int creatorId);
         IEnumerable<CardDTO> GetCards();
         public IEnumerable<CardDTO> GetMostLikedCards();
-        public IEnumerable<CardDTO> GetCardsByCategory(int CategoryId);
+        public IEnumerable<CardDTO> GetCardsByCategory(string category);
         void Dispose();
     }
 }
