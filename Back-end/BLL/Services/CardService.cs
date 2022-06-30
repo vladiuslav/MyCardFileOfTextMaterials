@@ -51,7 +51,24 @@ namespace BLL.Services
             _unitOfWork.Save();
             _unitOfWork.Dispose();
         }
-
+        public Dictionary<int,string> UserNames()
+        {
+            var userNames = new Dictionary<int, string>();
+            foreach (var item in _mapper.Map<IEnumerable<CardDTO>>(_unitOfWork.Cards.GetAll()))
+            {
+                userNames.Add(item.Id, _unitOfWork.Users.Get(item.UserId).NickName);
+            }
+            return userNames;
+        }
+        public Dictionary<int, string> CategoryNames()
+        {
+            var categoryNames = new Dictionary<int, string>();
+            foreach (var item in _mapper.Map<IEnumerable<CardDTO>>(_unitOfWork.Cards.GetAll()))
+            {
+                categoryNames.Add(item.Id, _unitOfWork.Categories.Get(item.CategoryId).Name);
+            }
+            return categoryNames;
+        }
         public CardDTO GetCard(int id)
         {
             return _mapper.Map<CardDTO>(_unitOfWork.Cards.Get(id));

@@ -8,7 +8,7 @@ class CardChangeClass extends Component {
     this.state = {
       title: "",
       text: "",
-      categoryName: "",
+      categoryName: ""
     };
 
     this.changeTitle = this.changeTitle.bind(this);
@@ -26,12 +26,25 @@ class CardChangeClass extends Component {
   changeCategoryName(event) {
     this.setState({ categoryName: event.target.value });
   }
-  componentDidMount(){
+  componentDidMount() {
     this.refreshList();
   }
   refreshList() {
-    
-        fetch(Variables.API_URL + "/Card", {
+    fetch(Variables.API_URL + "/Card/" + this.props.cardId, {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + sessionStorage.getItem("access_token"),
+      },
+    })
+      .then((res) => res.json())
+      .then((value) => {
+        this.setState({
+          title: value.title,
+          text: value.text,
+        });
+        fetch(Variables.API_URL + "/Category/" + value.categoryId, {
           method: "GET",
           headers: {
             accept: "application/json",
@@ -39,15 +52,15 @@ class CardChangeClass extends Component {
             Authorization: "Bearer " + sessionStorage.getItem("access_token"),
           },
         })
-          .then((res) => res.json())
-          .then((value) => {
-            this.setState({
-              title: value.title,
-              text: value.text,
-              categoryName: value.categoryName,
-            });
+        .then((res) => res.json())
+        .then((value) => {
+          this.setState({
+            categoryName: value,
           });
+        });
+    });
   }
+  
 
   changeCard() {
     fetch(Variables.API_URL + "/Card/" + this.props.cardId, {
@@ -66,8 +79,7 @@ class CardChangeClass extends Component {
       .then((res) => res.json())
       .then((result) => {
         alert("Changed");
-        console.log(result);
-        this.props.navigation("/Card/" + this.props.cardId);;
+        this.props.navigation("/Card/" + this.props.cardId);
       });
   }
   render() {
@@ -84,12 +96,12 @@ class CardChangeClass extends Component {
             placeholder="Card Title"
           ></input>
           <span>Text:</span>
-          <input
+          <textarea
             type="text"
             value={text}
             onChange={this.changeText}
             placeholder="Card text"
-          ></input>
+          ></textarea>
           <span>Category Name:</span>
           <input
             type="text"
@@ -105,7 +117,7 @@ class CardChangeClass extends Component {
 }
 
 export default function CardChange(props) {
-    let { id } = useParams();
+  let { id } = useParams();
   const navigation = useNavigate();
 
   return <CardChangeClass {...props} cardId={id} navigation={navigation} />;

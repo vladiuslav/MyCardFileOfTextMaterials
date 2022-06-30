@@ -5,8 +5,10 @@ export default function Navbar() {
   return (
     <nav className="nav">
       <ul>
-        <CustomLink to="/">Home</CustomLink>
-        <CustomLink to="/cards">Cards</CustomLink>
+        <div className="LeftDiv">
+          <CustomLink to="/">Home</CustomLink>
+          <CustomLink to="/cards">Cards</CustomLink>
+        </div>
         {CheckEmail()}
       </ul>
     </nav>
@@ -16,15 +18,15 @@ export default function Navbar() {
 function CheckEmail() {
   if (sessionStorage.getItem("Email") == null) {
     return (
-      <div>
+      <div className="RightDiv">
         <CustomLink to="/login">Login</CustomLink>
         <CustomLink to="/regestration">Regestration</CustomLink>
       </div>
     );
   } else {
     return (
-      <div>
-        <CustomLink to="/cardCreate">Create card</CustomLink>
+      <div className="RightDiv">
+        <CustomLink to="/cardCreate">CreateCard</CustomLink>
         <CustomLink to="/account">Account</CustomLink>
         <LogOut />
       </div>
@@ -36,6 +38,7 @@ function LogOut(props) {
   return (
     <li>
       <p
+        className="navItem"
         onClick={() => {
           sessionStorage.clear();
           navigation("/");
@@ -51,7 +54,7 @@ function LogOut(props) {
 function CustomLink({ to, children, ...props }) {
   return (
     <li>
-      <Link to={to} {...props}>
+      <Link className="navItem" to={to} {...props}>
         {children}
       </Link>
     </li>

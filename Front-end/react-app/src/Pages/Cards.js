@@ -68,6 +68,7 @@ class CardsClass extends Component {
         )
           .then((res) => res.json())
           .then((value) => {
+            console.log(value);
             this.setState({
               cards: value,
             });
@@ -77,6 +78,7 @@ class CardsClass extends Component {
         console.log("Problem with switch");
         break;
     }
+
   }
   componentDidMount() {
     this.refreshList(this.state.filter);
@@ -134,10 +136,10 @@ class CardsClass extends Component {
                   navigation("/Card/" + card.id);
                 }}
               >
-                <li>{card.id}</li>
                 <li>{card.title}</li>
+                <li>{card.userName}</li>
                 <li>{card.numberOfLikes}</li>
-                <li>{card.categoryId}</li>
+                <li>{card.categoryName}</li>
                 <li>
                   {card.text.substr(0, 90) +
                     (card.text.length > 90 ? " ..." : "")}

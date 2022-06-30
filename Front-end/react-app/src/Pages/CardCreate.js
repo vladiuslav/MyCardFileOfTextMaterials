@@ -59,12 +59,12 @@ class CardCreateClass extends Component {
             placeholder="Card Title"
           ></input>
           <span>Text:</span>
-          <input
+          <textarea
             type="text"
             value={text}
             onChange={this.changeText}
             placeholder="Card text"
-          ></input>
+          ></textarea>
           <span>Category Name:</span>
           <input
             type="text"

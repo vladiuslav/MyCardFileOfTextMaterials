@@ -11,8 +11,6 @@ using System.Linq;
 using System.Security.Claims;
 using WEBAPI.Models;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace WEBAPI.Controlers
 {
     [Route("api/[controller]")]
@@ -26,21 +24,20 @@ namespace WEBAPI.Controlers
             _mapper = mapper;
             this._categoryService = categoryService;
         }
-        // GET: api/<CategoryController>
+
         [HttpGet]
         public IEnumerable<CategoryInfoModel> Get()
         {
             return _mapper.Map<IEnumerable<CategoryInfoModel>>(_categoryService.GetCategories());
         }
 
-        // GET api/<CategoryController>/5
         [HttpGet("{id}")]
-        public CategoryInfoModel Get(int id)
+        public string Get(int id)
         {
-            return _mapper.Map<CategoryInfoModel>(_categoryService.GetCategory(id));
+            var category = _categoryService.GetCategory(id).Name;
+            return category;
         }
 
-        // POST api/<CategoryController>
         [Authorize(Roles = "admin")]
         [HttpPost]
         public IActionResult Post(CategoryCreationModel category)
@@ -53,7 +50,6 @@ namespace WEBAPI.Controlers
             return Ok();
         }
 
-        // PUT api/<CategoryController>
         [Authorize(Roles = "admin")]
         [HttpPut]
         public IActionResult Put(CategoryInfoModel category)

@@ -33,6 +33,12 @@ namespace WEBAPI.Controlers
             return _mapper.Map<UserInfoModel>(_userService.GetUserByEmail(User.Identity.Name));
         }
 
+        [HttpGet("name/{id}")]
+        public UserShortInfoModel GetName(int id)
+        {
+            return _mapper.Map<UserShortInfoModel>(_userService.GetUser(id));
+        }
+
         // POST api/<UserController>
         [HttpPost]
         public IActionResult Post(UserRegistrationModel user)

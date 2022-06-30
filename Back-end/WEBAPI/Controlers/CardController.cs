@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿
+using AutoMapper;
 using BLL.DTO;
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -33,7 +34,15 @@ namespace WEBAPI.Controlers
         [HttpGet]
         public IEnumerable<CardInfoModel> Get()
         {
-            return _mapper.Map<IEnumerable<CardInfoModel>>(_cardService.GetCards());
+            var cards = _mapper.Map<IEnumerable<CardInfoModel>>(_cardService.GetCards());
+            var userNames = _cardService.UserNames();
+            var categoriesNames = _cardService.CategoryNames();
+            foreach (var item in cards)
+            {
+                item.CategoryName = categoriesNames[item.Id];
+                item.UserName = userNames[item.Id];
+            }
+            return cards;
         }
         // GET: api/<CardController>/
         [HttpGet("mostLikedCards")]

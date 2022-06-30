@@ -8,7 +8,7 @@ class CardClass extends Component {
     this.state = {
       title: "",
       text: "",
-      numberOfLikes: "",
+      numberOfLikes: ""
     };
     this.Like = this.Like.bind(this);
     this.deleteCard = this.deleteCard.bind(this);
@@ -43,8 +43,9 @@ class CardClass extends Component {
           text: result.text,
           numberOfLikes: result.numberOfLikes,
         });
-      });
+    });
   }
+
   deleteCard() {
     fetch(Variables.API_URL + "/Card/" + this.props.cardId, {
       method: "DELETE",
@@ -73,8 +74,8 @@ class CardClass extends Component {
           <p>
             {numberOfLikes} : <button onClick={this.Like}>Like</button>
           </p>
-          <button onClick={this.deleteCard}>delete</button>
-          <button
+          <button id="deleteButton" onClick={this.deleteCard}>delete</button>
+          <button id="changeButton"
             onClick={() =>
               this.props.navigation("/cardChange/" + this.props.cardId)
             }
@@ -86,6 +87,7 @@ class CardClass extends Component {
     );
   }
 }
+
 
 // Wrap and export
 export default function Card(props) {
