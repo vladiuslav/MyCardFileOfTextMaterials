@@ -4,7 +4,6 @@ using BLL.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +26,6 @@ namespace WEBAPI
             Configuration = configuration;
         }
         public IConfiguration Configuration { get; }
-        private string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -61,18 +59,6 @@ namespace WEBAPI
                 mc.AddProfile(new MapperProfile());
             });
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: MyAllowSpecificOrigins,
-                        builder =>
-                        {
-                            builder.AllowAnyOrigin();
-                            builder.AllowAnyMethod();
-                            builder.AllowAnyHeader();
-                            builder.WithOrigins("http://localhost:3000");
-                        });
-            });
-
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
             services.AddControllers();
@@ -87,33 +73,31 @@ namespace WEBAPI
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(options =>
-                {
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json",
-                    "COFT API version 1");
-                    options.SupportedSubmitMethods(new[] {
-                SubmitMethod.Get, SubmitMethod.Post,
-                SubmitMethod.Put, SubmitMethod.Delete });
-                    options.RoutePrefix = string.Empty;
-                });
+
             }
             else
             {
                 app.UseHsts();
                 app.UseHttpsRedirection();
             }
-
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseCors(MyAllowSpecificOrigins);
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json",
+                "COFT API version 1");
+                options.SupportedSubmitMethods(new[] {
+                SubmitMethod.Get, SubmitMethod.Post,
+                SubmitMethod.Put, SubmitMethod.Delete });
+                options.RoutePrefix = string.Empty;
+            });
 
 
             app.UseEndpoints(endpoints =>
