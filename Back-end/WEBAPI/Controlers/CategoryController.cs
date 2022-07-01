@@ -64,8 +64,8 @@ namespace WEBAPI.Controlers
 
         // DELETE api/<CategoryController>/5
         [Authorize(Roles = "admin")]
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        [HttpPost("delete")]
+        public IActionResult Delete([FromBody]int id)
         {
             if (!ModelState.IsValid)
             {

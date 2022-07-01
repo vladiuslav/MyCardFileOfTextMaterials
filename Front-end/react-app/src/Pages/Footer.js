@@ -1,4 +1,4 @@
-export default function Footer() {
+export default function footer() {
   return (
     <footer>
         <p>Copyright © 2000 - 2022 by CFOT</p>

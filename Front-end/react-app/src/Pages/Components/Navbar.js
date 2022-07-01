@@ -8,11 +8,20 @@ export default function Navbar() {
         <div className="LeftDiv">
           <CustomLink to="/">Home</CustomLink>
           <CustomLink to="/cards">Cards</CustomLink>
+          <Categories/>
         </div>
         {CheckEmail()}
       </ul>
     </nav>
   );
+}
+
+function Categories(props) {
+  if (sessionStorage.getItem("Role") === "admin") {
+    return <CustomLink to="/categories">Categories</CustomLink>;
+  } else {
+    return "";
+  }
 }
 
 function CheckEmail() {

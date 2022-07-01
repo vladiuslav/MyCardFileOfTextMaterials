@@ -117,7 +117,7 @@ class CardChangeClass extends Component {
             ></input>
           </div>
           <button className="simpleButton" onClick={this.changeCard}>
-            Create
+            Change 
           </button>
         </div>
       </article>

@@ -170,15 +170,16 @@ namespace WEBAPI.Controlers
                     signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
+            var userInfo = _userService.GetUserByEmail(identity.Name);
             var response = new
             {
                 access_token = encodedJwt,
-                email = identity.Name
+                email = identity.Name,
+                userId = userInfo.Id,
+                role = userInfo.Role
             };
 
-            JsonResult json = new JsonResult(response);
-
-            return json;
+            return new JsonResult(response);
         }
 
         private ClaimsIdentity GetIdentity(string email, string password)

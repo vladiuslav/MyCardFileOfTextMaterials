@@ -2,6 +2,8 @@ import Home from "./Pages/Home";
 import Footer from "./Pages/Footer";
 import Account from "./Pages/Account";
 import Cards from "./Pages/Cards";
+import Categories from "./Pages/Categories";
+import CategoryChange from "./Pages/ChangeCategory";
 import CardCreate from "./Pages/CardCreate";
 import CardChange from "./Pages/CardChange";
 import Card from "./Pages/Card";
@@ -14,19 +16,19 @@ function App() {
   return (
     <>
       <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/account" element={<Account />} />
-          <Route path="/cards" element={<Cards />} />
-          <Route path="/cards" element={<Cards />} />
-          <Route path="/cardCreate" element={<CardCreate />} />
-          <Route path="/cardChange/:id" element={<CardChange />} />
-          <Route path="/card/:id" element={<Card />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/regestration" element={<Registration />} />
-        </Routes>
-        <Footer/>
-
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/account" element={<Account />} />
+        <Route path="/cards" element={<Cards />} />
+        <Route path="/categories" element={<Categories />} />
+        <Route path="/categoryChange/:id" element={<CategoryChange />} />
+        <Route path="/cardCreate" element={<CardCreate />} />
+        <Route path="/cardChange/:id" element={<CardChange />} />
+        <Route path="/card/:id" element={<Card />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/regestration" element={<Registration />} />
+      </Routes>
+      <Footer />
     </>
   );
 }

@@ -81,14 +81,12 @@ class CardClass extends Component {
         <div className="cardPageButtons">
           <button
             className="cardButton"
-            id="deleteButton"
             onClick={this.deleteCard}
           >
             delete
           </button>
           <button
             className="cardButton"
-            id="changeButton"
             onClick={() =>
               this.props.navigation("/cardChange/" + this.props.cardId)
             }

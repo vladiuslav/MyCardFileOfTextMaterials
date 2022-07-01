@@ -43,7 +43,7 @@ class LoginClass extends Component {
           if (res.ok) {
             answerOk = true;
             return res.json();
-          } else if (res.status == 400) {
+          } else if (res.status === 400) {
             answerOk = false;
             alert("Wrong pasword or email , please try again.");
           } else {
@@ -60,6 +60,8 @@ class LoginClass extends Component {
 
         sessionStorage.setItem("access_token", value[0].access_token);
         sessionStorage.setItem("Email", value[0].email);
+        sessionStorage.setItem("Id", value[0].userId);
+        sessionStorage.setItem("Role", value[0].role);
         alert("You are logged");
         this.props.navigation("/");
         window.location.reload(false);
