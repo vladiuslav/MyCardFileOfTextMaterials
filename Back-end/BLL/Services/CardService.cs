@@ -101,7 +101,7 @@ namespace BLL.Services
         public IEnumerable<CardDTO> GetCardsByCategory(string category)
         {
             List<CardDTO> cards = _mapper.Map<IEnumerable<CardDTO>>(_unitOfWork.Cards.GetAll()).ToList();
-            var sortedCards = cards.FindAll(card => card.CategoryId == _unitOfWork.Categories.Find(category1 => category1.Name == category).First().Id);
+            var sortedCards = cards.FindAll(card=>card.CategoryId==_unitOfWork.Categories.Find(item=>item.Name==category).First().Id);
             sortedCards.Reverse();
             return sortedCards;
         }

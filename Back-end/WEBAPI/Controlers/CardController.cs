@@ -30,7 +30,6 @@ namespace WEBAPI.Controlers
             this._categoryService = categoryService;
         }
 
-        // GET: api/<CardController>
         [HttpGet]
         public IEnumerable<CardInfoModel> Get()
         {
@@ -44,7 +43,6 @@ namespace WEBAPI.Controlers
             }
             return cards;
         }
-        // GET: api/<CardController>/
         [HttpGet("mostLikedCards")]
         public IEnumerable<CardInfoModel> GetMostLikedCards()
         {
@@ -58,11 +56,10 @@ namespace WEBAPI.Controlers
             }
             return cards;
         }
-        // GET: api/<CardController>
-        [HttpGet("GetCardsByCategory/{id}")]
-        public IEnumerable<CardInfoModel> GetCardsByCategory(string category)
+        [HttpPost("GetCardsByCategory")]
+        public IActionResult GetCardsByCategory(CategoryInfoModel category)
         {
-            var cards = _mapper.Map<IEnumerable<CardInfoModel>>(_cardService.GetCardsByCategory(category));
+            var cards = _mapper.Map<IEnumerable<CardInfoModel>>(_cardService.GetCardsByCategory(category.Name));
             var userNames = _cardService.UserNames();
             var categoriesNames = _cardService.CategoryNames();
             foreach (var item in cards)
@@ -70,17 +67,14 @@ namespace WEBAPI.Controlers
                 item.CategoryName = categoriesNames[item.Id];
                 item.UserName = userNames[item.Id];
             }
-            return cards;
+            return new JsonResult(cards);
         }
-
-        // GET api/<CardController>/5
         [HttpGet("{id}")]
         public CardInfoModel Get(int id)
         {
             return _mapper.Map<CardInfoModel>(_cardService.GetCard(id));
         }
 
-        // POST api/<CardController>
         [Authorize(Roles = "user,admin")]
         [HttpPost("Create")]
         public IActionResult Post(CardCreationModel card)
@@ -97,7 +91,6 @@ namespace WEBAPI.Controlers
             return new JsonResult(resultCard);
         }
 
-        // PUT api/<CardController>/5
         [Authorize(Roles = "user,admin")]
         [HttpPost("like/{id}")]
         public IActionResult likeCard(int id)
@@ -131,7 +124,6 @@ namespace WEBAPI.Controlers
             }
         }
 
-        // DELETE api/<CardController>/5
         [Authorize(Roles = "user,admin")]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)

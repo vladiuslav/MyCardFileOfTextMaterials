@@ -53,19 +53,18 @@ class CardsClass extends Component {
           });
         break;
       case 3:
-        fetch(
-          Variables.API_URL +
-            "/GetCardsByCategory/" +
-            this.state.filterCategory,
-          {
-            method: "GET",
-            headers: {
-              accept: "application/json",
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + sessionStorage.getItem("access_token"),
-            },
-          }
-        )
+        fetch(Variables.API_URL + "/Card/GetCardsByCategory", {
+          method: "POST",
+          headers: {
+            accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + sessionStorage.getItem("access_token"),
+          },
+          body: JSON.stringify({
+            id: 0,
+            name: this.state.filterCategory,
+          }),
+        })
           .then((res) => res.json())
           .then((value) => {
             console.log(value);
@@ -116,7 +115,7 @@ class CardsClass extends Component {
               onChange={this.changeCategoryFilter}
               placeholder="Category name"
             ></input>
-            <button className="simpleButton" onClick={this.setFilter2}>
+            <button className="simpleButton" onClick={this.setFilter3}>
               Sort by category
             </button>
           </div>

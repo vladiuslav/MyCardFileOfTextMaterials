@@ -14,6 +14,8 @@ namespace WEBAPI
         {
             CreateMap<UserInfoModel, UserDTO>()
                 .ForMember(dto => dto.Cards, model => model.Ignore())
+                .ForMember(dto => dto.Id, model => model.Ignore())
+                .ForMember(dto => dto.Role, model => model.Ignore())
                 .ReverseMap();
 
             CreateMap<UserRegistrationModel, UserDTO>()
@@ -26,7 +28,10 @@ namespace WEBAPI
 
             CreateMap<CardDTO, CardCreationModel>().ReverseMap();
             CreateMap<CardDTO, CardUpdateModel>().ReverseMap();
-            CreateMap<CardDTO, CardInfoModel>().ReverseMap();
+            CreateMap<CardDTO, CardInfoModel>()
+                .ForMember(dto=>dto.CategoryName,model=>model.Ignore())
+                .ForMember(dto=>dto.UserName,model=>model.Ignore())
+                .ReverseMap();
 
             CreateMap<CategoryDTO, CategoryCreationModel>().ReverseMap(); 
             CreateMap<CategoryDTO, CategoryInfoModel>().ReverseMap();

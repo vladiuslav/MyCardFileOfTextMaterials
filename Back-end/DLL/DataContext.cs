@@ -14,6 +14,7 @@ namespace DLL
         public DataContext(DbContextOptions<DataContext> options)
             : base(options)
         {
+
             if (Database.EnsureCreated())
             {
                 addSeedData(this);
