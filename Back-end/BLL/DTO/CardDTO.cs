@@ -1,6 +1,7 @@
 ﻿
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 namespace BLL.DTO
@@ -10,8 +11,8 @@ namespace BLL.DTO
         public int Id;
         public string Title { get; set; }
         public string Text { get; set; }
-        public int NumberOfLikes { get; set; }//set here 0 like standart value
 
+        public ICollection<LikeDTO> Likes { get; set; }
         public virtual UserDTO User { get; set; }
         public int UserId { get; set; }
 

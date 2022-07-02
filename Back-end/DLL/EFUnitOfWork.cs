@@ -14,6 +14,7 @@ namespace DLL
         private CardRepository cardRepository;
         private CategoryRepository categoryRepository;
         private UserRepository userRepository;
+        private LikeRepository likeRepository;
 
         public EFUnitOfWork(string connectionString)
         {
@@ -48,6 +49,16 @@ namespace DLL
                 if (userRepository == null)
                     userRepository = new UserRepository(db);
                 return userRepository;
+            }
+        }
+
+        public IRepository<Like> Likes
+        {
+            get
+            {
+                if (likeRepository == null)
+                    likeRepository = new LikeRepository(db);
+                return likeRepository;
             }
         }
 

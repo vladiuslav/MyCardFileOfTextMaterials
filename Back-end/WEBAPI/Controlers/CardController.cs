@@ -72,7 +72,9 @@ namespace WEBAPI.Controlers
         [HttpGet("{id}")]
         public CardInfoModel Get(int id)
         {
-            return _mapper.Map<CardInfoModel>(_cardService.GetCard(id));
+            var card = _mapper.Map<CardInfoModel>(_cardService.GetCard(id));
+            card.NumberOfLikes = _cardService.GetCardLikes(id);
+            return card;
         }
 
         [Authorize(Roles = "user,admin")]
@@ -95,8 +97,8 @@ namespace WEBAPI.Controlers
         [HttpPost("like/{id}")]
         public IActionResult likeCard(int id)
         {
-
-            _cardService.LikeCard(id);
+            int userId =_userService.GetUserByEmail(User.Identity.Name).Id;
+            _cardService.LikeCard(id, userId);
             return Ok();
 
         }

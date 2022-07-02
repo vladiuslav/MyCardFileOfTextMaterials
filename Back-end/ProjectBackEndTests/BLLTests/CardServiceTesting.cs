@@ -26,7 +26,6 @@ namespace ProjectBackEndTests.BLLTests
             CardDTO cardDTO = new CardDTO {
                 Title = "TestTitle11",
                 Text = "Some special test text for testing dataBase, some special test text for testing dataBase, ",
-                NumberOfLikes = 0,
                 UserId = 1,
                 CategoryId = 1
             };
@@ -38,14 +37,6 @@ namespace ProjectBackEndTests.BLLTests
         public void CardService_GetCards_ReturnCards()
         {
             Assert.IsNotNull(cardService.GetCards());
-        }
-        [Test]
-        public void CardService_LikeCard_ReturnCard()
-        {
-            int cardLikesBefore = cardService.GetCard(1).NumberOfLikes;
-            cardService.LikeCard(1);
-            int cardLikesAfter = cardService.GetCard(1).NumberOfLikes;
-            Assert.AreEqual(cardLikesBefore+1, cardLikesAfter);
         }
         [Test]
         public void CardService_GetCard_ReturnCard()

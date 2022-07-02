@@ -67,7 +67,6 @@ namespace ProjectBackEndTests.DLLTests
             {
                 Title = "TestTitle10",
                 Text = "Some special test text for testing dataBase, some special test text for testing dataBase, ",
-                NumberOfLikes = 0,
                 UserId=1,
                 CategoryId=1
             };

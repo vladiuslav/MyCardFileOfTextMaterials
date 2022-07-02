@@ -8,10 +8,11 @@ namespace BLL.Interfaces
     public interface ICardService
     {
         void CreateCard(CardDTO cardDto);
-        void LikeCard(int id);
+        void LikeCard(int id, int userId);
         void ChangeCard(CardDTO cardDto);
         void DeleteCard(int id);
         CardDTO GetCard(int id);
+        int GetCardLikes(int Cardid);
         CardDTO GetCardByTitle(string title);
         Dictionary<int, string> CategoryNames();
         Dictionary<int, string> UserNames();

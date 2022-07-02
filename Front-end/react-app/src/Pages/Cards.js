@@ -67,7 +67,6 @@ class CardsClass extends Component {
         })
           .then((res) => res.json())
           .then((value) => {
-            console.log(value);
             this.setState({
               cards: value,
             });

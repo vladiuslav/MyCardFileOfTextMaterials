@@ -23,6 +23,7 @@ class CardClass extends Component {
     })
       .then((value) => value)
       .then((result) => {
+        console.log(result);
         this.refreshCard();
       });
   }

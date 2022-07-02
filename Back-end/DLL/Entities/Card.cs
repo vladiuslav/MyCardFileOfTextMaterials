@@ -19,8 +19,7 @@ namespace DLL.Entities
         [Column(TypeName ="ntext")]
         public string Text { get; set; }
 
-        [DefaultValue(0)]
-        public int NumberOfLikes { get; set; }
+        public  ICollection<Like> Likes { get; set; }
 
         public virtual User User { get; set; }
         public int UserId { get; set; }

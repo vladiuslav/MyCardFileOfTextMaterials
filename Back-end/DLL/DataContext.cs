@@ -11,6 +11,7 @@ namespace DLL
         public DbSet<Card> Cards { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Like> Likes { get; set; }
         public DataContext(DbContextOptions<DataContext> options)
             : base(options)
         {
@@ -19,6 +20,19 @@ namespace DLL
             {
                 addSeedData(this);
             }
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Like>()
+                .HasOne(l => l.Card)
+                .WithMany(c=>c.Likes)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<Like>()
+                .HasOne(l => l.User)
+                .WithOne()
+                .OnDelete(DeleteBehavior.NoAction);
+            
         }
         private void addSeedData(DataContext context)
         {
@@ -41,7 +55,6 @@ namespace DLL
             {
                 Title = "TestTitle1",
                 Text = "Some special test text for testing dataBase, some special test text for testing dataBase, ",
-                NumberOfLikes = 0,
                 User = user1,
                 Category = category1
             };
@@ -49,7 +62,6 @@ namespace DLL
             {
                 Title = "TestTitle2",
                 Text = "Some special test text for testing dataBase, some special test text for testing dataBase, ",
-                NumberOfLikes = 0,
                 User = user2,
                 Category = category2
             };
@@ -57,7 +69,6 @@ namespace DLL
             {
                 Title = "TestTitle3",
                 Text = "Some special test text for testing dataBase, some special test text for testing dataBase, ",
-                NumberOfLikes = 0,
                 User = user3,
                 Category = category3
             };
@@ -65,7 +76,6 @@ namespace DLL
             {
                 Title = "TestTitle4",
                 Text = "Some special test text for testing dataBase, some special test text for testing dataBase, ",
-                NumberOfLikes = 0,
                 User = user4,
                 Category = category4
             };
@@ -73,7 +83,6 @@ namespace DLL
             {
                 Title = "TestTitle5",
                 Text = "Some special test text for testing dataBase, some special test text for testing dataBase, ",
-                NumberOfLikes = 0,
                 User = user5,
                 Category = category1
             };
@@ -81,7 +90,6 @@ namespace DLL
             {
                 Title = "TestTitle6",
                 Text = "Some special test text for testing dataBase, some special test text for testing dataBase, ",
-                NumberOfLikes = 0,
                 User = user1,
                 Category = category2
             };

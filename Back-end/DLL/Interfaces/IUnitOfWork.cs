@@ -10,6 +10,7 @@ namespace DLL.Interfaces
         IRepository<Card> Cards { get; }
         IRepository<Category> Categories { get; }
         IRepository<User> Users { get; }
+        IRepository<Like> Likes { get; }
         void Save();
     }
 }
