@@ -11,7 +11,6 @@ namespace BLL.MapperConfigurations
             CreateMap<User, UserDTO>().ReverseMap();
             CreateMap<Category, CategoryDTO>().ReverseMap();
             CreateMap<Card, CardDTO>().ReverseMap();
-            CreateMap<Like, LikeDTO>().ReverseMap();
         }
     }
 }

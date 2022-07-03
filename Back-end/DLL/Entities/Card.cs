@@ -19,13 +19,12 @@ namespace DLL.Entities
         [Column(TypeName ="ntext")]
         public string Text { get; set; }
 
-        public  ICollection<Like> Likes { get; set; }
-
         public virtual User User { get; set; }
         public int UserId { get; set; }
 
         public virtual Category Category { get; set; }
         public int CategoryId { get; set; }
+
 
     }
 }

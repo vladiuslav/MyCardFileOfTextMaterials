@@ -43,19 +43,6 @@ namespace WEBAPI.Controlers
             }
             return cards;
         }
-        [HttpGet("mostLikedCards")]
-        public IEnumerable<CardInfoModel> GetMostLikedCards()
-        {
-            var cards = _mapper.Map<IEnumerable<CardInfoModel>>(_cardService.GetMostLikedCards());
-            var userNames = _cardService.UserNames();
-            var categoriesNames = _cardService.CategoryNames();
-            foreach (var item in cards)
-            {
-                item.CategoryName = categoriesNames[item.Id];
-                item.UserName = userNames[item.Id];
-            }
-            return cards;
-        }
         [HttpPost("GetCardsByCategory")]
         public IActionResult GetCardsByCategory(CategoryInfoModel category)
         {
@@ -73,7 +60,6 @@ namespace WEBAPI.Controlers
         public CardInfoModel Get(int id)
         {
             var card = _mapper.Map<CardInfoModel>(_cardService.GetCard(id));
-            card.NumberOfLikes = _cardService.GetCardLikes(id);
             return card;
         }
 
@@ -91,16 +77,6 @@ namespace WEBAPI.Controlers
             CardDTO resultCard = _cardService.GetCardByTitle(cardDTO.Title);
                 
             return new JsonResult(resultCard);
-        }
-
-        [Authorize(Roles = "user,admin")]
-        [HttpPost("like/{id}")]
-        public IActionResult likeCard(int id)
-        {
-            int userId =_userService.GetUserByEmail(User.Identity.Name).Id;
-            _cardService.LikeCard(id, userId);
-            return Ok();
-
         }
 
         // PUT api/<CardController>/5

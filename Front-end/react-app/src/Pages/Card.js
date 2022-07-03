@@ -8,24 +8,8 @@ class CardClass extends Component {
     this.state = {
       title: "",
       text: "",
-      numberOfLikes: "",
     };
-    this.Like = this.Like.bind(this);
     this.deleteCard = this.deleteCard.bind(this);
-  }
-  Like() {
-    fetch(Variables.API_URL + "/Card/like/" + this.props.cardId, {
-      method: "POST",
-      headers: {
-        accept: "application/json",
-        Authorization: "Bearer " + sessionStorage.getItem("access_token"),
-      },
-    })
-      .then((value) => value)
-      .then((result) => {
-        console.log(result);
-        this.refreshCard();
-      });
   }
 
   refreshCard() {
@@ -42,7 +26,6 @@ class CardClass extends Component {
         this.setState({
           title: result.title,
           text: result.text,
-          numberOfLikes: result.numberOfLikes,
         });
       });
   }
@@ -74,16 +57,7 @@ class CardClass extends Component {
           <p>{text}</p>
         </div>
         <div className="cardPageButtons">
-          {numberOfLikes} :{" "}
-          <button className="cardButton" onClick={this.Like}>
-            Like
-          </button>
-        </div>
-        <div className="cardPageButtons">
-          <button
-            className="cardButton"
-            onClick={this.deleteCard}
-          >
+          <button className="cardButton" onClick={this.deleteCard}>
             delete
           </button>
           <button

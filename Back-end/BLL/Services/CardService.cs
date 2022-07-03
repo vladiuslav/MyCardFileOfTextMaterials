@@ -24,19 +24,6 @@ namespace BLL.Services
             });
             this._mapper = new Mapper(config);
         }
-        public void LikeCard(int id,int userId)
-        {
-            var likes = _mapper.Map<IEnumerable<LikeDTO>>(_unitOfWork.Likes.GetAll());
-            if (likes.Any(like=>like.CardId==id&&like.UserId== userId))
-            {
-                _unitOfWork.Likes.Delete(likes.First(like => like.CardId == id && like.UserId == userId).Id);
-            }
-            else
-            {
-                _unitOfWork.Likes.Create(new Like(){UserId=userId,CardId=id });
-            }
-            _unitOfWork.Save();
-        }
         public void CreateCard(CardDTO cardDto)
         {
             _unitOfWork.Cards.Create(_mapper.Map<Card>(cardDto));
@@ -81,11 +68,6 @@ namespace BLL.Services
         {
             return _mapper.Map<CardDTO>(_unitOfWork.Cards.Get(id));
         }
-        public int GetCardLikes(int Cardid)
-        {
-            var card = _unitOfWork.Cards.Get(Cardid).Likes.Count;
-            return card;
-        }
         public CardDTO GetCardByTitle(string title)
         {
             return _mapper.Map<CardDTO>(_unitOfWork.Cards.GetAll().FirstOrDefault(card => card.Title == title));
@@ -104,13 +86,6 @@ namespace BLL.Services
             return _mapper.Map<IEnumerable<CardDTO>>(_unitOfWork.Cards.GetAll());
         }
 
-        public IEnumerable<CardDTO> GetMostLikedCards()
-        {
-            List<CardDTO> cards = _mapper.Map<IEnumerable<CardDTO>>(_unitOfWork.Cards.GetAll()).ToList();
-            cards.Sort((x, y) => x.Likes.Count.CompareTo(y.Likes.Count));
-            cards.Reverse();
-            return cards;
-        }
         public IEnumerable<CardDTO> GetCardsByCategory(string category)
         {
             List<CardDTO> cards = _mapper.Map<IEnumerable<CardDTO>>(_unitOfWork.Cards.GetAll()).ToList();

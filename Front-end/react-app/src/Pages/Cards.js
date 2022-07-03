@@ -12,7 +12,6 @@ class CardsClass extends Component {
     };
 
     this.setFilter1 = this.setFilter1.bind(this);
-    this.setFilter2 = this.setFilter2.bind(this);
     this.setFilter3 = this.setFilter3.bind(this);
     this.changeCategoryFilter = this.changeCategoryFilter.bind(this);
   }
@@ -35,22 +34,6 @@ class CardsClass extends Component {
             });
           });
 
-        break;
-      case 2:
-        fetch(Variables.API_URL + "/Card/mostLikedCards", {
-          method: "GET",
-          headers: {
-            accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + sessionStorage.getItem("access_token"),
-          },
-        })
-          .then((res) => res.json())
-          .then((value) => {
-            this.setState({
-              cards: value,
-            });
-          });
         break;
       case 3:
         fetch(Variables.API_URL + "/Card/GetCardsByCategory", {
@@ -88,10 +71,6 @@ class CardsClass extends Component {
     this.setState({ filter: 1 });
     this.refreshList(this.state.filter);
   }
-  setFilter2() {
-    this.setState({ filter: 2 });
-    this.refreshList(this.state.filter);
-  }
   setFilter3() {
     this.setState({ filter: 3 });
     this.refreshList(this.state.filter);
@@ -103,9 +82,6 @@ class CardsClass extends Component {
     return (
       <article>
         <div className="sortButtons">
-          <button className="simpleButton" onClick={this.setFilter2}>
-            Sort by likes
-          </button>
           <div>
             <input
               className="input"
@@ -127,7 +103,6 @@ class CardsClass extends Component {
             <ul>
               <li>Title</li>
               <li>Creator name</li>
-              <li>Number of likes</li>
               <li>Category</li>
               <li>Text</li>
             </ul>
@@ -143,7 +118,6 @@ class CardsClass extends Component {
                 >
                   <li>{card.title}</li>
                   <li>{card.userName}</li>
-                  <li>{card.numberOfLikes}</li>
                   <li>{card.categoryName}</li>
                   <li>
                     {card.text.substr(0, 90) +

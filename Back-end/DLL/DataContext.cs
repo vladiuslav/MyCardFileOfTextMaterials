@@ -11,7 +11,6 @@ namespace DLL
         public DbSet<Card> Cards { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<Like> Likes { get; set; }
         public DataContext(DbContextOptions<DataContext> options)
             : base(options)
         {
@@ -24,14 +23,6 @@ namespace DLL
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Like>()
-                .HasOne(l => l.Card)
-                .WithMany(c=>c.Likes)
-                .OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<Like>()
-                .HasOne(l => l.User)
-                .WithOne()
-                .OnDelete(DeleteBehavior.NoAction);
             
         }
         private void addSeedData(DataContext context)
