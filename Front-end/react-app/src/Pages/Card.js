@@ -21,6 +21,9 @@ class CardClass extends Component {
         Authorization: "Bearer " + sessionStorage.getItem("access_token"),
       },
     })
+      .catch((error) => {
+        alert("Something go wrong, please try again later.");
+      })
       .then((value) => value.json())
       .then((result) => {
         this.setState({
@@ -31,6 +34,7 @@ class CardClass extends Component {
   }
 
   deleteCard() {
+    
     fetch(Variables.API_URL + "/Card/" + this.props.cardId, {
       method: "DELETE",
       headers: {
@@ -49,7 +53,7 @@ class CardClass extends Component {
   }
 
   render() {
-    const { title, text, numberOfLikes } = this.state;
+    const { title, text} = this.state;
     return (
       <article>
         <div className="cardPage">

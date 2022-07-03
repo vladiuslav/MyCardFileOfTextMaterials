@@ -46,8 +46,15 @@ namespace WEBAPI.Controlers
             {
                 return BadRequest();
             }
-            _categoryService.CreateCategory(_mapper.Map<CategoryDTO>(category));
-            return Ok();
+            if (_categoryService.GetCategoryByName(category.Name) is null)
+            {
+                _categoryService.CreateCategory(_mapper.Map<CategoryDTO>(category));
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         [Authorize(Roles = "admin")]
@@ -58,8 +65,15 @@ namespace WEBAPI.Controlers
             {
                 return BadRequest();
             }
-            _categoryService.ChangeCategory(_mapper.Map<CategoryDTO>(category));
-            return Ok();
+            if (_categoryService.GetCategoryByName(category.Name) is null|| _categoryService.GetCategoryByName(category.Name).Id==category.Id)
+            {
+                _categoryService.ChangeCategory(_mapper.Map<CategoryDTO>(category));
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         // DELETE api/<CategoryController>/5

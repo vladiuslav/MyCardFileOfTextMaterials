@@ -15,6 +15,11 @@ class CategoryChangeClass extends Component {
     this.setState({ categoryName: event.target.value });
   }
   changeCategory() {
+    if (this.state.categoryName === "") {
+      alert("Category name is empty, please try again.");
+      return;
+    }
+
     fetch(Variables.API_URL + "/Category", {
       method: "PUT",
       headers: {
@@ -26,7 +31,9 @@ class CategoryChangeClass extends Component {
         id: parseInt(this.props.categoryId),
         name: this.state.categoryName,
       }),
-    }).then((result) => {
+    }).catch((error) => {
+          alert("Something go wrong, please try again later.");
+        }).then((result) => {
       alert("Changed");
       this.props.navigation("/categories");
     });

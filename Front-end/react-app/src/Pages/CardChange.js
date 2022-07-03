@@ -38,6 +38,9 @@ class CardChangeClass extends Component {
         Authorization: "Bearer " + sessionStorage.getItem("access_token"),
       },
     })
+      .catch((error) => {
+        alert("Something go wrong, please try again later.");
+      })
       .then((res) => res.json())
       .then((value) => {
         this.setState({
@@ -52,6 +55,9 @@ class CardChangeClass extends Component {
             Authorization: "Bearer " + sessionStorage.getItem("access_token"),
           },
         })
+          .catch((error) => {
+            alert("Something go wrong, please try again later.");
+          })
           .then((res) => res.json())
           .then((value) => {
             this.setState({

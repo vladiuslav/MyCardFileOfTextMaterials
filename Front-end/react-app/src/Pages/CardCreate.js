@@ -40,6 +40,9 @@ class CardCreateClass extends Component {
         categoryName: this.state.categoryName,
       }),
     })
+      .catch((error) => {
+        alert("Something go wrong, please try again later.");
+      })
       .then((res) => res.json())
       .then((result) => {
         console.log(result);

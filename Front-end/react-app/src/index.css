@@ -72,6 +72,13 @@ article {
   margin-right: 10rem;
 }
 
+.home{
+  text-align: center;
+    background-color: var(--color3A);
+    margin: 10%;
+    width: 80%;
+    padding: 1rem;
+}
 
 .loginForm{
   padding: 1%;

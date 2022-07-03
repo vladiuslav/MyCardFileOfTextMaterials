@@ -58,7 +58,7 @@ namespace WEBAPI.Controlers
             {
                 return BadRequest();
             }
-
+            
         }
 
         // PUT api/<UserController>/changeNickname

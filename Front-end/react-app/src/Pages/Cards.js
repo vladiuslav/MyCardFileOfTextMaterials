@@ -27,6 +27,9 @@ class CardsClass extends Component {
             Authorization: "Bearer " + sessionStorage.getItem("access_token"),
           },
         })
+          .catch((error) => {
+            alert("Something go wrong, please try again later.");
+          })
           .then((res) => res.json())
           .then((value) => {
             this.setState({
@@ -36,24 +39,31 @@ class CardsClass extends Component {
 
         break;
       case 3:
-        fetch(Variables.API_URL + "/Card/GetCardsByCategory", {
-          method: "POST",
-          headers: {
-            accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + sessionStorage.getItem("access_token"),
-          },
-          body: JSON.stringify({
-            id: 0,
-            name: this.state.filterCategory,
-          }),
-        })
-          .then((res) => res.json())
-          .then((value) => {
-            this.setState({
-              cards: value,
+        if (this.state.filterCategory===""){
+          alert("Name is empty, please try again.");
+          return;
+        }
+          fetch(Variables.API_URL + "/Card/GetCardsByCategory", {
+            method: "POST",
+            headers: {
+              accept: "application/json",
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + sessionStorage.getItem("access_token"),
+            },
+            body: JSON.stringify({
+              id: 0,
+              name: this.state.filterCategory,
+            }),
+          })
+            .catch((error) => {
+              alert("Something go wrong, please try again later.");
+            })
+            .then((res) => res.json())
+            .then((value) => {
+              this.setState({
+                cards: value,
+              });
             });
-          });
         break;
       default:
         console.log("Problem with switch");

@@ -46,6 +46,10 @@ namespace WEBAPI.Controlers
         [HttpPost("GetCardsByCategory")]
         public IActionResult GetCardsByCategory(CategoryInfoModel category)
         {
+            if (_categoryService.GetCategoryByName(category.Name) is null)
+            {
+                return BadRequest();
+            }
             var cards = _mapper.Map<IEnumerable<CardInfoModel>>(_cardService.GetCardsByCategory(category.Name));
             var userNames = _cardService.UserNames();
             var categoriesNames = _cardService.CategoryNames();
@@ -55,18 +59,28 @@ namespace WEBAPI.Controlers
                 item.UserName = userNames[item.Id];
             }
             return new JsonResult(cards);
+           
+
         }
         [HttpGet("{id}")]
-        public CardInfoModel Get(int id)
+        public IActionResult Get(int id)
         {
+            if(_cardService.GetCard(id) is null)
+            {
+                return BadRequest();
+            }
             var card = _mapper.Map<CardInfoModel>(_cardService.GetCard(id));
-            return card;
+            return new JsonResult(card);
         }
 
         [Authorize(Roles = "user,admin")]
         [HttpPost("Create")]
         public IActionResult Post(CardCreationModel card)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             int userId = _userService.GetUserByEmail(User.Identity.Name).Id;
             CardDTO cardDTO = _mapper.Map<CardDTO>(card);
             cardDTO.UserId = userId;

@@ -18,6 +18,10 @@ class CategoriesClass extends Component {
     this.setState({ Nname: event.target.value });
   }
   AddCategory() {
+    if (this.state.Nname === "") {
+      alert("Name is empty, please try again.");
+      return;
+    }
     fetch(Variables.API_URL + "/Category", {
       method: "POST",
       headers: {
@@ -29,9 +33,12 @@ class CategoriesClass extends Component {
         name: this.state.Nname,
       }),
     })
+      .catch((error) => {
+        alert("Something go wrong, please try again later.");
+      })
       .then((value) => {
         alert("New category added");
-        this.setState({Nname:""});
+        this.setState({ Nname: "" });
         this.refreshList();
       });
   }

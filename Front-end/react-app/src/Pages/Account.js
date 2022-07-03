@@ -39,9 +39,13 @@ export default class Account extends Component {
         Authorization: "Bearer " + sessionStorage.getItem("access_token"),
       },
       body: JSON.stringify(this.state.Nnickname),
-    }).then((result) => {
-      this.refreshUser();
-    });
+    })
+      .catch((error) => {
+        alert("Something go wrong, please try again later.");
+      })
+      .then((result) => {
+        this.refreshUser();
+      });
   }
   fetchUserEmail() {
     fetch(Variables.API_URL + "/User/changeEmail", {
@@ -53,6 +57,9 @@ export default class Account extends Component {
       },
       body: this.state.Nemail,
     })
+      .catch((error) => {
+        alert("Something go wrong, please try again later.");
+      })
       .then((res) => res)
       .then((result) => {
         this.refreshUser();
@@ -68,6 +75,9 @@ export default class Account extends Component {
       },
       body: this.state.Npassword,
     })
+      .catch((error) => {
+        alert("Something go wrong, please try again later.");
+      })
       .then((res) => res)
       .then((result) => {
         this.refreshUser();
@@ -83,6 +93,9 @@ export default class Account extends Component {
         Authorization: "Bearer " + sessionStorage.getItem("access_token"),
       },
     })
+      .catch((error) => {
+        alert("Something go wrong, please try again later.");
+      })
       .then((res) => res.json())
       .then((result) => {
         this.setState({
