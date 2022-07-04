@@ -4,12 +4,7 @@ using BLL.DTO;
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
 using WEBAPI.Models;
 
 namespace WEBAPI.Controlers
@@ -59,13 +54,13 @@ namespace WEBAPI.Controlers
                 item.UserName = userNames[item.Id];
             }
             return new JsonResult(cards);
-           
+
 
         }
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            if(_cardService.GetCard(id) is null)
+            if (_cardService.GetCard(id) is null)
             {
                 return BadRequest();
             }
@@ -89,7 +84,7 @@ namespace WEBAPI.Controlers
 
             _cardService.CreateCard(cardDTO);
             CardDTO resultCard = _cardService.GetCardByTitle(cardDTO.Title);
-                
+
             return new JsonResult(resultCard);
         }
 
@@ -111,7 +106,8 @@ namespace WEBAPI.Controlers
                 _cardService.ChangeCard(_mapper.Map<CardDTO>(card));
                 return Ok();
             }
-            else{
+            else
+            {
                 return BadRequest();
             }
         }

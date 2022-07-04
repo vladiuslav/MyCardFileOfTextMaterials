@@ -1,8 +1,6 @@
 ﻿using DLL.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace DLL.Entities
 {
@@ -23,7 +21,8 @@ namespace DLL.Entities
         public string Password { get; set; }
         public virtual ICollection<Card> Cards { get; set; }
 
-        public User() {
+        public User()
+        {
             this.Cards = new List<Card>();
         }
     }

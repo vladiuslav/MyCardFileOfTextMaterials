@@ -1,10 +1,4 @@
-﻿
-
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-
-namespace BLL.DTO
+﻿namespace BLL.DTO
 {
     public class CardDTO
     {
@@ -17,7 +11,5 @@ namespace BLL.DTO
 
         public virtual CategoryDTO Category { get; set; }
         public int CategoryId { get; set; }
-
-
     }
 }

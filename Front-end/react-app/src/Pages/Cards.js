@@ -27,7 +27,7 @@ class CardsClass extends Component {
             Authorization: "Bearer " + sessionStorage.getItem("access_token"),
           },
         })
-          .catch((error) => {
+          .catch((res) => {
             alert("Something go wrong, please try again later.");
           })
           .then((res) => res.json())
@@ -39,31 +39,38 @@ class CardsClass extends Component {
 
         break;
       case 3:
-        if (this.state.filterCategory===""){
+        if (this.state.filterCategory === "") {
           alert("Name is empty, please try again.");
           return;
         }
-          fetch(Variables.API_URL + "/Card/GetCardsByCategory", {
-            method: "POST",
-            headers: {
-              accept: "application/json",
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + sessionStorage.getItem("access_token"),
-            },
-            body: JSON.stringify({
-              id: 0,
-              name: this.state.filterCategory,
-            }),
+        fetch(Variables.API_URL + "/Card/GetCardsByCategory", {
+          method: "POST",
+          headers: {
+            accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + sessionStorage.getItem("access_token"),
+          },
+          body: JSON.stringify({
+            id: 0,
+            name: this.state.filterCategory,
+          }),
+        })
+          .catch((error) => {
+            alert("Something go wrong, please try again later.");
           })
-            .catch((error) => {
+          .then((res) => {
+            if (res.status != 200) {
               alert("Something go wrong, please try again later.");
-            })
-            .then((res) => res.json())
-            .then((value) => {
-              this.setState({
-                cards: value,
-              });
+              return;
+            }
+            return res;
+          })
+          .then((res) => res.json())
+          .then((value) => {
+            this.setState({
+              cards: value,
             });
+          });
         break;
       default:
         console.log("Problem with switch");

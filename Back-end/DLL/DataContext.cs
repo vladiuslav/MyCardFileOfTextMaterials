@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DLL.Entities;
+﻿using DLL.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace DLL
@@ -23,7 +20,7 @@ namespace DLL
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
+
         }
         private void addSeedData(DataContext context)
         {
@@ -33,7 +30,7 @@ namespace DLL
             User user4 = new User { Email = "TestEmail4@mail.com", NickName = "TestNickName4", Password = "qwe123", Role = "user" };
             User user5 = new User { Email = "TestEmail5@mail.com", NickName = "TestNickName5", Password = "qwe123", Role = "user" };
             User user6 = new User { Email = "TestEmail6@mail.com", NickName = "TestNickName6", Password = "qwe123", Role = "user" };
-            
+
             context.Users.AddRange(user1, user2, user3, user4, user5, user6);
             Category category1 = new Category { Name = "TestCategoryName1" };
             Category category2 = new Category { Name = "TestCategoryName2" };

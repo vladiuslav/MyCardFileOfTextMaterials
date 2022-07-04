@@ -1,10 +1,7 @@
 ﻿using DLL;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
 using DLL.Entities;
+using NUnit.Framework;
+using System.Linq;
 
 namespace ProjectBackEndTests.DLLTests
 {
@@ -32,7 +29,7 @@ namespace ProjectBackEndTests.DLLTests
             string userNickName = user.NickName;
             unitOfWork.Users.Create(user);
             unitOfWork.Save();
-            Assert.IsNotNull(unitOfWork.Users.GetAll().FirstOrDefault(user => user.NickName==userNickName));
+            Assert.IsNotNull(unitOfWork.Users.GetAll().FirstOrDefault(user => user.NickName == userNickName));
 
         }
     }

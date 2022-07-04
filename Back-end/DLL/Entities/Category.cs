@@ -1,8 +1,6 @@
-﻿using System;
+﻿using DLL.Interfaces;
 using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel.DataAnnotations;
-using DLL.Interfaces;
 
 namespace DLL.Entities
 {

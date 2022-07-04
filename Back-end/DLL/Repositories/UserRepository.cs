@@ -1,10 +1,8 @@
-﻿using System;
+﻿using DLL.Entities;
+using DLL.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using DLL.Entities;
-using DLL.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace DLL.Repositories
 {
@@ -30,6 +28,11 @@ namespace DLL.Repositories
         public IEnumerable<User> Find(Func<User, bool> predicate)
         {
             return db.Users.Where(predicate).ToList();
+        }
+
+        public User FirstOrDefault(Func<User, bool> predicate)
+        {
+            return db.Users.FirstOrDefault(predicate);
         }
 
         public User Get(int id)

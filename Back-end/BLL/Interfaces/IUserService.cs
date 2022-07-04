@@ -1,7 +1,5 @@
 ﻿using BLL.DTO;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace BLL.Interfaces
 {
@@ -13,7 +11,7 @@ namespace BLL.Interfaces
         UserDTO GetUserByNickName(string nickname);
         UserDTO GetUserByEmail(string email);
         IEnumerable<UserDTO> GetUsers();
-        IEnumerable<UserDTO> GetUsersRange(int []usersId);
+        IEnumerable<UserDTO> GetUsersRange(int[] usersId);
         void Dispose();
     }
 }

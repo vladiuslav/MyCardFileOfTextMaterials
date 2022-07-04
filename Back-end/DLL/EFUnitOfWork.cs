@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DLL.Entities;
+﻿using DLL.Entities;
 using DLL.Interfaces;
 using DLL.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace DLL
 {

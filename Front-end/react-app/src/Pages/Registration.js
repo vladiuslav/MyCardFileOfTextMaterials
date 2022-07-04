@@ -68,16 +68,16 @@ class RegistrationClass extends Component {
           alert("Something go wrong, please try again later.");
         }
       })
-      .catch((error) => {
-        alert("Something go wrong, please try again later.");
-      })
       .then((result) => {
         if (answerOk) {
           alert("Congratulations you are registered, now you can login.");
           this.props.navigation("/");
-          window.location.reload(false);
         }
-      });
+      })
+      .catch((error) => {
+        alert("Something go wrong, please try again later.");
+        console.log("Error:", error);
+      });;
   }
   render() {
     const { Nickname, Email, Password, ConfirmPassword } = this.state;

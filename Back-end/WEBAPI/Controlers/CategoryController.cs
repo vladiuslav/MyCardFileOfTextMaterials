@@ -3,12 +3,7 @@ using BLL.DTO;
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
 using WEBAPI.Models;
 
 namespace WEBAPI.Controlers
@@ -65,7 +60,7 @@ namespace WEBAPI.Controlers
             {
                 return BadRequest();
             }
-            if (_categoryService.GetCategoryByName(category.Name) is null|| _categoryService.GetCategoryByName(category.Name).Id==category.Id)
+            if (_categoryService.GetCategoryByName(category.Name) is null || _categoryService.GetCategoryByName(category.Name).Id == category.Id)
             {
                 _categoryService.ChangeCategory(_mapper.Map<CategoryDTO>(category));
                 return Ok();
@@ -79,7 +74,7 @@ namespace WEBAPI.Controlers
         // DELETE api/<CategoryController>/5
         [Authorize(Roles = "admin")]
         [HttpPost("delete")]
-        public IActionResult Delete([FromBody]int id)
+        public IActionResult Delete([FromBody] int id)
         {
             if (!ModelState.IsValid)
             {

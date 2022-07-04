@@ -33,14 +33,26 @@ class CategoriesClass extends Component {
         name: this.state.Nname,
       }),
     })
-      .catch((error) => {
-        alert("Something go wrong, please try again later.");
+      .then((res) => {
+        if (res.ok) {
+          return res;
+        } else if (res.status === 400) {
+          alert("Wrong pasword or email , please try again.");
+          return;
+        } else {
+          alert("Something go wrong, please try again later.");
+          return;
+        }
       })
       .then((value) => {
         alert("New category added");
         this.setState({ Nname: "" });
         this.refreshList();
-      });
+      })
+      .catch((error) => {
+        alert("Something go wrong, please try again later.");
+        console.log("Error:", error);
+      });;
   }
 
   refreshList(sort) {

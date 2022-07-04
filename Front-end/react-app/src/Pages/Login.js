@@ -38,35 +38,36 @@ class LoginClass extends Component {
           email: this.state.Email,
           password: this.state.Password,
         }),
-      })
-        .then((res) => {
-          if (res.ok) {
-            answerOk = true;
-            return res.json();
-          } else if (res.status === 400) {
-            answerOk = false;
-            alert("Wrong pasword or email , please try again.");
-          } else {
-            answerOk = false;
-            alert("Something go wrong, please try again later.");
-          }
-        })
-        .catch((error) => {
+      }).then((res) => {
+        if (res.ok) {
+          answerOk = true;
+          return res.json();
+        } else if (res.status === 400) {
+          alert("Wrong pasword or email , please try again.");
+          return;
+        } else {
           alert("Something go wrong, please try again later.");
-        }),
-    ]).then((value) => {
-      if (answerOk) {
-        console.log(value[0]);
+          return;
+        }
+      }),
+    ])
+      .then((value) => {
+        if (answerOk) {
+          console.log(value[0]);
 
-        sessionStorage.setItem("access_token", value[0].access_token);
-        sessionStorage.setItem("Email", value[0].email);
-        sessionStorage.setItem("Id", value[0].userId);
-        sessionStorage.setItem("Role", value[0].role);
-        alert("You are logged");
-        this.props.navigation("/");
-        window.location.reload(false);
-      }
-    });
+          sessionStorage.setItem("access_token", value[0].access_token);
+          sessionStorage.setItem("Email", value[0].email);
+          sessionStorage.setItem("Id", value[0].userId);
+          sessionStorage.setItem("Role", value[0].role);
+          alert("You are logged");
+          this.props.navigation("/");
+          window.location.reload(false);
+        }
+      })
+      .catch((error) => {
+        alert("Something go wrong, please try again later.");
+        console.log("Error:", error);
+      });
   }
 
   render() {

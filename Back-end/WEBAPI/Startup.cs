@@ -4,19 +4,12 @@ using BLL.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerUI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace WEBAPI
 {
@@ -55,7 +48,7 @@ namespace WEBAPI
 
             CategoryService categoryService = new CategoryService(connection);
             services.AddSingleton<ICategoryService>(categoryService);
-            
+
             var mapperConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new MapperProfile());
@@ -83,7 +76,7 @@ namespace WEBAPI
                 { Title = "COFT", Version = "v1" });
             });
 
-            
+
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

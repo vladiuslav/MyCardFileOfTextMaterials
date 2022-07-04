@@ -1,12 +1,11 @@
-﻿using BLL.Interfaces;
+﻿using AutoMapper;
 using BLL.DTO;
+using BLL.Interfaces;
 using BLL.MapperConfigurations;
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using AutoMapper;
-using DLL.Entities;
 using DLL;
+using DLL.Entities;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BLL.Services
 {
@@ -18,7 +17,8 @@ namespace BLL.Services
         {
             this._unitOfWork = new EFUnitOfWork(connectionString);
 
-            var config = new MapperConfiguration(cfg => {
+            var config = new MapperConfiguration(cfg =>
+            {
                 cfg.AddProfile<ConfigurationProfile>();
             });
             this._mapper = new Mapper(config);
@@ -60,7 +60,7 @@ namespace BLL.Services
 
         public CategoryDTO GetCategoryByName(string name)
         {
-            return _mapper.Map<CategoryDTO>(_unitOfWork.Categories.GetAll().FirstOrDefault(category => category.Name == name));
+            return _mapper.Map<CategoryDTO>(_unitOfWork.Categories.FirstOrDefault(category => category.Name == name));
         }
     }
 }

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DLL.Entities;
+﻿using DLL.Entities;
+using System;
 
 namespace DLL.Interfaces
 {

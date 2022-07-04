@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
 using BLL.DTO;
 using WEBAPI.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace WEBAPI
 {
@@ -29,11 +25,11 @@ namespace WEBAPI
             CreateMap<CardDTO, CardCreationModel>().ReverseMap();
             CreateMap<CardDTO, CardUpdateModel>().ReverseMap();
             CreateMap<CardDTO, CardInfoModel>()
-                .ForMember(dto=>dto.CategoryName,model=>model.Ignore())
-                .ForMember(dto=>dto.UserName,model=>model.Ignore())
+                .ForMember(dto => dto.CategoryName, model => model.Ignore())
+                .ForMember(dto => dto.UserName, model => model.Ignore())
                 .ReverseMap();
 
-            CreateMap<CategoryDTO, CategoryCreationModel>().ReverseMap(); 
+            CreateMap<CategoryDTO, CategoryCreationModel>().ReverseMap();
             CreateMap<CategoryDTO, CategoryInfoModel>().ReverseMap();
         }
     }

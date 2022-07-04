@@ -1,11 +1,7 @@
-﻿using NUnit.Framework;
-using BLL.DTO;
-using System.Linq;
-using System.Collections.Generic;
-using System.Text;
-using AutoMapper;
-using BLL.MapperConfigurations;
+﻿using BLL.DTO;
 using BLL.Services;
+using NUnit.Framework;
+using System.Linq;
 
 namespace ProjectBackEndTests.BLLTests
 {

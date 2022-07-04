@@ -1,10 +1,10 @@
-﻿using NUnit.Framework;
+﻿using DLL;
 using DLL.Entities;
 using DLL.Repositories;
-using DLL;
-using System.Linq;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ProjectBackEndTests.DLLTests
 {
@@ -67,8 +67,8 @@ namespace ProjectBackEndTests.DLLTests
             {
                 Title = "TestTitle10",
                 Text = "Some special test text for testing dataBase, some special test text for testing dataBase, ",
-                UserId=1,
-                CategoryId=1
+                UserId = 1,
+                CategoryId = 1
             };
             cardRepository.Create(Card);
             dataContext.SaveChanges();

@@ -5,9 +5,9 @@ namespace WEBAPI
 {
     public class AuthOptions
     {
-        public const string ISSUER = "MyAuthServer"; 
-        public const string AUDIENCE = "MyAuthClient"; 
-        const string KEY = "my1o_wn!5supErsec_R5etK6ey!3"; 
+        public const string ISSUER = "MyAuthServer";
+        public const string AUDIENCE = "MyAuthClient";
+        const string KEY = "my1o_wn!5supErsec_R5etK6ey!3";
         public const int LIFETIME = 60;
         public static SymmetricSecurityKey GetSymmetricSecurityKey()
         {

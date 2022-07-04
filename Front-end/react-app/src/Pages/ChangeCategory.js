@@ -31,12 +31,22 @@ class CategoryChangeClass extends Component {
         id: parseInt(this.props.categoryId),
         name: this.state.categoryName,
       }),
-    }).catch((error) => {
+    })
+      .then((res) => {
+        if (res.status != 200) {
           alert("Something go wrong, please try again later.");
-        }).then((result) => {
-      alert("Changed");
-      this.props.navigation("/categories");
-    });
+          return;
+        }
+        return res;
+      })
+      .then((result) => {
+        alert("Changed");
+        this.props.navigation("/categories");
+      })
+      .catch((error) => {
+        alert("Something go wrong, please try again later.");
+        console.log("Error:", error);
+      });
   }
   render() {
     const { categoryName } = this.state;

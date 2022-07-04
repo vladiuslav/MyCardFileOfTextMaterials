@@ -1,11 +1,10 @@
-﻿using BLL.Interfaces;
+﻿using AutoMapper;
 using BLL.DTO;
+using BLL.Interfaces;
 using BLL.MapperConfigurations;
-using System;
-using System.Collections.Generic;
-using AutoMapper;
-using DLL.Entities;
 using DLL;
+using DLL.Entities;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace BLL.Services
@@ -19,7 +18,8 @@ namespace BLL.Services
         {
             this._unitOfWork = new EFUnitOfWork(connectionString);
 
-            var config = new MapperConfiguration(cfg => {
+            var config = new MapperConfiguration(cfg =>
+            {
                 cfg.AddProfile<ConfigurationProfile>();
             });
             this._mapper = new Mapper(config);
@@ -46,7 +46,7 @@ namespace BLL.Services
             _unitOfWork.Save();
             _unitOfWork.Dispose();
         }
-        public Dictionary<int,string> UserNames()
+        public Dictionary<int, string> UserNames()
         {
             var userNames = new Dictionary<int, string>();
             foreach (var item in _mapper.Map<IEnumerable<CardDTO>>(_unitOfWork.Cards.GetAll()))
@@ -70,7 +70,7 @@ namespace BLL.Services
         }
         public CardDTO GetCardByTitle(string title)
         {
-            return _mapper.Map<CardDTO>(_unitOfWork.Cards.GetAll().FirstOrDefault(card => card.Title == title));
+            return _mapper.Map<CardDTO>(_unitOfWork.Cards.FirstOrDefault(card => card.Title == title));
         }
         public int GetCreatorIdByCardId(int CardId)
         {
@@ -78,7 +78,7 @@ namespace BLL.Services
         }
         public IEnumerable<CardDTO> GetCardsIdByCreatorId(int creatorId)
         {
-            return _mapper.Map<IEnumerable<CardDTO>>(_unitOfWork.Cards.GetAll().FirstOrDefault(card=>card.UserId==creatorId));
+            return _mapper.Map<IEnumerable<CardDTO>>(_unitOfWork.Cards.FirstOrDefault(card => card.UserId == creatorId));
         }
 
         public IEnumerable<CardDTO> GetCards()
@@ -89,7 +89,7 @@ namespace BLL.Services
         public IEnumerable<CardDTO> GetCardsByCategory(string category)
         {
             List<CardDTO> cards = _mapper.Map<IEnumerable<CardDTO>>(_unitOfWork.Cards.GetAll()).ToList();
-            var sortedCards = cards.FindAll(card=>card.CategoryId==_unitOfWork.Categories.Find(item=>item.Name==category).First().Id);
+            var sortedCards = cards.FindAll(card => card.CategoryId == _unitOfWork.Categories.Find(item => item.Name == category).First().Id);
             sortedCards.Reverse();
             return sortedCards;
         }

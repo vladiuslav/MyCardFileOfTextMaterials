@@ -1,10 +1,10 @@
-﻿using NUnit.Framework;
+﻿using DLL;
 using DLL.Entities;
 using DLL.Repositories;
-using DLL;
-using System.Linq;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ProjectBackEndTests.DLLTests
 {
@@ -26,7 +26,7 @@ namespace ProjectBackEndTests.DLLTests
         [Test]
         public void UserRepository_GetUser_ReturnsUser()
         {
-            User userExcepted = new User {Email = "TestEmail1@mail.com", NickName = "TestNickName1", Password = "qwe123", Role = "user" };
+            User userExcepted = new User { Email = "TestEmail1@mail.com", NickName = "TestNickName1", Password = "qwe123", Role = "user" };
             User userActual = userRepository.Get(1);
             Assert.AreEqual(userExcepted.Email, userActual.Email);
             Assert.AreEqual(userExcepted.NickName, userActual.NickName);
@@ -37,8 +37,8 @@ namespace ProjectBackEndTests.DLLTests
         public void UserRepository_GetALL_ReturnsListOfUser()
         {
             List<User> users = userRepository.GetAll().ToList();
-            Assert.IsNotNull(users.FirstOrDefault(user=>user.NickName == "TestNickName1"));
-            Assert.IsNotNull(users.FirstOrDefault(user=>user.NickName == "TestNickName2"));
+            Assert.IsNotNull(users.FirstOrDefault(user => user.NickName == "TestNickName1"));
+            Assert.IsNotNull(users.FirstOrDefault(user => user.NickName == "TestNickName2"));
         }
 
         [Test]
@@ -57,7 +57,7 @@ namespace ProjectBackEndTests.DLLTests
             user.Email = "TestEmail" + System.DateTime.Now.ToString() + "@gmail.com";
             userRepository.Update(user);
             dataContext.SaveChanges();
-            User changedUser= userRepository.Get(userId);
+            User changedUser = userRepository.Get(userId);
             Assert.AreNotEqual(nonChangedUserEmail, changedUser.Email);
 
             changedUser.Email = "TestEmail1@mail.com";

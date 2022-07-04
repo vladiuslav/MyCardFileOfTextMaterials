@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace DLL.Interfaces
 {
@@ -9,6 +8,7 @@ namespace DLL.Interfaces
         IEnumerable<T> GetAll();
         T Get(int id);
         IEnumerable<T> Find(Func<T, Boolean> predicate);
+        T FirstOrDefault(Func<T, Boolean> predicate);
         void Create(T item);
         void Update(T item);
         void Delete(int id);

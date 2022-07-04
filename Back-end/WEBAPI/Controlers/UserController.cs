@@ -56,9 +56,9 @@ namespace WEBAPI.Controlers
             }
             else
             {
-                return BadRequest();
+                return BadRequest();//new StatusCodeResult(209);
             }
-            
+
         }
 
         // PUT api/<UserController>/changeNickname
@@ -67,24 +67,27 @@ namespace WEBAPI.Controlers
         public IActionResult PutNickname([FromBody] string value)
         {
             UserDTO userBefore = _userService.GetUserByEmail(User.Identity.Name);
-            
-            if (String.IsNullOrEmpty(value)||value.Length<4 || value.Length > 40)
+
+            if (String.IsNullOrEmpty(value) || value.Length < 4 || value.Length > 40)
             {
                 return BadRequest();
             }
             var userWithNickName = _userService.GetUserByNickName(value);
             if (userWithNickName is null)
             { }
-            else if (userWithNickName.Id!=userBefore.Id)
+            else if (userWithNickName.Id != userBefore.Id)
             {
                 return BadRequest();
             }
 
-            UserDTO userdto = new UserDTO{NickName=value,
-                Role=userBefore.Role,
-                Id= userBefore.Id,
-                Email=userBefore.Email,
-                Password=userBefore.Password };
+            UserDTO userdto = new UserDTO
+            {
+                NickName = value,
+                Role = userBefore.Role,
+                Id = userBefore.Id,
+                Email = userBefore.Email,
+                Password = userBefore.Password
+            };
             _userService.ChangeUser(userdto);
             return Ok();
         }
@@ -101,10 +104,10 @@ namespace WEBAPI.Controlers
                 return BadRequest();
             }
 
-            var userWithEmail = _userService.GetUserByEmail(value) ;
+            var userWithEmail = _userService.GetUserByEmail(value);
             if (userWithEmail is null)
             { }
-            else if (userWithEmail.Id!=userBefore.Id)
+            else if (userWithEmail.Id != userBefore.Id)
             {
                 return BadRequest();
             }
@@ -126,7 +129,7 @@ namespace WEBAPI.Controlers
         [HttpPut("changePassword")]
         public IActionResult PutPassword([FromBody] string value)
         {
-            if (String.IsNullOrEmpty(value)||value.Length<8 || value.Length > 100)
+            if (String.IsNullOrEmpty(value) || value.Length < 8 || value.Length > 100)
             {
                 return BadRequest();
             }
@@ -184,7 +187,7 @@ namespace WEBAPI.Controlers
 
         private ClaimsIdentity GetIdentity(string email, string password)
         {
-            UserDTO user = _userService.GetUsers().FirstOrDefault(user=>user.Email==email&&user.Password==password);// part with getUsers.firstOrdefault must to be in bll. 
+            UserDTO user = _userService.GetUsers().FirstOrDefault(user => user.Email == email && user.Password == password);// part with getUsers.firstOrdefault must to be in bll. 
             if (user != null)
             {
                 var claims = new List<Claim>

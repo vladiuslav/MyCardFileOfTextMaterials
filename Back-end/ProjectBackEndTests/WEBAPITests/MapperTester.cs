@@ -1,10 +1,6 @@
-﻿using NUnit.Framework;
+﻿using AutoMapper;
+using NUnit.Framework;
 using WEBAPI;
-using WEBAPI.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using AutoMapper;
 
 namespace ProjectBackEndTests.WEBAPITests
 {

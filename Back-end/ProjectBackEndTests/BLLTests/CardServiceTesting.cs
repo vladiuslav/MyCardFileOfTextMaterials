@@ -1,15 +1,11 @@
-﻿using NUnit.Framework;
-using BLL.DTO;
-using System.Linq;
-using System.Collections.Generic;
-using System.Text;
-using AutoMapper;
-using BLL.MapperConfigurations;
+﻿using BLL.DTO;
 using BLL.Services;
+using NUnit.Framework;
+using System.Linq;
 
 namespace ProjectBackEndTests.BLLTests
 {
-    
+
     [TestFixture]
     public class CardServiceTesting
     {
@@ -23,7 +19,8 @@ namespace ProjectBackEndTests.BLLTests
         [Test]
         public void CardService_CreateCard_ReturnCard()
         {
-            CardDTO cardDTO = new CardDTO {
+            CardDTO cardDTO = new CardDTO
+            {
                 Title = "TestTitle11",
                 Text = "Some special test text for testing dataBase, some special test text for testing dataBase, ",
                 UserId = 1,
