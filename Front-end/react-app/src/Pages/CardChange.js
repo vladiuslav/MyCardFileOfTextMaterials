@@ -68,7 +68,7 @@ class CardChangeClass extends Component {
   }
 
   changeCard() {
-    fetch(Variables.API_URL + "/Card/" + this.props.cardId, {
+    fetch(Variables.API_URL + "/Card", {
       method: "PUT",
       headers: {
         accept: "application/json",
@@ -76,6 +76,7 @@ class CardChangeClass extends Component {
         Authorization: "Bearer " + sessionStorage.getItem("access_token"),
       },
       body: JSON.stringify({
+        id: parseInt(this.props.cardId),
         title: this.state.title,
         text: this.state.text,
         categoryName: this.state.categoryName,
@@ -123,7 +124,7 @@ class CardChangeClass extends Component {
             ></input>
           </div>
           <button className="simpleButton" onClick={this.changeCard}>
-            Change 
+            Change
           </button>
         </div>
       </article>

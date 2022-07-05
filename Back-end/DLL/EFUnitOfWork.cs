@@ -3,6 +3,7 @@ using DLL.Interfaces;
 using DLL.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Threading.Tasks;
 
 namespace DLL
 {
@@ -48,9 +49,9 @@ namespace DLL
                 return userRepository;
             }
         }
-        public void Save()
+        public Task<int> SaveAsync()
         {
-            db.SaveChanges();
+            return db.SaveChangesAsync();
         }
 
         private bool disposed = false;

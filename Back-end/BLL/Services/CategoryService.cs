@@ -6,6 +6,7 @@ using DLL;
 using DLL.Entities;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BLL.Services
 {
@@ -23,28 +24,27 @@ namespace BLL.Services
             });
             this._mapper = new Mapper(config);
         }
-        public void CreateCategory(CategoryDTO categoryDto)
+        public async Task CreateCategory(CategoryDTO categoryDto)
         {
-            _unitOfWork.Categories.Create(_mapper.Map<Category>(categoryDto));
-            _unitOfWork.Save();
+            await _unitOfWork.Categories.Create(_mapper.Map<Category>(categoryDto));
+            await _unitOfWork.SaveAsync();
         }
 
-        public void ChangeCategory(CategoryDTO categoryDto)
+        public async Task ChangeCategory(CategoryDTO categoryDto)
         {
             _unitOfWork.Categories.Update(_mapper.Map<Category>(categoryDto));
-            _unitOfWork.Save();
+            await _unitOfWork.SaveAsync();
         }
 
-
-        public void DeleteCategory(int id)
+        public async Task DeleteCategoryAsync(int id)
         {
-            _unitOfWork.Categories.Delete(id);
-            _unitOfWork.Save();
+            await _unitOfWork.Categories.Delete(id);
+            await _unitOfWork.SaveAsync();
         }
 
-        public void Dispose()
+        public async Task Dispose()
         {
-            _unitOfWork.Save();
+            await _unitOfWork.SaveAsync();
             _unitOfWork.Dispose();
         }
 
@@ -53,14 +53,14 @@ namespace BLL.Services
             return _mapper.Map<IEnumerable<CategoryDTO>>(_unitOfWork.Categories.GetAll());
         }
 
-        public CategoryDTO GetCategory(int id)
+        public async Task<CategoryDTO> GetCategoryAsync(int id)
         {
-            return _mapper.Map<CategoryDTO>(_unitOfWork.Categories.Get(id));
+            return _mapper.Map<CategoryDTO>(await _unitOfWork.Categories.GetAsync(id));
         }
 
         public CategoryDTO GetCategoryByName(string name)
         {
-            return _mapper.Map<CategoryDTO>(_unitOfWork.Categories.FirstOrDefault(category => category.Name == name));
+            return _mapper.Map<CategoryDTO>(_unitOfWork.Categories.GetAll().FirstOrDefault(category => category.Name == name));
         }
     }
 }

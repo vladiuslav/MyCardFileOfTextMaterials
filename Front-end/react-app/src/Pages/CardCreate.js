@@ -49,7 +49,6 @@ class CardCreateClass extends Component {
       });
   }
   render() {
-    const { navigation } = this.props;
     const { title, text, categoryName } = this.state;
     return (
       <article>

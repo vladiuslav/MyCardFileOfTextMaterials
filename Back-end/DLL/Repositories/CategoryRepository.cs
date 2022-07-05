@@ -1,8 +1,10 @@
 ﻿using DLL.Entities;
 using DLL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DLL.Repositories
 {
@@ -13,36 +15,25 @@ namespace DLL.Repositories
         {
             this.db = dataContext;
         }
-        public void Create(Category item)
+        public async Task Create(Category item)
         {
-            db.Categories.Add(item);
+            await db.Categories.AddAsync(item);
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            Category category = db.Categories.Find(id);
-            if (category != null)
-                db.Categories.Remove(category);
+            Category item = await db.Categories.FindAsync(id);
+            db.Categories.Remove(item);
         }
 
-        public IEnumerable<Category> Find(Func<Category, bool> predicate)
+        public async Task<Category> GetAsync(int id)
         {
-            return db.Categories.Where(predicate).ToList();
+            return await db.Categories.FindAsync(id);
         }
 
-        public Category FirstOrDefault(Func<Category, bool> predicate)
+        public IQueryable<Category> GetAll()
         {
-            return db.Categories.FirstOrDefault(predicate);
-        }
-
-        public Category Get(int id)
-        {
-            return db.Categories.Find(id);
-        }
-
-        public IEnumerable<Category> GetAll()
-        {
-            return db.Categories;
+            return db.Categories.AsQueryable();
         }
 
         public void Update(Category item)

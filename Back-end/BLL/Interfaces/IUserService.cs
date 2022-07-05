@@ -1,17 +1,18 @@
 ﻿using BLL.DTO;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BLL.Interfaces
 {
     public interface IUserService
     {
-        void CreateUser(UserDTO userDto);
-        void ChangeUser(UserDTO userDto);
-        UserDTO GetUser(int id);
+        Task CreateUser(UserDTO userDto);
+        Task ChangeUser(UserDTO userDto);
+        Task<UserDTO> GetUser(int id);
         UserDTO GetUserByNickName(string nickname);
         UserDTO GetUserByEmail(string email);
         IEnumerable<UserDTO> GetUsers();
         IEnumerable<UserDTO> GetUsersRange(int[] usersId);
-        void Dispose();
+        Task Dispose();
     }
 }

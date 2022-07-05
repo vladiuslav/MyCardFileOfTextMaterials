@@ -5,7 +5,7 @@ namespace WEBAPI.Models
     public class CardUpdateModel
     {
         [Required(ErrorMessage = "Wrong id")]
-        public int Id;
+        public int Id { get; set; }
         [Required(ErrorMessage = "Wrong title")]
         [DataType(DataType.Text)]
         [StringLength(40, MinimumLength = 5)]
@@ -16,6 +16,6 @@ namespace WEBAPI.Models
         public string Text { get; set; }
 
         [Required(ErrorMessage = "Wrong Category")]
-        public int CategoryId { get; set; }
+        public string categoryName { get; set; }
     }
 }

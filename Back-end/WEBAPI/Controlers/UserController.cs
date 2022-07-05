@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using WEBAPI.Models;
 
 namespace WEBAPI.Controlers
@@ -34,14 +35,14 @@ namespace WEBAPI.Controlers
         }
 
         [HttpGet("name/{id}")]
-        public UserShortInfoModel GetName(int id)
+        public async Task<UserShortInfoModel> GetNameAsync(int id)
         {
-            return _mapper.Map<UserShortInfoModel>(_userService.GetUser(id));
+            return _mapper.Map<UserShortInfoModel>(await _userService.GetUser(id));
         }
 
         // POST api/<UserController>
         [HttpPost]
-        public IActionResult Post(UserRegistrationModel user)
+        public async Task<IActionResult> PostAsync(UserRegistrationModel user)
         {
             if (!ModelState.IsValid)
             {
@@ -51,7 +52,7 @@ namespace WEBAPI.Controlers
             {
                 UserDTO userdto = _mapper.Map<UserDTO>(user);
                 userdto.Role = "user";
-                _userService.CreateUser(userdto);
+                await _userService.CreateUser(userdto);
                 return Ok();
             }
             else
@@ -64,7 +65,7 @@ namespace WEBAPI.Controlers
         // PUT api/<UserController>/changeNickname
         [Authorize(Roles = "user,admin")]
         [HttpPut("changeNickname")]
-        public IActionResult PutNickname([FromBody] string value)
+        public async Task<IActionResult> PutNicknameAsync([FromBody] string value)
         {
             UserDTO userBefore = _userService.GetUserByEmail(User.Identity.Name);
 
@@ -88,14 +89,14 @@ namespace WEBAPI.Controlers
                 Email = userBefore.Email,
                 Password = userBefore.Password
             };
-            _userService.ChangeUser(userdto);
+            await _userService.ChangeUser(userdto);
             return Ok();
         }
 
         // PUT api/<UserController>/changeNickname
         [Authorize(Roles = "user,admin")]
         [HttpPut("changeEmail")]
-        public IActionResult PutEmail([FromBody] string value)
+        public async Task<IActionResult> PutEmailAsync([FromBody] string value)
         {
             UserDTO userBefore = _userService.GetUserByEmail(User.Identity.Name);
 
@@ -120,14 +121,14 @@ namespace WEBAPI.Controlers
                 Email = value,
                 Password = userBefore.Password
             };
-            _userService.ChangeUser(userdto);
+            await _userService.ChangeUser(userdto);
             return Ok();
         }
 
         // PUT api/<UserController>/changeNickname
         [Authorize(Roles = "user,admin")]
         [HttpPut("changePassword")]
-        public IActionResult PutPassword([FromBody] string value)
+        public async Task<IActionResult> PutPasswordAsync([FromBody] string value)
         {
             if (String.IsNullOrEmpty(value) || value.Length < 8 || value.Length > 100)
             {
@@ -144,7 +145,7 @@ namespace WEBAPI.Controlers
                 Email = userBefore.Email,
                 Password = value
             };
-            _userService.ChangeUser(userdto);
+            await _userService.ChangeUser(userdto);
             return Ok();
         }
 

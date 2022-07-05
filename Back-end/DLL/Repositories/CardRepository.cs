@@ -1,8 +1,11 @@
 ﻿using DLL.Entities;
 using DLL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace DLL.Repositories
 {
@@ -13,36 +16,25 @@ namespace DLL.Repositories
         {
             this.db = dataContext;
         }
-        public void Create(Card item)
+        public async Task Create(Card item)
         {
-            db.Cards.Add(item);
+            await db.Cards.AddAsync(item);
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            Card card = db.Cards.Find(id);
-            if (card != null)
-                db.Cards.Remove(card);
+            Card item = await db.Cards.FindAsync(id);
+            db.Cards.Remove(item);
         }
 
-        public IEnumerable<Card> Find(Func<Card, bool> predicate)
+        public async Task<Card> GetAsync(int id)
         {
-            return db.Cards.Where(predicate).ToList();
+            return await db.Cards.FindAsync(id);
         }
 
-        public Card FirstOrDefault(Func<Card, bool> predicate)
+        public IQueryable<Card> GetAll()
         {
-            return db.Cards.FirstOrDefault(predicate);
-        }
-
-        public Card Get(int id)
-        {
-            return db.Cards.Find(id);
-        }
-
-        public IEnumerable<Card> GetAll()
-        {
-            return db.Cards;
+            return db.Cards.AsQueryable();
         }
 
         public void Update(Card item)

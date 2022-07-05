@@ -5,6 +5,7 @@ using BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using WEBAPI.Models;
 
 namespace WEBAPI.Controlers
@@ -26,11 +27,11 @@ namespace WEBAPI.Controlers
         }
 
         [HttpGet]
-        public IEnumerable<CardInfoModel> Get()
+        public async System.Threading.Tasks.Task<IEnumerable<CardInfoModel>> GetAsync()
         {
             var cards = _mapper.Map<IEnumerable<CardInfoModel>>(_cardService.GetCards());
-            var userNames = _cardService.UserNames();
-            var categoriesNames = _cardService.CategoryNames();
+            var userNames = await _cardService.UserNamesAsync();
+            var categoriesNames = await _cardService.CategoryNamesAsync();
             foreach (var item in cards)
             {
                 item.CategoryName = categoriesNames[item.Id];
@@ -39,15 +40,15 @@ namespace WEBAPI.Controlers
             return cards;
         }
         [HttpPost("GetCardsByCategory")]
-        public IActionResult GetCardsByCategory(CategoryInfoModel category)
+        public async System.Threading.Tasks.Task<IActionResult> GetCardsByCategoryAsync(CategoryInfoModel category)
         {
             if (_categoryService.GetCategoryByName(category.Name) is null)
             {
                 return BadRequest();
             }
             var cards = _mapper.Map<IEnumerable<CardInfoModel>>(_cardService.GetCardsByCategory(category.Name));
-            var userNames = _cardService.UserNames();
-            var categoriesNames = _cardService.CategoryNames();
+            var userNames = await _cardService.UserNamesAsync();
+            var categoriesNames = await _cardService.CategoryNamesAsync();
             foreach (var item in cards)
             {
                 item.CategoryName = categoriesNames[item.Id];
@@ -58,19 +59,19 @@ namespace WEBAPI.Controlers
 
         }
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> GetAsync(int id)
         {
-            if (_cardService.GetCard(id) is null)
+            if (await _cardService.GetCardAsync(id) is null)
             {
                 return BadRequest();
             }
-            var card = _mapper.Map<CardInfoModel>(_cardService.GetCard(id));
+            var card = _mapper.Map<CardInfoModel>(await _cardService.GetCardAsync(id));
             return new JsonResult(card);
         }
 
         [Authorize(Roles = "user,admin")]
         [HttpPost("Create")]
-        public IActionResult Post(CardCreationModel card)
+        public async Task<IActionResult> PostAsync(CardCreationModel card)
         {
             if (!ModelState.IsValid)
             {
@@ -82,7 +83,7 @@ namespace WEBAPI.Controlers
             cardDTO.CategoryId = _categoryService.GetCategoryByName(card.CategoryName).Id;
 
 
-            _cardService.CreateCard(cardDTO);
+            await _cardService.CreateCard(cardDTO);
             CardDTO resultCard = _cardService.GetCardByTitle(cardDTO.Title);
 
             return new JsonResult(resultCard);
@@ -90,8 +91,8 @@ namespace WEBAPI.Controlers
 
         // PUT api/<CardController>/5
         [Authorize(Roles = "user,admin")]
-        [HttpPut("{id}")]
-        public IActionResult Put(CardUpdateModel card)
+        [HttpPut]
+        public async Task<IActionResult> PutAsync(CardUpdateModel card)
         {
             if (!ModelState.IsValid)
             {
@@ -99,11 +100,11 @@ namespace WEBAPI.Controlers
             }
             int userId = _userService.GetUserByEmail(User.Identity.Name).Id;
             CardDTO cardDTO = _mapper.Map<CardDTO>(card);
-            if (_cardService.GetCreatorIdByCardId(cardDTO.Id) == userId)
+            if (await _cardService.GetCreatorIdByCardIdAsync(cardDTO.Id) == userId)
             {
                 cardDTO.UserId = _userService.GetUserByEmail(User.Identity.Name).Id;
-
-                _cardService.ChangeCard(_mapper.Map<CardDTO>(card));
+                cardDTO.CategoryId = _categoryService.GetCategoryByName(card.categoryName).Id;
+                await _cardService.ChangeCard(_mapper.Map<CardDTO>(card));
                 return Ok();
             }
             else
@@ -114,9 +115,9 @@ namespace WEBAPI.Controlers
 
         [Authorize(Roles = "user,admin")]
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
-            _cardService.DeleteCard(id);
+            await _cardService.DeleteCard(id);
             return Ok();
         }
     }

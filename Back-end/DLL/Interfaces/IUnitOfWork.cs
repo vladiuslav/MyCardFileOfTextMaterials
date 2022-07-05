@@ -1,5 +1,6 @@
 ﻿using DLL.Entities;
 using System;
+using System.Threading.Tasks;
 
 namespace DLL.Interfaces
 {
@@ -8,6 +9,6 @@ namespace DLL.Interfaces
         IRepository<Card> Cards { get; }
         IRepository<Category> Categories { get; }
         IRepository<User> Users { get; }
-        void Save();
+        Task<int> SaveAsync();
     }
 }

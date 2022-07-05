@@ -1,21 +1,22 @@
 ﻿using BLL.DTO;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BLL.Interfaces
 {
     public interface ICardService
     {
-        void CreateCard(CardDTO cardDto);
-        void ChangeCard(CardDTO cardDto);
-        void DeleteCard(int id);
-        CardDTO GetCard(int id);
+        Task CreateCard(CardDTO cardDto);
+        Task ChangeCard(CardDTO cardDto);
+        Task DeleteCard(int id);
+        Task<CardDTO> GetCardAsync(int id);
         CardDTO GetCardByTitle(string title);
-        Dictionary<int, string> CategoryNames();
-        Dictionary<int, string> UserNames();
-        int GetCreatorIdByCardId(int CardId);
+        Task<Dictionary<int, string>> CategoryNamesAsync();
+        Task<Dictionary<int, string>> UserNamesAsync();
+        Task<int> GetCreatorIdByCardIdAsync(int CardId);
         IEnumerable<CardDTO> GetCardsIdByCreatorId(int creatorId);
         IEnumerable<CardDTO> GetCards();
-        public IEnumerable<CardDTO> GetCardsByCategory(string category);
-        void Dispose();
+        IEnumerable<CardDTO> GetCardsByCategory(string category);
+        Task Dispose();
     }
 }

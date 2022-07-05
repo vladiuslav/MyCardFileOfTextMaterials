@@ -38,7 +38,7 @@ namespace ProjectBackEndTests.BLLTests
         [Test]
         public void CardService_GetCard_ReturnCard()
         {
-            Assert.IsNotNull(cardService.GetCard(1));
+            Assert.IsNotNull(cardService.GetCardAsync(1));
         }
     }
 }

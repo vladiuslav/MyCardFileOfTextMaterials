@@ -4,6 +4,7 @@ using BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using WEBAPI.Models;
 
 namespace WEBAPI.Controlers
@@ -27,9 +28,9 @@ namespace WEBAPI.Controlers
         }
 
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<string> GetAsync(int id)
         {
-            var category = _categoryService.GetCategory(id).Name;
+            var category =(await _categoryService.GetCategoryAsync(id)).Name;
             return category;
         }
 
@@ -54,7 +55,7 @@ namespace WEBAPI.Controlers
 
         [Authorize(Roles = "admin")]
         [HttpPut]
-        public IActionResult Put(CategoryInfoModel category)
+        public async Task<IActionResult> PutAsync(CategoryInfoModel category)
         {
             if (!ModelState.IsValid)
             {
@@ -62,7 +63,7 @@ namespace WEBAPI.Controlers
             }
             if (_categoryService.GetCategoryByName(category.Name) is null || _categoryService.GetCategoryByName(category.Name).Id == category.Id)
             {
-                _categoryService.ChangeCategory(_mapper.Map<CategoryDTO>(category));
+                await _categoryService.ChangeCategory(_mapper.Map<CategoryDTO>(category));
                 return Ok();
             }
             else
@@ -74,13 +75,13 @@ namespace WEBAPI.Controlers
         // DELETE api/<CategoryController>/5
         [Authorize(Roles = "admin")]
         [HttpPost("delete")]
-        public IActionResult Delete([FromBody] int id)
+        public async Task<IActionResult> DeleteAsync([FromBody] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            _categoryService.DeleteCategory(id);
+            await _categoryService.DeleteCategoryAsync(id);
             return Ok();
         }
     }
