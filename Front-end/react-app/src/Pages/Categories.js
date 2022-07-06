@@ -36,8 +36,11 @@ class CategoriesClass extends Component {
       .then((res) => {
         if (res.ok) {
           return res;
+        } else if (res.status === 404) {
+          alert("Category with that name already exist, please try another");
+          return;
         } else if (res.status === 400) {
-          alert("Wrong pasword or email , please try again.");
+          alert("Wrong input");
           return;
         } else {
           alert("Something go wrong, please try again later.");
@@ -49,13 +52,9 @@ class CategoriesClass extends Component {
         this.setState({ Nname: "" });
         this.refreshList();
       })
-      .catch((error) => {
-        alert("Something go wrong, please try again later.");
-        console.log("Error:", error);
-      });;
   }
 
-  refreshList(sort) {
+  refreshList() {
     fetch(Variables.API_URL + "/Category", {
       method: "GET",
       headers: {
@@ -64,7 +63,13 @@ class CategoriesClass extends Component {
         Authorization: "Bearer " + sessionStorage.getItem("access_token"),
       },
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.status !== 200) {
+          alert("Something go wrong, please try again later.");
+          return;
+        }
+        return res.json();
+      })
       .then((value) => {
         this.setState({
           Categories: value,
@@ -113,6 +118,7 @@ class CategoriesClass extends Component {
 
 function DeleteCategroyButton(props) {
   let deletefunction = function () {
+    let answerOk=false;
     fetch(Variables.API_URL + "/Category/delete", {
       method: "POST",
       headers: {
@@ -121,10 +127,28 @@ function DeleteCategroyButton(props) {
         Authorization: "Bearer " + sessionStorage.getItem("access_token"),
       },
       body: props.id,
-    }).then((result) => {
-      window.location.reload(false);
-      alert("Category deleted");
-    });
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          answerOk = true;
+          return;
+        } else if (res.status === 404) {
+          alert("Category doesnt exist");
+          return;
+        } else if (res.status === 400) {
+          alert("Wrong input");
+          return;
+        } else {
+          alert("Something go wrong, please try again later.");
+          return;
+        }
+      })
+      .then((result) => {
+        if (!answerOk){
+          return;
+        } window.location.reload(false);
+        alert("Category deleted");
+      });
   };
 
   return (

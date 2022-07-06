@@ -34,16 +34,16 @@ class RegistrationClass extends Component {
 
   createNewUser() {
     if (
-      this.state.Nickname == "" ||
-      this.state.Email == "" ||
-      this.state.Password == "" ||
-      this.state.Password != this.state.ConfirmPassword
+      this.state.Nickname === "" ||
+      this.state.Email === "" ||
+      this.state.Password === "" ||
+      this.state.Password !== this.state.ConfirmPassword
     ) {
       alert("Nickname or email or password is empty, please try again.");
       return;
     }
 
-    let answerOk;
+    let answerOk = false;
     fetch(Variables.API_URL + "/User", {
       method: "POST",
       headers: {
@@ -60,24 +60,20 @@ class RegistrationClass extends Component {
       .then((res) => {
         if (res.ok) {
           answerOk = true;
-        } else if (res.status == 400) {
-          answerOk = false;
-          alert("Wrong pasword or Email , please try again.");
+        } else if (res.status === 400) {
+          alert("Wrong input , please try again.");
+        } else if (res.status === 409) {
+          alert("Password or email already used, please try again.");
         } else {
-          answerOk = false;
           alert("Something go wrong, please try again later.");
         }
       })
       .then((result) => {
         if (answerOk) {
           alert("Congratulations you are registered, now you can login.");
-          this.props.navigation("/");
+          this.props.navigation("/login");
         }
       })
-      .catch((error) => {
-        alert("Something go wrong, please try again later.");
-        console.log("Error:", error);
-      });;
   }
   render() {
     const { Nickname, Email, Password, ConfirmPassword } = this.state;

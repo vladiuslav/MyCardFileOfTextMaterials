@@ -28,10 +28,14 @@ namespace WEBAPI.Controlers
         }
 
         [HttpGet("{id}")]
-        public async Task<string> GetAsync(int id)
+        public async Task<IActionResult> GetAsync(int id)
         {
-            var category =(await _categoryService.GetCategoryAsync(id)).Name;
-            return category;
+            var category =(await _categoryService.GetCategoryAsync(id));
+            if (category is null)
+            {
+                return new NotFoundResult();
+            }
+            return new JsonResult(category.Name);
         }
 
         [Authorize(Roles = "admin")]
@@ -49,7 +53,7 @@ namespace WEBAPI.Controlers
             }
             else
             {
-                return BadRequest();
+                return new ConflictResult();
             }
         }
 
@@ -68,7 +72,7 @@ namespace WEBAPI.Controlers
             }
             else
             {
-                return BadRequest();
+                return new ForbidResult();
             }
         }
 
@@ -80,6 +84,11 @@ namespace WEBAPI.Controlers
             if (!ModelState.IsValid)
             {
                 return BadRequest();
+            }
+            var category = await _categoryService.GetCategoryAsync(id);
+            if (category is null)
+            {
+                return new NotFoundResult();
             }
             await _categoryService.DeleteCategoryAsync(id);
             return Ok();

@@ -13,6 +13,7 @@ class CardClass extends Component {
   }
 
   refreshCard() {
+    let answerOk= false;
     fetch(Variables.API_URL + "/Card/" + this.props.cardId, {
       method: "GET",
       headers: {
@@ -21,11 +22,28 @@ class CardClass extends Component {
         Authorization: "Bearer " + sessionStorage.getItem("access_token"),
       },
     })
-      .catch((error) => {
-        alert("Something go wrong, please try again later.");
+      .then((res) => {
+        if (res.status === 200) {
+          answerOk = true;
+          return res.json();
+        } else if (res.status === 401) {
+          alert("You was unauthorized please login again.");
+          this.props.navigation("/login");
+          window.location.reload(false);
+          return;
+        } else if (res.status === 404) {
+          alert("Card not found");
+          this.props.navigation("/cards");
+          return;
+        } else {
+          alert("Something go wrong, please try again later.");
+          return;
+        }
       })
-      .then((value) => value.json())
       .then((result) => {
+        if(!answerOk){
+          return
+        }
         this.setState({
           title: result.title,
           text: result.text,
@@ -34,7 +52,7 @@ class CardClass extends Component {
   }
 
   deleteCard() {
-    
+    let answerOk=false;
     fetch(Variables.API_URL + "/Card/" + this.props.cardId, {
       method: "DELETE",
       headers: {
@@ -42,11 +60,33 @@ class CardClass extends Component {
         "Content-Type": "application/json",
         Authorization: "Bearer " + sessionStorage.getItem("access_token"),
       },
-    }).then((result) => {
-      console.log(result);
-      alert("Card deleted");
-      this.props.navigation("/");
-    });
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          answerOk = true;
+          return;
+        } else if (res.status === 401) {
+          alert("You was unauthorized please login again.");
+          this.props.navigation("/login");
+          window.location.reload(false);
+          return;
+        } else if (res.status === 403) {
+          alert("You cant delete this card, not enough rights");
+          return;
+        } else if (res.status === 404) {
+          alert("Card dont existed");
+          return;
+        } else {
+          alert("Something go wrong, please try again later.");
+          return;
+        }
+      })
+      .then((result) => {
+        if (!answerOk){
+          return;
+        } alert("Card deleted");
+        this.props.navigation("/");
+      });
   }
   componentDidMount() {
     this.refreshCard();

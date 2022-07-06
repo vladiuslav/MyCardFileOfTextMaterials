@@ -26,7 +26,6 @@ namespace WEBAPI.Controlers
             this._userService = userService;
         }
 
-        // GET api/<UserController>/account
         [Authorize(Roles = "user,admin")]
         [HttpGet]
         public UserInfoModel Get()
@@ -35,12 +34,16 @@ namespace WEBAPI.Controlers
         }
 
         [HttpGet("name/{id}")]
-        public async Task<UserShortInfoModel> GetNameAsync(int id)
+        public async Task<IActionResult> GetNameAsync(int id)
         {
-            return _mapper.Map<UserShortInfoModel>(await _userService.GetUser(id));
+            var user = await _userService.GetUser(id);
+            if(user is null)
+            {
+                return new NotFoundResult();//404
+            }
+            return new JsonResult(_mapper.Map<UserShortInfoModel>(user));
         }
 
-        // POST api/<UserController>
         [HttpPost]
         public async Task<IActionResult> PostAsync(UserRegistrationModel user)
         {
@@ -57,12 +60,11 @@ namespace WEBAPI.Controlers
             }
             else
             {
-                return BadRequest();//new StatusCodeResult(209);
+                return new ConflictResult();//409
             }
 
         }
 
-        // PUT api/<UserController>/changeNickname
         [Authorize(Roles = "user,admin")]
         [HttpPut("changeNickname")]
         public async Task<IActionResult> PutNicknameAsync([FromBody] string value)
@@ -78,7 +80,7 @@ namespace WEBAPI.Controlers
             { }
             else if (userWithNickName.Id != userBefore.Id)
             {
-                return BadRequest();
+                return new ConflictResult();
             }
 
             UserDTO userdto = new UserDTO
@@ -110,7 +112,7 @@ namespace WEBAPI.Controlers
             { }
             else if (userWithEmail.Id != userBefore.Id)
             {
-                return BadRequest();
+                return new ConflictResult();
             }
 
             UserDTO userdto = new UserDTO
@@ -161,7 +163,7 @@ namespace WEBAPI.Controlers
             var identity = GetIdentity(email, password);
             if (identity == null)
             {
-                return BadRequest(new { errorText = "Invalid username or password." });
+                return BadRequest();
             }
 
             var now = DateTime.UtcNow;

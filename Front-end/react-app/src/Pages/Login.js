@@ -22,25 +22,23 @@ class LoginClass extends Component {
   }
   Login() {
     if (this.state.Email === "" || this.state.Password === "") {
-      alert("Email or passwor is empty, please try again.");
+      alert("Some fild is empty, please enter information and try again.");
       return;
     }
-
-    let answerOk;
-    Promise.all([
-      fetch(Variables.API_URL + "/User/login", {
-        method: "POST",
-        headers: {
-          accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: this.state.Email,
-          password: this.state.Password,
-        }),
-      }).then((res) => {
-        if (res.ok) {
-          answerOk = true;
+    fetch(Variables.API_URL + "/User/login", {
+      method: "POST",
+      headers: {
+        accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: this.state.Email,
+        password: this.state.Password,
+      }),
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          console.log(res.status);
           return res.json();
         } else if (res.status === 400) {
           alert("Wrong pasword or email , please try again.");
@@ -49,25 +47,16 @@ class LoginClass extends Component {
           alert("Something go wrong, please try again later.");
           return;
         }
-      }),
-    ])
-      .then((value) => {
-        if (answerOk) {
-          console.log(value[0]);
-
-          sessionStorage.setItem("access_token", value[0].access_token);
-          sessionStorage.setItem("Email", value[0].email);
-          sessionStorage.setItem("Id", value[0].userId);
-          sessionStorage.setItem("Role", value[0].role);
-          alert("You are logged");
-          this.props.navigation("/");
-          window.location.reload(false);
-        }
       })
-      .catch((error) => {
-        alert("Something go wrong, please try again later.");
-        console.log("Error:", error);
-      });
+      .then((value) => {
+        sessionStorage.setItem("access_token", value.access_token);
+        sessionStorage.setItem("Email", value.email);
+        sessionStorage.setItem("Id", value.userId);
+        sessionStorage.setItem("Role", value.role);
+        alert("You are logged");
+        this.props.navigation("/");
+        window.location.reload(false);
+      })
   }
 
   render() {

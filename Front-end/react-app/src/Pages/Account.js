@@ -1,6 +1,8 @@
 import { Component } from "react";
 import { Variables } from "./Components/Variables";
-export default class Account extends Component {
+import { useNavigate } from "react-router-dom";
+
+class AccountClass extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -40,8 +42,24 @@ export default class Account extends Component {
       },
       body: JSON.stringify(this.state.Nnickname),
     })
-      .catch((error) => {
-        alert("Something go wrong, please try again later.");
+      .then((res) => {
+        if (res.status === 200) {
+          return;
+        } else if (res.status === 401) {
+          alert("You was unauthorized please login again.");
+          this.props.navigation("/login");
+          window.location.reload(false);
+          return;
+        } else if (res.status === 409) {
+          alert("This nickname already exist, please try another.");
+          return;
+        } else if (res.status === 400) {
+          alert("Wrong input");
+          return;
+        } else {
+          alert("Something go wrong, please try again later.");
+          return;
+        }
       })
       .then((result) => {
         this.refreshUser();
@@ -57,10 +75,25 @@ export default class Account extends Component {
       },
       body: this.state.Nemail,
     })
-      .catch((error) => {
-        alert("Something go wrong, please try again later.");
+      .then((res) => {
+        if (res.status === 200) {
+          return;
+        } else if (res.status === 401) {
+          alert("You was unauthorized please login again.");
+          this.props.navigation("/login");
+          window.location.reload(false);
+          return;
+        } else if (res.status === 409) {
+          alert("This email already used, please try another.");
+          return;
+        } else if (res.status === 400) {
+          alert("Wrong input");
+          return;
+        } else {
+          alert("Something go wrong, please try again later.");
+          return;
+        }
       })
-      .then((res) => res)
       .then((result) => {
         this.refreshUser();
       });
@@ -75,8 +108,21 @@ export default class Account extends Component {
       },
       body: this.state.Npassword,
     })
-      .catch((error) => {
-        alert("Something go wrong, please try again later.");
+      .then((res) => {
+        if (res.status === 200) {
+          return;
+        } else if (res.status === 401) {
+          alert("You was unauthorized please login again.");
+          this.props.navigation("/login");
+          window.location.reload(false);
+          return;
+        } else if (res.status === 400) {
+          alert("Wrong input");
+          return;
+        } else {
+          alert("Something go wrong, please try again later.");
+          return;
+        }
       })
       .then((res) => res)
       .then((result) => {
@@ -85,6 +131,7 @@ export default class Account extends Component {
   }
 
   refreshUser() {
+    let answerOk = false;
     fetch(Variables.API_URL + "/User", {
       method: "GET",
       headers: {
@@ -93,11 +140,23 @@ export default class Account extends Component {
         Authorization: "Bearer " + sessionStorage.getItem("access_token"),
       },
     })
-      .catch((error) => {
-        alert("Something go wrong, please try again later.");
+      .then((res) => {
+        if (res.status === 200) {
+          answerOk = true;
+        } else if (res.status === 401) {
+          alert("You was unauthorized please login again.");
+          this.props.navigation("/login");
+          window.location.reload(false);
+          return;
+        } else {
+          alert("Something go wrong, please try again later.");
+          return;
+        }
       })
-      .then((res) => res.json())
       .then((result) => {
+        if (!answerOk) {
+          return;
+        }
         this.setState({
           nickname: result.nickName,
           email: result.email,
@@ -117,7 +176,8 @@ export default class Account extends Component {
     let CheckEmail = sessionStorage.getItem("Email");
 
     if (CheckEmail == null) {
-      return <div>You are not logged, please login</div>;
+      alert("You was unauthorized please login again.");
+      this.props.navigation("/login");
     } else {
       return (
         <article>
@@ -177,4 +237,10 @@ export default class Account extends Component {
       );
     }
   }
+}
+
+export default function Account(props) {
+  const navigation = useNavigate();
+
+  return <AccountClass {...props} navigation={navigation} />;
 }

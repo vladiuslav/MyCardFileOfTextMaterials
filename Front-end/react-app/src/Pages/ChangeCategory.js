@@ -19,7 +19,7 @@ class CategoryChangeClass extends Component {
       alert("Category name is empty, please try again.");
       return;
     }
-
+    let answerOk = false;
     fetch(Variables.API_URL + "/Category", {
       method: "PUT",
       headers: {
@@ -33,13 +33,24 @@ class CategoryChangeClass extends Component {
       }),
     })
       .then((res) => {
-        if (res.status != 200) {
+        if (res.status === 200) {
+          answerOk = true;
+          return;
+        } else if (res.status === 409) {
+          alert("Category with that name already exist, please try another");
+          return;
+        } else if (res.status === 400) {
+          alert("Wrong input");
+          return;
+        } else {
           alert("Something go wrong, please try again later.");
           return;
         }
-        return res;
       })
       .then((result) => {
+        if (!answerOk) {
+          return;
+        }
         alert("Changed");
         this.props.navigation("/categories");
       })

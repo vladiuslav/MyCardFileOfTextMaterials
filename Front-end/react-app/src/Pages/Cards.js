@@ -27,10 +27,13 @@ class CardsClass extends Component {
             Authorization: "Bearer " + sessionStorage.getItem("access_token"),
           },
         })
-          .catch((res) => {
-            alert("Something go wrong, please try again later.");
+          .then((res) => {
+            if (res.status !== 200) {
+              alert("Something go wrong, please try again later.");
+              return;
+            }
+            return res.json();
           })
-          .then((res) => res.json())
           .then((value) => {
             this.setState({
               cards: value,
@@ -39,6 +42,7 @@ class CardsClass extends Component {
 
         break;
       case 3:
+        let answerOk = false;
         if (this.state.filterCategory === "") {
           alert("Name is empty, please try again.");
           return;
@@ -55,32 +59,35 @@ class CardsClass extends Component {
             name: this.state.filterCategory,
           }),
         })
-          .catch((error) => {
-            alert("Something go wrong, please try again later.");
-          })
           .then((res) => {
-            if (res.status != 200) {
+            if (res.status === 200) {
+              answerOk = true;
+              return res.json();
+            } else if (res.status === 404) {
+              alert("Category dont existed");
+              return;
+            } else {
               alert("Something go wrong, please try again later.");
               return;
             }
-            return res;
           })
-          .then((res) => res.json())
           .then((value) => {
+            if (!answerOk) {
+              return;
+            }
             this.setState({
               cards: value,
             });
           });
         break;
       default:
-        console.log("Problem with switch");
+        alert("Wrong sort category");
         break;
     }
   }
   componentDidMount() {
     this.refreshList(this.state.filter);
   }
-
   changeCategoryFilter(event) {
     this.setState({ filterCategory: event.target.value });
   }

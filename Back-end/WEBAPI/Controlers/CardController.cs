@@ -27,7 +27,7 @@ namespace WEBAPI.Controlers
         }
 
         [HttpGet]
-        public async System.Threading.Tasks.Task<IEnumerable<CardInfoModel>> GetAsync()
+        public async Task<IEnumerable<CardInfoModel>> GetAsync()
         {
             var cards = _mapper.Map<IEnumerable<CardInfoModel>>(_cardService.GetCards());
             var userNames = await _cardService.UserNamesAsync();
@@ -40,11 +40,11 @@ namespace WEBAPI.Controlers
             return cards;
         }
         [HttpPost("GetCardsByCategory")]
-        public async System.Threading.Tasks.Task<IActionResult> GetCardsByCategoryAsync(CategoryInfoModel category)
+        public async Task<IActionResult> GetCardsByCategoryAsync(CategoryInfoModel category)
         {
             if (_categoryService.GetCategoryByName(category.Name) is null)
             {
-                return BadRequest();
+                return new NotFoundResult();
             }
             var cards = _mapper.Map<IEnumerable<CardInfoModel>>(_cardService.GetCardsByCategory(category.Name));
             var userNames = await _cardService.UserNamesAsync();
@@ -63,7 +63,7 @@ namespace WEBAPI.Controlers
         {
             if (await _cardService.GetCardAsync(id) is null)
             {
-                return BadRequest();
+                return new NotFoundResult();
             }
             var card = _mapper.Map<CardInfoModel>(await _cardService.GetCardAsync(id));
             return new JsonResult(card);
@@ -109,7 +109,7 @@ namespace WEBAPI.Controlers
             }
             else
             {
-                return BadRequest();
+                return new ForbidResult();
             }
         }
 
@@ -117,6 +117,15 @@ namespace WEBAPI.Controlers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
+            var card = await _cardService.GetCardAsync(id);
+            if(card is null)
+            {
+                return new NotFoundResult();
+            }
+            if(_userService.GetUserByEmail(User.Identity.Name).Id != card.CategoryId)
+            {
+                return new ForbidResult();
+            }
             await _cardService.DeleteCard(id);
             return Ok();
         }

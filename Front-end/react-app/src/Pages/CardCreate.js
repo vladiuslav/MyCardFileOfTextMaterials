@@ -27,6 +27,15 @@ class CardCreateClass extends Component {
   }
 
   createNewCard() {
+    if (
+      this.state.title === "" ||
+      this.state.text === "" ||
+      this.state.categoryName === ""
+    ) {
+      alert("Some fild is empty, please enter information and try again.");
+      return;
+    }
+
     fetch(Variables.API_URL + "/Card/Create", {
       method: "POST",
       headers: {
@@ -40,13 +49,25 @@ class CardCreateClass extends Component {
         categoryName: this.state.categoryName,
       }),
     })
-      .catch((error) => {
-        alert("Something go wrong, please try again later.");
+      .then((res) => {
+        if (res.status === 200) {
+          return res.json();
+        } else if (res.status === 401) {
+          alert("You was unauthorized please login again.");
+          this.props.navigation("/login");
+          window.location.reload(false);
+          return;
+        } else if (res.status === 400) {
+          alert("Wrong input");
+          return;
+        } else {
+          alert("Something go wrong, please try again later.");
+          return;
+        }
       })
-      .then((res) => res.json())
-      .then((result) => {
-        console.log(result);
-      });
+      .then((result)=>{
+        alert("Created");
+      })
   }
   render() {
     const { title, text, categoryName } = this.state;

@@ -30,6 +30,7 @@ class CardChangeClass extends Component {
     this.refreshList();
   }
   refreshList() {
+    let answerOk = false;
     fetch(Variables.API_URL + "/Card/" + this.props.cardId, {
       method: "GET",
       headers: {
@@ -38,11 +39,28 @@ class CardChangeClass extends Component {
         Authorization: "Bearer " + sessionStorage.getItem("access_token"),
       },
     })
-      .catch((error) => {
-        alert("Something go wrong, please try again later.");
+      .then((res) => {
+        if (res.status === 200) {
+          answerOk = true;
+          return res.json();
+        } else if (res.status === 401) {
+          alert("You was unauthorized please login again.");
+          this.props.navigation("/login");
+          window.location.reload(false);
+          return;
+        } else if (res.status === 404) {
+          alert("Card not found");
+          this.props.navigation("/cards");
+          return;
+        } else {
+          alert("Something go wrong, please try again later.");
+          return;
+        }
       })
-      .then((res) => res.json())
       .then((value) => {
+        if (!answerOk) {
+          return;
+        }
         this.setState({
           title: value.title,
           text: value.text,
@@ -55,11 +73,33 @@ class CardChangeClass extends Component {
             Authorization: "Bearer " + sessionStorage.getItem("access_token"),
           },
         })
-          .catch((error) => {
-            alert("Something go wrong, please try again later.");
+          .then((res) => {
+            if (!answerOk) {
+              return;
+            } else {
+              answerOk = false;
+            }
+            if (res.status === 200) {
+              answerOk = true;
+              return res.json();
+            } else if (res.status === 401) {
+              alert("You was unauthorized please login again.");
+              this.props.navigation("/login");
+              window.location.reload(false);
+              return;
+            } else if (res.status === 404) {
+              alert("Category not found");
+              this.props.navigation("/cards");
+              return;
+            } else {
+              alert("Something go wrong, please try again later.");
+              return;
+            }
           })
-          .then((res) => res.json())
           .then((value) => {
+            if (!answerOk) {
+              return;
+            }
             this.setState({
               categoryName: value,
             });
@@ -68,6 +108,7 @@ class CardChangeClass extends Component {
   }
 
   changeCard() {
+    let answerOk = false;
     fetch(Variables.API_URL + "/Card", {
       method: "PUT",
       headers: {
@@ -82,9 +123,31 @@ class CardChangeClass extends Component {
         categoryName: this.state.categoryName,
       }),
     })
-      .then((res) => res.json())
-      .then((result) => {
-        alert("Changed");
+      .then((res) => {
+        if (res.status === 200) {
+          answerOk = true;
+          return;
+        } else if (res.status === 401) {
+          alert("You was unauthorized please login again.");
+          this.props.navigation("/login");
+          window.location.reload(false);
+          return;
+        } else if (res.status === 403) {
+          alert("You cant edit this card, not enough rights");
+          return;
+        } else if (res.status === 400) {
+          alert("Wrong input");
+          return;
+        } else {
+          alert("Something go wrong, please try again later.");
+          return;
+        }
+      })
+      .then((reslt) => {
+        if (!answerOk) {
+          return;
+        }
+        alert("Card changed");
         this.props.navigation("/Card/" + this.props.cardId);
       });
   }
