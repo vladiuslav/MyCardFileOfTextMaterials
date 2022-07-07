@@ -53,7 +53,8 @@ namespace BLL.Services
 
         public UserDTO GetUserByEmail(string email)
         {
-            return _mapper.Map<UserDTO>(_unitOfWork.Users.GetAll().FirstOrDefault(user => user.Email == email));
+            var user = _mapper.Map<UserDTO>(_unitOfWork.Users.GetAll().FirstOrDefault(user => user.Email == email));
+            return user;
         }
 
         public IEnumerable<UserDTO> GetUsers()

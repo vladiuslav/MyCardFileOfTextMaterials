@@ -126,6 +126,7 @@ class CardsClass extends Component {
           <div className="cardsListItem">
             <ul>
               <li>Title</li>
+              <li>Date:</li>
               <li>Creator name</li>
               <li>Category</li>
               <li>Text</li>
@@ -141,6 +142,7 @@ class CardsClass extends Component {
                   }}
                 >
                   <li>{card.title}</li>
+                  <li>{card.creationDate.slice(0, 10)}</li>
                   <li>{card.userName}</li>
                   <li>{card.categoryName}</li>
                   <li>

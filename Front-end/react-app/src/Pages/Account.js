@@ -9,6 +9,7 @@ class AccountClass extends Component {
       nickname: "",
       email: "",
       password: "",
+      registrationDate: "",
       Nnickname: "",
       Nemail: "",
       Npassword: "",
@@ -143,6 +144,7 @@ class AccountClass extends Component {
       .then((res) => {
         if (res.status === 200) {
           answerOk = true;
+          return res.json();
         } else if (res.status === 401) {
           alert("You was unauthorized please login again.");
           this.props.navigation("/login");
@@ -161,6 +163,7 @@ class AccountClass extends Component {
           nickname: result.nickName,
           email: result.email,
           password: result.password,
+          registrationDate: result.registrationDate,
         });
       });
   }
@@ -170,8 +173,15 @@ class AccountClass extends Component {
   }
 
   render() {
-    const { nickname, email, password, Nnickname, Nemail, Npassword } =
-      this.state;
+    const {
+      nickname,
+      email,
+      password,
+      registrationDate,
+      Nnickname,
+      Nemail,
+      Npassword,
+    } = this.state;
 
     let CheckEmail = sessionStorage.getItem("Email");
 
@@ -231,6 +241,9 @@ class AccountClass extends Component {
                   Change password
                 </button>
               </div>
+            </div>
+            <div className="inputDiv">
+              <p>User registrationDate : {registrationDate.slice(0, 10)}</p>
             </div>
           </div>
         </article>

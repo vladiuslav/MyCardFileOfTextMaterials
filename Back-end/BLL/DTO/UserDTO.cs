@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace BLL.DTO
 {
@@ -9,6 +10,7 @@ namespace BLL.DTO
         public string NickName { get; set; }
         public string Password { get; set; }
         public string Role { get; set; }
+        public DateTime RegistrationDate { get; set; }
         public virtual ICollection<CardDTO> Cards { get; set; }
         public UserDTO()
         {

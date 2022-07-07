@@ -89,7 +89,6 @@ namespace WEBAPI.Controlers
             return new JsonResult(resultCard);
         }
 
-        // PUT api/<CardController>/5
         [Authorize(Roles = "user,admin")]
         [HttpPut]
         public async Task<IActionResult> PutAsync(CardUpdateModel card)

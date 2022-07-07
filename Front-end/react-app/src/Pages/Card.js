@@ -8,12 +8,13 @@ class CardClass extends Component {
     this.state = {
       title: "",
       text: "",
+      date: "",
     };
     this.deleteCard = this.deleteCard.bind(this);
   }
 
   refreshCard() {
-    let answerOk= false;
+    let answerOk = false;
     fetch(Variables.API_URL + "/Card/" + this.props.cardId, {
       method: "GET",
       headers: {
@@ -41,18 +42,19 @@ class CardClass extends Component {
         }
       })
       .then((result) => {
-        if(!answerOk){
-          return
+        if (!answerOk) {
+          return;
         }
         this.setState({
           title: result.title,
           text: result.text,
+          date: result.creationDate.slice(0, 10),
         });
       });
   }
 
   deleteCard() {
-    let answerOk=false;
+    let answerOk = false;
     fetch(Variables.API_URL + "/Card/" + this.props.cardId, {
       method: "DELETE",
       headers: {
@@ -82,9 +84,10 @@ class CardClass extends Component {
         }
       })
       .then((result) => {
-        if (!answerOk){
+        if (!answerOk) {
           return;
-        } alert("Card deleted");
+        }
+        alert("Card deleted");
         this.props.navigation("/");
       });
   }
@@ -93,12 +96,13 @@ class CardClass extends Component {
   }
 
   render() {
-    const { title, text} = this.state;
+    const { title, text, date } = this.state;
     return (
       <article>
         <div className="cardPage">
           <h1>{title}</h1>
           <p>{text}</p>
+          <p>{date}</p>
         </div>
         <div className="cardPageButtons">
           <button className="cardButton" onClick={this.deleteCard}>

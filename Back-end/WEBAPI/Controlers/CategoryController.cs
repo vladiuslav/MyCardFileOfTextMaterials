@@ -72,11 +72,10 @@ namespace WEBAPI.Controlers
             }
             else
             {
-                return new ForbidResult();
+                return new ConflictResult();
             }
         }
 
-        // DELETE api/<CategoryController>/5
         [Authorize(Roles = "admin")]
         [HttpPost("delete")]
         public async Task<IActionResult> DeleteAsync([FromBody] int id)

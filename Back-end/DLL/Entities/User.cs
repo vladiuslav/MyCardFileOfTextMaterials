@@ -1,4 +1,5 @@
 ﻿using DLL.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -19,11 +20,15 @@ namespace DLL.Entities
         [Required]
         [StringLength(40)]
         public string Password { get; set; }
+
+        [Required]
+        public DateTime RegistrationDate { get; set; }
         public virtual ICollection<Card> Cards { get; set; }
 
         public User()
         {
             this.Cards = new List<Card>();
+            this.RegistrationDate = DateTime.Now;
         }
     }
 }

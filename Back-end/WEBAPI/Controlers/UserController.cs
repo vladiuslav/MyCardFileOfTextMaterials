@@ -30,7 +30,8 @@ namespace WEBAPI.Controlers
         [HttpGet]
         public UserInfoModel Get()
         {
-            return _mapper.Map<UserInfoModel>(_userService.GetUserByEmail(User.Identity.Name));
+            var user = _mapper.Map<UserInfoModel>(_userService.GetUserByEmail(User.Identity.Name)); 
+            return user;
         }
 
         [HttpGet("name/{id}")]
@@ -39,7 +40,7 @@ namespace WEBAPI.Controlers
             var user = await _userService.GetUser(id);
             if(user is null)
             {
-                return new NotFoundResult();//404
+                return new NotFoundResult();
             }
             return new JsonResult(_mapper.Map<UserShortInfoModel>(user));
         }
@@ -60,7 +61,7 @@ namespace WEBAPI.Controlers
             }
             else
             {
-                return new ConflictResult();//409
+                return new ConflictResult();
             }
 
         }
@@ -95,7 +96,6 @@ namespace WEBAPI.Controlers
             return Ok();
         }
 
-        // PUT api/<UserController>/changeNickname
         [Authorize(Roles = "user,admin")]
         [HttpPut("changeEmail")]
         public async Task<IActionResult> PutEmailAsync([FromBody] string value)
@@ -127,7 +127,6 @@ namespace WEBAPI.Controlers
             return Ok();
         }
 
-        // PUT api/<UserController>/changeNickname
         [Authorize(Roles = "user,admin")]
         [HttpPut("changePassword")]
         public async Task<IActionResult> PutPasswordAsync([FromBody] string value)
@@ -151,7 +150,6 @@ namespace WEBAPI.Controlers
             return Ok();
         }
 
-        //POST api/<UserController>/login
         [HttpPost("login")]
         public IActionResult Login(UserLoginModel user)
         {
