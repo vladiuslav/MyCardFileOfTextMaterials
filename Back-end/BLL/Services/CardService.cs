@@ -28,8 +28,37 @@ namespace BLL.Services
         }
         public async Task CreateCard(CardDTO cardDto)
         {
+            cardDto.CreationDate = DateTime.Now;
             await _unitOfWork.Cards.Create(_mapper.Map<Card>(cardDto));
             await _unitOfWork.SaveAsync();
+        }
+        public async Task LikeCard(int cardId,UserDTO user,bool isDislike=false)
+        {
+
+            var like = _unitOfWork.Likes.GetAll().FirstOrDefault(like => like.UserId == user.Id && like.CardId == cardId);
+            if (like is null)
+            {
+                await _unitOfWork.Likes.Create(new Like()
+                {
+                    IsDislike = isDislike,
+                    UserId = user.Id,
+                    CardId = cardId
+                });
+            }
+            else
+            {
+                if (like.IsDislike == isDislike)
+                {
+                    await _unitOfWork.Likes.Delete(like.Id);
+                }
+                else
+                {
+                    like.IsDislike = isDislike;
+                    _unitOfWork.Likes.Update(like);
+                }
+            }
+            await _unitOfWork.SaveAsync();
+
         }
         public async Task ChangeCard(CardDTO cardDto)
         {
@@ -68,7 +97,8 @@ namespace BLL.Services
         }
         public async Task<CardDTO> GetCardAsync(int id)
         {
-            return _mapper.Map<CardDTO>(await _unitOfWork.Cards.GetAsync(id));
+            var card = _mapper.Map<CardDTO>(await _unitOfWork.Cards.GetAsync(id));
+            return card; 
         }
         public CardDTO GetCardByTitle(string title)
         {

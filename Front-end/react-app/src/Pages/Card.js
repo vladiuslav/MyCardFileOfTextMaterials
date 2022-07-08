@@ -9,14 +9,19 @@ class CardClass extends Component {
       title: "",
       text: "",
       date: "",
+      likes: 0,
+      disLikes:0,
     };
     this.deleteCard = this.deleteCard.bind(this);
+    this.likeCard = this.likeCard.bind(this);
+    this.disLikeCard = this.disLikeCard.bind(this);
+    this.refreshCard = this.refreshCard.bind(this);
   }
 
-  refreshCard() {
+  likeCard() {
     let answerOk = false;
-    fetch(Variables.API_URL + "/Card/" + this.props.cardId, {
-      method: "GET",
+    fetch(Variables.API_URL + "/Card/like/" + this.props.cardId, {
+      method: "POST",
       headers: {
         accept: "application/json",
         "Content-Type": "application/json",
@@ -26,15 +31,14 @@ class CardClass extends Component {
       .then((res) => {
         if (res.status === 200) {
           answerOk = true;
-          return res.json();
+          return;
         } else if (res.status === 401) {
           alert("You was unauthorized please login again.");
           this.props.navigation("/login");
           window.location.reload(false);
           return;
         } else if (res.status === 404) {
-          alert("Card not found");
-          this.props.navigation("/cards");
+          alert("Card dont existed");
           return;
         } else {
           alert("Something go wrong, please try again later.");
@@ -45,14 +49,43 @@ class CardClass extends Component {
         if (!answerOk) {
           return;
         }
-        this.setState({
-          title: result.title,
-          text: result.text,
-          date: result.creationDate.slice(0, 10),
-        });
+        this.refreshCard();
       });
   }
-
+  disLikeCard() {
+    let answerOk = false;
+    fetch(Variables.API_URL + "/Card/dislike/" + this.props.cardId, {
+      method: "POST",
+      headers: {
+        accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + sessionStorage.getItem("access_token"),
+      },
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          answerOk = true;
+          return;
+        } else if (res.status === 401) {
+          alert("You was unauthorized please login again.");
+          this.props.navigation("/login");
+          window.location.reload(false);
+          return;
+        } else if (res.status === 404) {
+          alert("Card dont existed");
+          return;
+        } else {
+          alert("Something go wrong, please try again later.");
+          return;
+        }
+      })
+      .then((result) => {
+        if (!answerOk) {
+          return;
+        }
+        this.refreshCard();
+      });
+  }
   deleteCard() {
     let answerOk = false;
     fetch(Variables.API_URL + "/Card/" + this.props.cardId, {
@@ -91,22 +124,74 @@ class CardClass extends Component {
         this.props.navigation("/");
       });
   }
+
+  refreshCard() {
+    let answerOk = false;
+    fetch(Variables.API_URL + "/Card/" + this.props.cardId, {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + sessionStorage.getItem("access_token"),
+      },
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          answerOk = true;
+          return res.json();
+        } else if (res.status === 401) {
+          alert("You was unauthorized please login again.");
+          this.props.navigation("/login");
+          window.location.reload(false);
+          return;
+        } else if (res.status === 404) {
+          alert("Card not found");
+          this.props.navigation("/cards");
+          return;
+        } else {
+          alert("Something go wrong, please try again later.");
+          return;
+        }
+      })
+      .then((result) => {
+        if (!answerOk) {
+          return;
+        }
+        this.setState({
+          title: result.title,
+          text: result.text,
+          date: result.creationDate.slice(0, 10),
+          likes: result.likes,
+          disLikes: result.disLikes,
+        });
+      });
+  }
+
   componentDidMount() {
     this.refreshCard();
   }
 
   render() {
-    const { title, text, date } = this.state;
+    const { title, text, date, likes, disLikes } = this.state;
     return (
       <article>
         <div className="cardPage">
           <h1>{title}</h1>
           <p>{text}</p>
           <p>{date}</p>
+          <p>
+            Likes : {likes} Dislikes : {disLikes}
+          </p>
         </div>
         <div className="cardPageButtons">
           <button className="cardButton" onClick={this.deleteCard}>
             delete
+          </button>
+          <button className="cardButton" onClick={this.likeCard}>
+            Like
+          </button>
+          <button className="cardButton" onClick={this.disLikeCard}>
+            DisLike
           </button>
           <button
             className="cardButton"

@@ -35,7 +35,7 @@ class CardCreateClass extends Component {
       alert("Some fild is empty, please enter information and try again.");
       return;
     }
-
+    let answerOk = false;
     fetch(Variables.API_URL + "/Card/Create", {
       method: "POST",
       headers: {
@@ -51,7 +51,8 @@ class CardCreateClass extends Component {
     })
       .then((res) => {
         if (res.status === 200) {
-          return res.json();
+          answerOk = true;
+          return;
         } else if (res.status === 401) {
           alert("You was unauthorized please login again.");
           this.props.navigation("/login");
@@ -65,9 +66,12 @@ class CardCreateClass extends Component {
           return;
         }
       })
-      .then((result)=>{
+      .then((result) => {
+        if (!answerOk) {
+          return;
+        }
         alert("Created");
-      })
+      });
   }
   render() {
     const { title, text, categoryName } = this.state;

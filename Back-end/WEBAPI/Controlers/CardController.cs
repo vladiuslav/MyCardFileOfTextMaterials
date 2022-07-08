@@ -4,6 +4,7 @@ using BLL.DTO;
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WEBAPI.Models;
@@ -70,6 +71,29 @@ namespace WEBAPI.Controlers
         }
 
         [Authorize(Roles = "user,admin")]
+        [HttpPost("like/{id}")]
+        public async Task<IActionResult> LikeAsync(int id)
+        {
+            if (await _cardService.GetCardAsync(id) is null)
+            {
+                return new NotFoundResult();
+            }
+            await _cardService.LikeCard(id,_userService.GetUserByEmail(User.Identity.Name));
+            return Ok();
+        }
+        [Authorize(Roles = "user,admin")]
+        [HttpPost("dislike/{id}")]
+        public async Task<IActionResult> DislikeAsync(int id)
+        {
+            if (await _cardService.GetCardAsync(id) is null)
+            {
+                return new NotFoundResult();
+            }
+            await _cardService.LikeCard(id, _userService.GetUserByEmail(User.Identity.Name),true);
+            return Ok();
+        }
+
+        [Authorize(Roles = "user,admin")]
         [HttpPost("Create")]
         public async Task<IActionResult> PostAsync(CardCreationModel card)
         {
@@ -81,12 +105,14 @@ namespace WEBAPI.Controlers
             CardDTO cardDTO = _mapper.Map<CardDTO>(card);
             cardDTO.UserId = userId;
             cardDTO.CategoryId = _categoryService.GetCategoryByName(card.CategoryName).Id;
-
+            cardDTO.CreationDate = DateTime.Now;
 
             await _cardService.CreateCard(cardDTO);
             CardDTO resultCard = _cardService.GetCardByTitle(cardDTO.Title);
 
-            return new JsonResult(resultCard);
+            var result = new JsonResult(resultCard);
+            result.StatusCode = 200;
+            return result;
         }
 
         [Authorize(Roles = "user,admin")]

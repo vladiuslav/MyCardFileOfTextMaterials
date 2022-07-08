@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BLL.DTO;
 using WEBAPI.Models;
+using System.Linq;
 
 namespace WEBAPI
 {
@@ -27,6 +28,8 @@ namespace WEBAPI
             CreateMap<CardDTO, CardInfoModel>()
                 .ForMember(dto => dto.CategoryName, model => model.Ignore())
                 .ForMember(dto => dto.UserName, model => model.Ignore())
+                .ForMember(dto => dto.Likes, model => model.MapFrom(card => card.Likes.Where(like=>like.IsDislike==false).ToList().Count))
+                .ForMember(dto => dto.DisLikes, model => model.MapFrom(card => card.Likes.Where(like => like.IsDislike == true).ToList().Count))
                 .ReverseMap();
 
             CreateMap<CategoryDTO, CategoryCreationModel>().ReverseMap();

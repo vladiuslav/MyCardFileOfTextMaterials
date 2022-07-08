@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace BLL.DTO
 {
@@ -14,5 +15,7 @@ namespace BLL.DTO
 
         public virtual CategoryDTO Category { get; set; }
         public int CategoryId { get; set; }
+
+        public virtual ICollection<LikeDTO> Likes { get; set; }
     }
 }

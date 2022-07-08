@@ -13,7 +13,7 @@ namespace DLL
         private CardRepository cardRepository;
         private CategoryRepository categoryRepository;
         private UserRepository userRepository;
-
+        private LikeRepository likeRepository;
         public EFUnitOfWork(string connectionString)
         {
             var contextOptions = new DbContextOptionsBuilder<DataContext>()
@@ -47,6 +47,16 @@ namespace DLL
                 if (userRepository == null)
                     userRepository = new UserRepository(db);
                 return userRepository;
+            }
+        }
+
+        public IRepository<Like> Likes
+        {
+            get
+            {
+                if (likeRepository == null)
+                    likeRepository = new LikeRepository(db);
+                return likeRepository;
             }
         }
         public Task<int> SaveAsync()

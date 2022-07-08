@@ -24,10 +24,12 @@ namespace DLL.Entities
         [Required]
         public DateTime RegistrationDate { get; set; }
         public virtual ICollection<Card> Cards { get; set; }
+        public virtual ICollection<Like> Likes { get; set; }
 
         public User()
         {
             this.Cards = new List<Card>();
+            this.Likes = new List<Like>();
             this.RegistrationDate = DateTime.Now;
         }
     }

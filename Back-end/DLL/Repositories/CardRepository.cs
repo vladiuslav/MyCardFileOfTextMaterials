@@ -29,12 +29,14 @@ namespace DLL.Repositories
 
         public async Task<Card> GetAsync(int id)
         {
-            return await db.Cards.FindAsync(id);
+            var card = await db.Cards.FindAsync(id);
+            card.Likes = await db.Likes.AsQueryable().Where(like => like.CardId == card.Id).ToListAsync();
+            return card;
         }
 
         public IQueryable<Card> GetAll()
         {
-            return db.Cards.AsQueryable();
+            return db.Cards.AsQueryable().Include(c=>c.Likes);
         }
 
         public void Update(Card item)

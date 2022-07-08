@@ -1,5 +1,6 @@
 ﻿using DLL.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -25,8 +26,11 @@ namespace DLL.Entities
         public virtual Category Category { get; set; }
         public int CategoryId { get; set; }
 
+        public virtual ICollection<Like> Likes { get; set; }
+
         public Card()
         {
+            this.Likes = new List<Like>();
             this.CreationDate = DateTime.Now;
         }
 

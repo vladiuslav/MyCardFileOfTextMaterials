@@ -12,9 +12,11 @@ namespace BLL.DTO
         public string Role { get; set; }
         public DateTime RegistrationDate { get; set; }
         public virtual ICollection<CardDTO> Cards { get; set; }
+        public virtual ICollection<LikeDTO> Likes { get; set; }
         public UserDTO()
         {
             this.Cards = new List<CardDTO>();
+            this.Likes = new List<LikeDTO>();
         }
     }
 }

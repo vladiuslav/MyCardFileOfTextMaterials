@@ -8,6 +8,8 @@ namespace WEBAPI.Models
         public string Title { get; set; }
         public string Text { get; set; }
         public DateTime CreationDate { get; set; }
+        public int Likes { get; set; }
+        public int DisLikes { get; set; }
         public int UserId { get; set; }
         public int CategoryId { get; set; }
         public string UserName { get; set; }

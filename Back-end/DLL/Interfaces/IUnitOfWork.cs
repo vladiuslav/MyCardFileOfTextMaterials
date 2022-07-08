@@ -7,6 +7,7 @@ namespace DLL.Interfaces
     public interface IUnitOfWork : IDisposable
     {
         IRepository<Card> Cards { get; }
+        IRepository<Like> Likes { get; }
         IRepository<Category> Categories { get; }
         IRepository<User> Users { get; }
         Task<int> SaveAsync();

@@ -9,6 +9,7 @@ namespace DLL
         public DbSet<Card> Cards { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Like> Likes { get; set; }
         public DataContext(DbContextOptions<DataContext> options)
             : base(options)
         {
@@ -21,7 +22,14 @@ namespace DLL
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            modelBuilder.Entity<Like>()
+            .HasOne(p => p.Card)
+            .WithMany(t => t.Likes)
+            .OnDelete(DeleteBehavior.ClientCascade);
+            modelBuilder.Entity<Like>()
+            .HasOne(p => p.User)
+            .WithMany(t => t.Likes)
+            .OnDelete(DeleteBehavior.ClientCascade);
         }
         private void addSeedData(DataContext context)
         {
@@ -88,8 +96,34 @@ namespace DLL
                 Category = category2,
                 CreationDate = DateTime.Now
             };
-
             context.Cards.AddRange(card1, card2, card3, card4, card5, card6);
+
+            Like like1 = new Like()
+            {
+                IsDislike = false,
+                User = user1,
+                Card = card1
+            };
+            Like like2 = new Like()
+            {
+                IsDislike = true,
+                User = user2,
+                Card = card1
+            };
+            Like like3 = new Like()
+            {
+                IsDislike = false,
+                User = user3,
+                Card = card1
+            };
+            Like like4 = new Like()
+            {
+                IsDislike = false,
+                User = user4,
+                Card = card1
+            };
+
+            context.Likes.AddRange(like1, like2, like3, like4);
             context.SaveChanges();
         }
     }

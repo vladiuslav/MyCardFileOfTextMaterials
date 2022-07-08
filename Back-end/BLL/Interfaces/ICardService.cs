@@ -6,6 +6,7 @@ namespace BLL.Interfaces
 {
     public interface ICardService
     {
+        Task LikeCard(int cardId, UserDTO user, bool IsDislike = false);
         Task CreateCard(CardDTO cardDto);
         Task ChangeCard(CardDTO cardDto);
         Task DeleteCard(int id);
