@@ -6,6 +6,9 @@ using System.Text;
 
 namespace DLL.Entities
 {
+    /// <summary>
+    /// Like entity used for creating likes for cards.
+    /// </summary>
     public class Like : IEntity
     {
         [Key]

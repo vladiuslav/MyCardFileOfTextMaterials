@@ -11,11 +11,18 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
+    /// <summary>
+    /// Implementaion of intarface card service for working with cards and likes.
+    /// </summary>
     public class CardService : ICardService
     {
 
         private EFUnitOfWork _unitOfWork;
         private Mapper _mapper;
+        /// <summary>
+        /// Constructor for creating mapper and for unit of work. 
+        /// </summary>
+        /// <param name="connectionString">String for connecting to data base</param>
         public CardService(string connectionString)
         {
             this._unitOfWork = new EFUnitOfWork(connectionString);

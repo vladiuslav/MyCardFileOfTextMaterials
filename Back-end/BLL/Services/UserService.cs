@@ -10,11 +10,18 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
+    /// <summary>
+    /// Implementaion of intarface user service for working with users.
+    /// </summary>
     public class UserService : IUserService
     {
 
         private EFUnitOfWork _unitOfWork;
         private Mapper _mapper;
+        /// <summary>
+        /// Constructor for creating mapper and for unit of work. 
+        /// </summary>
+        /// <param name="connectionString">String for connecting to data base</param>
         public UserService(string connectionString)
         {
             this._unitOfWork = new EFUnitOfWork(connectionString);

@@ -8,9 +8,16 @@ using System.Threading.Tasks;
 
 namespace DLL.Repositories
 {
+    /// <summary>
+    /// Repository for working with table categories.
+    /// </summary>
     public class CategoryRepository : IRepository<Category>
     {
         private DataContext db;
+        /// <summary>
+        /// Simple constructor with data context
+        /// </summary>
+        /// <param name="dataContext">Data context for working with bd</param>
         public CategoryRepository(DataContext dataContext)
         {
             this.db = dataContext;

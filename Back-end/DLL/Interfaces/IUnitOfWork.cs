@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 
 namespace DLL.Interfaces
 {
+    /// <summary>
+    /// Intarface of Unit of work pattern, include repositories for work with db.
+    /// </summary>
     public interface IUnitOfWork : IDisposable
     {
         IRepository<Card> Cards { get; }

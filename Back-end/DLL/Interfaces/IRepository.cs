@@ -5,6 +5,10 @@ using System.Threading.Tasks;
 
 namespace DLL.Interfaces
 {
+    /// <summary>
+    ///  Intarface with base repository function (CRED): create,read,edit,delete
+    /// </summary>
+    /// <typeparam name="T">Entity for repository inheritance IEntity</typeparam>
     public interface IRepository<T> where T : IEntity
     {
         IQueryable<T> GetAll();

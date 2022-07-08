@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 
 namespace DLL
 {
+    /// <summary>
+    /// Unit of work is used for working with repositories.
+    /// Repositories used for working with specific tables.
+    /// Have methods for dispose and async save of data base.
+    /// </summary>
     public class EFUnitOfWork : IUnitOfWork
     {
         private DataContext db;
@@ -14,6 +19,11 @@ namespace DLL
         private CategoryRepository categoryRepository;
         private UserRepository userRepository;
         private LikeRepository likeRepository;
+
+        /// <summary>
+        /// Constructor is used for creating context of db, using Microsoft sql server. 
+        /// </summary>
+        /// <param name="connectionString">Connection string for options</param>
         public EFUnitOfWork(string connectionString)
         {
             var contextOptions = new DbContextOptionsBuilder<DataContext>()

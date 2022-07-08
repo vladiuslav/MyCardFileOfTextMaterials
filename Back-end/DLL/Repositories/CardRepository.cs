@@ -9,9 +9,16 @@ using System.Threading.Tasks;
 
 namespace DLL.Repositories
 {
+    /// <summary>
+    /// Repository for working with table cards.
+    /// </summary>
     public class CardRepository : IRepository<Card>
     {
         private DataContext db;
+        /// <summary>
+        /// Simple constructor with data context
+        /// </summary>
+        /// <param name="dataContext">Data context for working with bd</param>
         public CardRepository(DataContext dataContext)
         {
             this.db = dataContext;

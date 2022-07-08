@@ -10,10 +10,17 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
+    /// <summary>
+    /// Implementaion of intarface category service for working with categories.
+    /// </summary>
     public class CategoryService : ICategoryService
     {
         private EFUnitOfWork _unitOfWork;
         private Mapper _mapper;
+        /// <summary>
+        /// Constructor for creating mapper and for unit of work. 
+        /// </summary>
+        /// <param name="connectionString">String for connecting to data base</param>
         public CategoryService(string connectionString)
         {
             this._unitOfWork = new EFUnitOfWork(connectionString);

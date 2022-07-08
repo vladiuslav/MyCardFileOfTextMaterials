@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace BLL.DTO
 {
+    /// <summary>
+    /// User DTO (data context object) used working with bll, for mapping card to data logic layer.
+    /// </summary>
     public class UserDTO
     {
         public int Id { get; set; }

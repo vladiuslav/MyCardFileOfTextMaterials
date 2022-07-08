@@ -9,9 +9,17 @@ using System.Threading.Tasks;
 
 namespace DLL.Repositories
 {
+    /// <summary>
+    /// Repository for working with table likes.
+    /// </summary>
     class LikeRepository : IRepository<Like>
     {
         private DataContext db;
+        /// <summary>
+        /// Simple constructor with data context
+        /// </summary>
+        /// <param name="dataContext">Data context for working with bd</param>
+
         public LikeRepository(DataContext dataContext)
         {
             this.db = dataContext;

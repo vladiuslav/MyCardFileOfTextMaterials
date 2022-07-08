@@ -5,6 +5,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DLL.Entities
 {
+    /// <summary>
+    /// User entity used for creating users.
+    /// </summary>
     public class User : IEntity
     {
         [Key]
@@ -25,7 +28,9 @@ namespace DLL.Entities
         public DateTime RegistrationDate { get; set; }
         public virtual ICollection<Card> Cards { get; set; }
         public virtual ICollection<Like> Likes { get; set; }
-
+        /// <summary>
+        /// Create empty user.
+        /// </summary>
         public User()
         {
             this.Cards = new List<Card>();

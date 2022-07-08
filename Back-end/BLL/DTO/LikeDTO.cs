@@ -4,6 +4,9 @@ using System.Text;
 
 namespace BLL.DTO
 {
+    /// <summary>
+    /// Like DTO (data context object) used working with bll, for mapping card to data logic layer.
+    /// </summary>
     public class LikeDTO
     {
         public int Id { get; set; }

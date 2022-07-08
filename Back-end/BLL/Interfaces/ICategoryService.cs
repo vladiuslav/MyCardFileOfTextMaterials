@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 
 namespace BLL.Interfaces
 {
+    /// <summary>
+    /// Intarface of service that is used for work with categories. 
+    /// </summary>
     public interface ICategoryService
     {
         Task CreateCategory(CategoryDTO categoryDto);

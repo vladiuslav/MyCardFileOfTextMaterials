@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 
 namespace BLL.Interfaces
 {
+    /// <summary>
+    /// Intarface of service that is used for work with users. 
+    /// </summary>
     public interface IUserService
     {
         Task CreateUser(UserDTO userDto);

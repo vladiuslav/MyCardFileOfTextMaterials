@@ -3,6 +3,7 @@ using System.Text;
 
 namespace WEBAPI
 {
+
     public class AuthOptions
     {
         public const string ISSUER = "MyAuthServer";

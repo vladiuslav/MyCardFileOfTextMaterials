@@ -4,12 +4,19 @@ using System;
 
 namespace DLL
 {
+    /// <summary>
+    /// Data context for working data base.
+    /// </summary>
     public class DataContext : DbContext
     {
         public DbSet<Card> Cards { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Like> Likes { get; set; }
+        /// <summary>
+        /// Constructor for creating context, create data base with seed data if data base doesnt exist. 
+        /// </summary>
+        /// <param name="options">Parameter for starting database</param>
         public DataContext(DbContextOptions<DataContext> options)
             : base(options)
         {
@@ -19,7 +26,10 @@ namespace DLL
                 addSeedData(this);
             }
         }
-
+        /// <summary>
+        /// Method create model contections with entities, using fluent api.
+        /// </summary>
+        /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Like>()
@@ -31,6 +41,11 @@ namespace DLL
             .WithMany(t => t.Likes)
             .OnDelete(DeleteBehavior.ClientCascade);
         }
+
+        /// <summary>
+        /// Create simple data for testing db.
+        /// </summary>
+        /// <param name="context">context for data</param>
         private void addSeedData(DataContext context)
         {
             User user1 = new User { Email = "TestEmail1@mail.com", NickName = "TestNickName1", Password = "qwe123", Role = "admin",RegistrationDate = DateTime.Now };

@@ -6,6 +6,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DLL.Entities
 {
+    /// <summary>
+    /// Card entity used for creating cards.
+    /// </summary>
     public class Card : IEntity
     {
         [Key]
@@ -19,15 +22,15 @@ namespace DLL.Entities
 
         [Required]
         public DateTime CreationDate { get; set; }
-
         public virtual User User { get; set; }
         public int UserId { get; set; }
-
         public virtual Category Category { get; set; }
         public int CategoryId { get; set; }
-
         public virtual ICollection<Like> Likes { get; set; }
 
+        /// <summary>
+        /// Create empty card.
+        /// </summary>
         public Card()
         {
             this.Likes = new List<Like>();
