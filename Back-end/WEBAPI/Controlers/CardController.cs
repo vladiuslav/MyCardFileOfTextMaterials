@@ -40,6 +40,34 @@ namespace WEBAPI.Controlers
             }
             return cards;
         }
+
+        [HttpGet("sortedByDate")]
+        public async Task<IEnumerable<CardInfoModel>> GetAsyncSortedByDate()
+        {
+            var cards = _mapper.Map<IEnumerable<CardInfoModel>>(_cardService.GetCardsSortByDate());
+            var userNames = await _cardService.UserNamesAsync();
+            var categoriesNames = await _cardService.CategoryNamesAsync();
+            foreach (var item in cards)
+            {
+                item.CategoryName = categoriesNames[item.Id];
+                item.UserName = userNames[item.Id];
+            }
+            return cards;
+        }
+
+        [HttpGet("sortedByPopularity")]
+        public async Task<IEnumerable<CardInfoModel>> GetAsyncSortedByPopularity()
+        {
+            var cards = _mapper.Map<IEnumerable<CardInfoModel>>(_cardService.GetCardsSortByPopularity());
+            var userNames = await _cardService.UserNamesAsync();
+            var categoriesNames = await _cardService.CategoryNamesAsync();
+            foreach (var item in cards)
+            {
+                item.CategoryName = categoriesNames[item.Id];
+                item.UserName = userNames[item.Id];
+            }
+            return cards;
+        }
         [HttpPost("GetCardsByCategory")]
         public async Task<IActionResult> GetCardsByCategoryAsync(CategoryInfoModel category)
         {

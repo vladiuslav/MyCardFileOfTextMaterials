@@ -132,5 +132,21 @@ namespace BLL.Services
             sortedCards.Reverse();
             return sortedCards;
         }
+
+        public IEnumerable<CardDTO> GetCardsSortByDate()
+        {
+            List<CardDTO> cards = _mapper.Map<IEnumerable<CardDTO>>(_unitOfWork.Cards.GetAll()).ToList();
+            cards.Sort((x, y) => DateTime.Compare(x.CreationDate, y.CreationDate));
+            cards.Reverse();
+            return cards;
+        }
+
+        public IEnumerable<CardDTO> GetCardsSortByPopularity()
+        {
+            List<CardDTO> cards = _mapper.Map<IEnumerable<CardDTO>>(_unitOfWork.Cards.GetAll()).ToList();
+            cards.Sort((x, y) =>  x.Likes.Count.CompareTo(y.Likes.Count));
+            cards.Reverse();
+            return cards;
+        }
     }
 }

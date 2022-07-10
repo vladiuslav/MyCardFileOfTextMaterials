@@ -12,7 +12,9 @@ class CardsClass extends Component {
     };
 
     this.setFilter1 = this.setFilter1.bind(this);
+    this.setFilter2 = this.setFilter2.bind(this);
     this.setFilter3 = this.setFilter3.bind(this);
+    this.setFilter4 = this.setFilter4.bind(this);
     this.changeCategoryFilter = this.changeCategoryFilter.bind(this);
   }
 
@@ -20,6 +22,29 @@ class CardsClass extends Component {
     switch (sort) {
       case 1:
         fetch(Variables.API_URL + "/Card", {
+          method: "GET",
+          headers: {
+            accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + sessionStorage.getItem("access_token"),
+          },
+        })
+          .then((res) => {
+            if (res.status !== 200) {
+              alert("Something go wrong, please try again later.");
+              return;
+            }
+            return res.json();
+          })
+          .then((value) => {
+            this.setState({
+              cards: value,
+            });
+          });
+
+        break;
+      case 2:
+        fetch(Variables.API_URL + "/Card/sortedByPopularity", {
           method: "GET",
           headers: {
             accept: "application/json",
@@ -80,6 +105,28 @@ class CardsClass extends Component {
             });
           });
         break;
+      case 4:
+        fetch(Variables.API_URL + "/Card/sortedByDate", {
+          method: "GET",
+          headers: {
+            accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + sessionStorage.getItem("access_token"),
+          },
+        })
+          .then((res) => {
+            if (res.status !== 200) {
+              alert("Something go wrong, please try again later.");
+              return;
+            }
+            return res.json();
+          })
+          .then((value) => {
+            this.setState({
+              cards: value,
+            });
+          });
+        break;
       default:
         alert("Wrong sort category");
         break;
@@ -95,8 +142,16 @@ class CardsClass extends Component {
     this.setState({ filter: 1 });
     this.refreshList(this.state.filter);
   }
+  setFilter2() {
+    this.setState({ filter: 2 });
+    this.refreshList(this.state.filter);
+  }
   setFilter3() {
     this.setState({ filter: 3 });
+    this.refreshList(this.state.filter);
+  }
+  setFilter4() {
+    this.setState({ filter: 4 });
     this.refreshList(this.state.filter);
   }
 
@@ -106,18 +161,22 @@ class CardsClass extends Component {
     return (
       <article>
         <div className="sortButtons">
-          <div>
-            <input
-              className="input"
-              type="text"
-              value={filterCategory}
-              onChange={this.changeCategoryFilter}
-              placeholder="Category name"
-            ></input>
-            <button className="simpleButton" onClick={this.setFilter3}>
-              Sort by category
-            </button>
-          </div>
+          <button className="simpleButton" onClick={this.setFilter2}>
+            Sort by Popularity
+          </button>
+          <button className="simpleButton" onClick={this.setFilter4}>
+            Sort by Date
+          </button>
+          <input
+            className="input"
+            type="text"
+            value={filterCategory}
+            onChange={this.changeCategoryFilter}
+            placeholder="Category name"
+          ></input>
+          <button className="simpleButton" onClick={this.setFilter3}>
+            Sort by category
+          </button>
           <button className="simpleButton" onClick={this.setFilter1}>
             Reset list
           </button>
@@ -127,7 +186,7 @@ class CardsClass extends Component {
             <ul>
               <li>Title</li>
               <li>Likes/DisLike</li>
-              <li>Date:</li>
+              <li>Date</li>
               <li>Creator name</li>
               <li>Category</li>
               <li>Text</li>
@@ -144,7 +203,10 @@ class CardsClass extends Component {
                 >
                   <li>{card.title}</li>
                   <li>
-                    {card.likes}/{card.disLikes}
+                    <i className="fa-solid fa-thumbs-up"></i> {card.likes}
+                    {" | "}
+                    <i className="fa-solid fa-thumbs-down"></i>
+                    {card.disLikes}
                   </li>
                   <li>{card.creationDate.slice(0, 10)}</li>
                   <li>{card.userName}</li>

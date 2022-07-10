@@ -9,8 +9,9 @@ class CardClass extends Component {
       title: "",
       text: "",
       date: "",
+      userId: 0,
       likes: 0,
-      disLikes:0,
+      disLikes: 0,
     };
     this.deleteCard = this.deleteCard.bind(this);
     this.likeCard = this.likeCard.bind(this);
@@ -162,6 +163,7 @@ class CardClass extends Component {
           text: result.text,
           date: result.creationDate.slice(0, 10),
           likes: result.likes,
+          userId: result.userId,
           disLikes: result.disLikes,
         });
       });
@@ -172,7 +174,21 @@ class CardClass extends Component {
   }
 
   render() {
-    const { title, text, date, likes, disLikes } = this.state;
+    const { title, text, date, likes, disLikes, userId } = this.state;
+    let likefunction, dislikefunction, deleteCardFunction, changeCardFunction;
+    if (sessionStorage.getItem("Id") !== null) {
+      likefunction = this.likeCard;
+      dislikefunction = this.disLikeCard;
+      deleteCardFunction = this.deleteCard;
+      changeCardFunction = () =>
+        this.props.navigation("/cardChange/" + this.props.cardId);
+    } else {
+      let alertFunction = () => alert("You are not registered");
+      likefunction = alertFunction;
+      dislikefunction = alertFunction;
+      deleteCardFunction = alertFunction;
+      changeCardFunction = alertFunction;
+    }
     return (
       <article>
         <div className="cardPage">
@@ -180,25 +196,20 @@ class CardClass extends Component {
           <p>{text}</p>
           <p>{date}</p>
           <p>
-            Likes : {likes} Dislikes : {disLikes}
+            <i className="fa-solid fa-thumbs-up" onClick={likefunction}></i>{" "}
+            {likes} {" | "}
+            <i
+              className="fa-solid fa-thumbs-down"
+              onClick={dislikefunction}
+            ></i>{" "}
+            {disLikes}
           </p>
         </div>
         <div className="cardPageButtons">
-          <button className="cardButton" onClick={this.deleteCard}>
+          <button className="cardButton" onClick={deleteCardFunction}>
             delete
           </button>
-          <button className="cardButton" onClick={this.likeCard}>
-            Like
-          </button>
-          <button className="cardButton" onClick={this.disLikeCard}>
-            DisLike
-          </button>
-          <button
-            className="cardButton"
-            onClick={() =>
-              this.props.navigation("/cardChange/" + this.props.cardId)
-            }
-          >
+          <button className="cardButton" onClick={changeCardFunction}>
             change
           </button>
         </div>
@@ -206,8 +217,6 @@ class CardClass extends Component {
     );
   }
 }
-
-// Wrap and export
 export default function Card(props) {
   let { id } = useParams();
   const navigation = useNavigate();

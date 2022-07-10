@@ -44,6 +44,15 @@ namespace BLL.Interfaces
         /// Method give all cards by the category. 
         /// </summary>
         IEnumerable<CardDTO> GetCardsByCategory(string category);
+        /// <summary>
+        /// Method give cards sorted by date.
+        /// </summary>
+        IEnumerable<CardDTO> GetCardsSortByDate();
+        /// <summary>
+        /// Method give cards sorted by number of likes.
+        /// </summary>
+        IEnumerable<CardDTO> GetCardsSortByPopularity();
+
         Task Dispose();
     }
 }
