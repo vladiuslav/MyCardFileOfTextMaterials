@@ -148,5 +148,25 @@ namespace BLL.Services
             cards.Reverse();
             return cards;
         }
+
+        public IEnumerable<CardDTO> GetCardsBySearch(string search)
+        {
+            List<CardDTO> cards = _mapper.Map<IEnumerable<CardDTO>>(_unitOfWork.Cards.GetAll()).ToList();
+            List<CardDTO> returnCards = new List<CardDTO>();
+            for (int i = 0; i < cards.Capacity; i++)
+            {
+                var card = cards[i];
+                if(card is null)
+                {
+                    continue;
+                }
+                else if(cards[i].Title.Contains(search))
+                {
+                    returnCards.Add(cards[i]);
+                }
+            }
+            returnCards.Reverse();
+            return returnCards;
+        }
     }
 }

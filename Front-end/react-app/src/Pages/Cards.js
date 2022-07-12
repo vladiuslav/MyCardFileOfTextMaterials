@@ -9,13 +9,16 @@ class CardsClass extends Component {
       cards: [],
       filter: 1,
       filterCategory: "",
+      searchString: "",
     };
 
     this.setFilter1 = this.setFilter1.bind(this);
     this.setFilter2 = this.setFilter2.bind(this);
     this.setFilter3 = this.setFilter3.bind(this);
     this.setFilter4 = this.setFilter4.bind(this);
+    this.setFilter5 = this.setFilter5.bind(this);
     this.changeCategoryFilter = this.changeCategoryFilter.bind(this);
+    this.changeSearchString = this.changeSearchString.bind(this);
   }
 
   refreshList(sort) {
@@ -127,6 +130,38 @@ class CardsClass extends Component {
             });
           });
         break;
+      case 5:
+        if (this.state.searchString === "") {
+          alert("Search string is empty");
+          return;
+        }
+        fetch(
+          Variables.API_URL + "/Card/cardsSearch/" + this.state.searchString,
+          {
+            method: "POST",
+            headers: {
+              accept: "application/json",
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + sessionStorage.getItem("access_token"),
+            },
+          }
+        )
+          .then((res) => {
+            if (res.status === 404) {
+              alert("No much result.");
+              return;
+            } else if (res.status !== 200) {
+              alert("Something go wrong, please try again later.");
+              return;
+            }
+            return res.json();
+          })
+          .then((value) => {
+            this.setState({
+              cards: value,
+            });
+          });
+        break;
       default:
         alert("Wrong sort category");
         break;
@@ -137,6 +172,9 @@ class CardsClass extends Component {
   }
   changeCategoryFilter(event) {
     this.setState({ filterCategory: event.target.value });
+  }
+  changeSearchString(event) {
+    this.setState({ searchString: event.target.value });
   }
   setFilter1() {
     this.setState({ filter: 1 });
@@ -154,10 +192,14 @@ class CardsClass extends Component {
     this.setState({ filter: 4 });
     this.refreshList(this.state.filter);
   }
+  setFilter5() {
+    this.setState({ filter: 5 });
+    this.refreshList(this.state.filter);
+  }
 
   render() {
     const { navigation } = this.props;
-    const { cards, filterCategory } = this.state;
+    const { cards, filterCategory, searchString } = this.state;
     return (
       <article>
         <div className="sortButtons">
@@ -165,7 +207,7 @@ class CardsClass extends Component {
             Sort by Popularity
           </button>
           <button className="simpleButton" onClick={this.setFilter4}>
-            Sort by Date
+            Sort by date
           </button>
           <input
             className="input"
@@ -173,13 +215,29 @@ class CardsClass extends Component {
             value={filterCategory}
             onChange={this.changeCategoryFilter}
             placeholder="Category name"
-          ></input>
+          ></input> 
           <button className="simpleButton" onClick={this.setFilter3}>
             Sort by category
           </button>
-          <button className="simpleButton" onClick={this.setFilter1}>
-            Reset list
-          </button>
+          <input
+            className="input"
+            type="text"
+            value={searchString}
+            onChange={this.changeSearchString}
+            placeholder="Title"
+          ></input>
+          <div>
+            <i
+              className="fa-solid fa-magnifying-glass"
+              onClick={this.setFilter5}
+            ></i>
+          </div>
+          <div>
+            <i
+              className="fa-solid fa-arrows-rotate"
+              onClick={this.setFilter1}
+            ></i>
+          </div>
         </div>
         <div>
           <div className="cardsListItem">

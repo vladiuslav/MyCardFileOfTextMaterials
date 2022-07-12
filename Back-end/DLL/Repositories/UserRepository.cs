@@ -8,9 +8,16 @@ using System.Threading.Tasks;
 
 namespace DLL.Repositories
 {
+    /// <summary>
+    /// Repository for working with table users.
+    /// </summary>
     public class UserRepository : IRepository<User>
     {
         private DataContext db;
+        /// <summary>
+        /// Simple constructor with data context
+        /// </summary>
+        /// <param name="dataContext">Data context for working with bd</param>
         public UserRepository(DataContext dataContext)
         {
             this.db = dataContext;

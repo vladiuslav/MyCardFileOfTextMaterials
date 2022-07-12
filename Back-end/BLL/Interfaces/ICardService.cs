@@ -44,6 +44,11 @@ namespace BLL.Interfaces
         /// Method give all cards by the category. 
         /// </summary>
         IEnumerable<CardDTO> GetCardsByCategory(string category);
+
+        /// <summary>
+        /// Method give all cards where card contains search string
+        /// </summary>
+        IEnumerable<CardDTO> GetCardsBySearch(string search);
         /// <summary>
         /// Method give cards sorted by date.
         /// </summary>

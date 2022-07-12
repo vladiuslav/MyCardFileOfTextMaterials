@@ -68,6 +68,26 @@ namespace WEBAPI.Controlers
             }
             return cards;
         }
+
+        [HttpPost("cardsSearch/{search}")]
+        public async Task<IActionResult> CardsSearch(string search)
+        {
+            
+            var cards = _mapper.Map<IEnumerable<CardInfoModel>>(_cardService.GetCardsBySearch(search));
+            if (cards==null)
+            {
+                return new NotFoundResult();
+            }
+            var userNames = await _cardService.UserNamesAsync();
+            var categoriesNames = await _cardService.CategoryNamesAsync();
+            foreach (var item in cards)
+            {
+                item.CategoryName = categoriesNames[item.Id];
+                item.UserName = userNames[item.Id];
+            }
+            return new JsonResult(cards);
+        }
+
         [HttpPost("GetCardsByCategory")]
         public async Task<IActionResult> GetCardsByCategoryAsync(CategoryInfoModel category)
         {
@@ -84,9 +104,8 @@ namespace WEBAPI.Controlers
                 item.UserName = userNames[item.Id];
             }
             return new JsonResult(cards);
-
-
         }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAsync(int id)
         {
