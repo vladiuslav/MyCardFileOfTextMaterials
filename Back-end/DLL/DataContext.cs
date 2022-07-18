@@ -20,12 +20,12 @@ namespace DLL
         public DataContext(DbContextOptions<DataContext> options)
             : base(options)
         {
-
             if (Database.EnsureCreated())
             {
                 addSeedData(this);
             }
         }
+
         /// <summary>
         /// Method create model contections with entities, using fluent api.
         /// </summary>

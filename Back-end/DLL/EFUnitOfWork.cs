@@ -2,6 +2,7 @@
 using DLL.Interfaces;
 using DLL.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -19,7 +20,6 @@ namespace DLL
         private CategoryRepository categoryRepository;
         private UserRepository userRepository;
         private LikeRepository likeRepository;
-
         /// <summary>
         /// Constructor is used for creating context of db, using Microsoft sql server. 
         /// </summary>
@@ -28,6 +28,7 @@ namespace DLL
         {
             var contextOptions = new DbContextOptionsBuilder<DataContext>()
             .UseSqlServer(connectionString)
+            .LogTo(Console.WriteLine,LogLevel.Warning)
             .Options;
             db = new DataContext(contextOptions);
         }
