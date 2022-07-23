@@ -4,6 +4,7 @@ using BLL.Interfaces;
 using BLL.MapperConfigurations;
 using DLL;
 using DLL.Entities;
+using DLL.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace BLL.Services
     /// </summary>
     public class CategoryService : ICategoryService
     {
-        private EFUnitOfWork _unitOfWork;
+        private IUnitOfWork _unitOfWork;
         private Mapper _mapper;
         /// <summary>
         /// Constructor for creating mapper and for unit of work. 
@@ -24,6 +25,19 @@ namespace BLL.Services
         public CategoryService(string connectionString)
         {
             this._unitOfWork = new EFUnitOfWork(connectionString);
+
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<ConfigurationProfile>();
+            });
+            this._mapper = new Mapper(config);
+        }
+        /// <summary>
+        /// Constructor with parameter of unit of work, used for testing.
+        /// </summary>
+        public CategoryService(IUnitOfWork unitOfWork)
+        {
+            this._unitOfWork = unitOfWork;
 
             var config = new MapperConfiguration(cfg =>
             {

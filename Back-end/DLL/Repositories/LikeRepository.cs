@@ -12,7 +12,7 @@ namespace DLL.Repositories
     /// <summary>
     /// Repository for working with table likes.
     /// </summary>
-    class LikeRepository : IRepository<Like>
+    public class LikeRepository : IRepository<Like>
     {
         private DataContext db;
         /// <summary>

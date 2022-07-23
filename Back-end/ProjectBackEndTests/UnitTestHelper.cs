@@ -1,66 +1,30 @@
-﻿using DLL.Entities;
+﻿using DLL;
+using DLL.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace DLL
+namespace ProjectBackEndTests
 {
-    /// <summary>
-    /// Data context for working data base.
-    /// </summary>
-    public class DataContext : DbContext
+    internal static class UnitTestHelper
     {
-        public DbSet<Card> Cards { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<Like> Likes { get; set; }
-        /// <summary>
-        /// Constructor for creating context, based on options in parameters. 
-        /// Method log warning information to console.
-        /// </summary>
-        /// <param name="options">Parameter for database options</param>
-        public DataContext(DbContextOptions<DataContext> options)
-            : base(options) {}
-        /// <summary>
-        /// Constructor for creating context, create datacontext with sql server , used connection string 
-        /// Method log warning information to console.
-        /// </summary>
-        /// <param name="options">Connection string for connection to data base</param>
-        public DataContext(string connectionString)
+        public static DbContextOptions<DataContext> GetUnitTestDbOptions()
         {
-            var contextOptions = new DbContextOptionsBuilder<DataContext>()
-            .UseSqlServer(connectionString)
-            .LogTo(Console.WriteLine, LogLevel.Warning)
-            .Options;
-            if (Database.EnsureCreated())
+            var options = new DbContextOptionsBuilder<DataContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options;
+
+            using (var context = new DataContext(options))
             {
-                addSeedData(this);
+                SeedData(context);
             }
+            return options;
         }
 
-        /// <summary>
-        /// Method create model contections with entities, using fluent api.
-        /// </summary>
-        /// <param name="modelBuilder"></param>
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        private static void SeedData(DataContext context)
         {
-            modelBuilder.Entity<Like>()
-            .HasOne(p => p.Card)
-            .WithMany(t => t.Likes)
-            .OnDelete(DeleteBehavior.ClientCascade);
-            modelBuilder.Entity<Like>()
-            .HasOne(p => p.User)
-            .WithMany(t => t.Likes)
-            .OnDelete(DeleteBehavior.ClientCascade);
-        }
-
-        /// <summary>
-        /// Create simple data for testing db.
-        /// </summary>
-        /// <param name="context">context for data</param>
-        private void addSeedData(DataContext context)
-        {
-            User user1 = new User { Email = "TestEmail1@mail.com", NickName = "TestNickName1", Password = "qwe123", Role = "admin",RegistrationDate = DateTime.Now };
+            User user1 = new User { Email = "TestEmail1@mail.com", NickName = "TestNickName1", Password = "qwe123", Role = "admin", RegistrationDate = DateTime.Now };
             User user2 = new User { Email = "TestEmail2@mail.com", NickName = "TestNickName2", Password = "qwe123", Role = "user", RegistrationDate = DateTime.Now };
             User user3 = new User { Email = "TestEmail3@mail.com", NickName = "TestNickName3", Password = "qwe123", Role = "user", RegistrationDate = DateTime.Now };
             User user4 = new User { Email = "TestEmail4@mail.com", NickName = "TestNickName4", Password = "qwe123", Role = "user", RegistrationDate = DateTime.Now };
@@ -154,6 +118,4 @@ namespace DLL
             context.SaveChanges();
         }
     }
-
-
 }

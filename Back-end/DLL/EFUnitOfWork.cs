@@ -26,11 +26,7 @@ namespace DLL
         /// <param name="connectionString">Connection string for options</param>
         public EFUnitOfWork(string connectionString)
         {
-            var contextOptions = new DbContextOptionsBuilder<DataContext>()
-            .UseSqlServer(connectionString)
-            .LogTo(Console.WriteLine,LogLevel.Warning)
-            .Options;
-            db = new DataContext(contextOptions);
+            db = new DataContext(connectionString);
         }
         public IRepository<Card> Cards
         {
