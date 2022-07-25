@@ -21,22 +21,6 @@ namespace DLL
         /// <param name="options">Parameter for database options</param>
         public DataContext(DbContextOptions<DataContext> options)
             : base(options) {}
-        /// <summary>
-        /// Constructor for creating context, create datacontext with sql server , used connection string 
-        /// Method log warning information to console.
-        /// </summary>
-        /// <param name="options">Connection string for connection to data base</param>
-        public DataContext(string connectionString)
-        {
-            var contextOptions = new DbContextOptionsBuilder<DataContext>()
-            .UseSqlServer(connectionString)
-            .LogTo(Console.WriteLine, LogLevel.Warning)
-            .Options;
-            if (Database.EnsureCreated())
-            {
-                addSeedData(this);
-            }
-        }
 
         /// <summary>
         /// Method create model contections with entities, using fluent api.
